@@ -89,17 +89,21 @@ if ($filterDate !== '') {
     }
 
     .navbar-brand span {
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       background-color: #1d3a8a;
       color: white;
-      padding: 2px 4px;
+      padding: 6px 6px;
       border-radius: 3px;
       margin-right: 4px;
     }
 
     .nav-link {
-      color: #1d3a8a !important;
-      font-weight: 500;
+      padding: 6px 6px;
+      background-color: #1d3a8a;
+      color:rgb(231, 234, 241) !important;
+      font-weight: bold;
+      border-radius: 3px;
+      margin-right: 4px;
     }
     .nav-item.dropdown:hover .nav-link {
       color: #f6b800 !important;
@@ -189,15 +193,15 @@ if ($filterDate !== '') {
   <!-- Navbar principal -->
   <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="escuelas/escuelas.php">
-        <span>Consejo</span>Escolar.
+      <a class="navbar-brand" href="index.php">
+        <span>Consejo Escolar</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="folders.php">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="escuelas/escuelas.php">Escuelas</a></li>
         </ul>
       </div>
     </div>

@@ -112,10 +112,10 @@
     }
 
     .navbar-brand span {
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       background-color: #1d3a8a;
       color: white;
-      padding: 2px 4px;
+      padding: 6px 6px;
       border-radius: 3px;
       margin-right: 4px;
     }
@@ -232,7 +232,7 @@
   <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="index.php">
-        <span>Cooperativa de trabajo</span>La comarca ltda.
+        <span>Consejo Escolar</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
@@ -253,12 +253,12 @@
     </div>
   </nav>
 
-  <!-- Hero -->
+  <!-- Hero: banner de fotografía.
   <div class="hero">
     <div class="hero-text">
       <p>Transformando el Futuro, Hoy</p>
     </div>
-  </div>
+  </div> -->
 
 
 <!-- Servicios -->
@@ -276,12 +276,12 @@
         </a>
       </div>
       <div class="col-md-4 mb-4">
-        <a href="socios/socios.php" class="service text-center d-block h-100">
+        <a href="escuelas/escuelas.php" class="service text-center d-block h-100">
           <div class="service-icon">
             <i class="fas fa-users"></i>
           </div>
-          <h3>Gestión de Socios</h3>
-          <p>Agrega, muestra y elimina socios en la base de datos.</p>
+          <h3>Gestión de Escuelas</h3>
+          <p>Agrega, muestra y elimina escuelas en la base de datos.</p>
         </a>
       </div>
       <div class="col-md-4 mb-4">
@@ -299,6 +299,7 @@
 
 
   <!-- Proyectos -->
+  <!-- Sin usar.
   <section id="proyectos">
     <h2>Proyectos Recientes</h2>
     <div class="container">
@@ -326,7 +327,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <style>
 .map-hover {
@@ -346,7 +347,7 @@
 </style>
 
 <div class="map-hover my-4">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1451.7932467810208!2d-63.00876520807553!3d-40.8178496674357!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95f6999da7dbf011%3A0x5b2a3adb19ea31c!2sBarrio%20America!5e0!3m2!1ses!2sar!4v1745536848729!5m2!1ses!2sar  " width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3020.659104875207!2d-62.976390099999996!3d-40.791508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95f6a3695d9920c7%3A0x1230bcd0782d7251!2sCONSEJO%20ESCOLAR%20PATAGONES%20SEDE2!5e0!3m2!1ses-419!2sar!4v1746542196717!5m2!1ses-419!2sar" width=100% height=100% style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
 
 
