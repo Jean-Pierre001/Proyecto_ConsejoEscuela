@@ -1,2 +1,2 @@
 # Proyecto_ConsejoEscuela
-Proyecto sobre la escuela sa
+Proyecto sobre la escuela esoooo sasas
