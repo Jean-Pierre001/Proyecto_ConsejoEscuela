@@ -266,7 +266,7 @@
   <h2 class="section-title">Nuestros Servicios</h2>
   <div class="container">
     <div class="row">
-      <div class="col-md-4 mb-4">
+      <div class="col-md-6 mb-4">
         <a href="folders.php" class="service text-center d-block h-100">
           <div class="service-icon">
             <i class="fas fa-folder-open"></i>
@@ -275,7 +275,7 @@
           <p>Crear carpetas organizadas por fecha de creación.</p>
         </a>
       </div>
-      <div class="col-md-4 mb-4">
+      <div class="col-md-6 mb-4">
         <a href="escuelas/escuelas.php" class="service text-center d-block h-100">
           <div class="service-icon">
             <i class="fas fa-users"></i>
@@ -284,7 +284,7 @@
           <p>Agrega, muestra y elimina escuelas en la base de datos.</p>
         </a>
       </div>
-      <div class="col-md-4 mb-4">
+      <!--<div class="col-md-4 mb-4">
         <a href="sistemaContable/contable.php" class="service text-center d-block h-100">
           <div class="service-icon">
             <i class="fas fa-calculator"></i>
@@ -292,7 +292,7 @@
           <h3>Sistema Contable</h3>
           <p>Visualiza la contabilidad de la empresa de manera detallada.</p>
         </a>
-      </div>
+      </div> -->
     </div>
   </div>
 </section>
