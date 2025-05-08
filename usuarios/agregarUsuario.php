@@ -1,3 +1,26 @@
+<?php
+require_once '../baseDatos/conexion.php';
+
+$cue = isset($_POST['id_usuarios']) ? $_POST['id_usuarios'] : '';
+
+$sql = "SELECT id, CUE, turno, servicio, direccion, localidad, telefono, correo_electronico, directivo FROM escuelas WHERE 1=1";
+
+// Filtrar por CUE si se ha ingresado uno
+if ($cue) {
+    $sql .= " AND CUE LIKE :cue";
+}
+
+try {
+    $stmt = $pdo->prepare($sql);
+    if ($cue) {
+        $stmt->bindValue(':cue', $cue . '%');
+    }
+    $stmt->execute();
+} catch (PDOException $e) {
+    die("Error al consultar la base de datos: " . $e->getMessage());
+}
+?>
+
 <!-- archivo: registrar.php -->
 <form method="POST">
     <label>Usuario:</label>

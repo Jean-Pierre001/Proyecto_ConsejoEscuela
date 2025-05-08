@@ -194,7 +194,7 @@ if ($filterDate !== '') {
   <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
     <div class="container">
       <a class="navbar-brand" href="index.php">
-        <span>Consejo Escolar</span>
+      <span class="bi bi-house-door-fill"> Consejo Escolar </span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>

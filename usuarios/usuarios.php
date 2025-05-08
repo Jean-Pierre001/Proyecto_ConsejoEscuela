@@ -1,10 +1,10 @@
 <?php
 require_once '../baseDatos/conexion.php';
 
-$usuario = isset($_POST['usuario']) ? $_POST['usuario'] : '';
+$usuario = isset($_POST['id_usuario']) ? $_POST['id_usuario'] : '';
 $contrasena = isset($_POST['contrasena']) ? $_POST['contrasena'] : '';
 
-$sql = "SELECT id_usuario, usuario, contrasena, rol FROM usuarios WHERE 1=1";
+$sql = "SELECT id_usuario, nombre, contrasena, tipo FROM usuarios WHERE 1=1";
 
 // Filtrar por usuario si se ha ingresado un usuario
 if ($usuario) {
