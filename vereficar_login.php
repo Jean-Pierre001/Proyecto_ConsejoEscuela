@@ -5,6 +5,9 @@
 session_start();
 require_once 'baseDatos/conexion.php';
 
+
+
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario = trim($_POST["usuario"]);
     $contrasena = trim($_POST["contrasena"]);
