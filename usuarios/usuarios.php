@@ -24,21 +24,76 @@ try {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Listado de Usuarios</title>
+  <title>Gestor de Usuarios</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="estilos/usuario.css"> <!-- Asegúrate de tener este archivo -->
+  <style>
+    .navbar {
+      transition: all 0.3s ease;
+      background-color: white;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
 
+    .navbar.shrink {
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.7rem;
+      color: #1d3a8a;
+    }
+
+    .navbar-brand span {
+      font-size: 0.9rem;
+      background-color: #1d3a8a;
+      color: white;
+      padding: 6px 6px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .nav-link {
+      padding: 6px 6px;
+      background-color: #1d3a8a;
+      color:rgb(231, 234, 241) !important;
+      font-weight: bold;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+    .nav-item.dropdown:hover .nav-link {
+      color: #f6b800 !important;
+    }
+
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
 
 <header class="text-white bg-primary p-4 text-center">
-  <h1><i class="bi bi-person"></i> Gestor de Usuarios</h1>
+  <h1><i class="bi bi-person-badge-fill"></i> Gestor de Usuarios</h1>
 </header>
 
-<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light shadow-sm">
+<!-- Navbar principal -->
+<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
   <div class="container">
-    <a class="navbar-brand" href="../index.php"><strong>Panel Principal</strong></a>
+    <a class="navbar-brand" href="../index.php">
+      <span class="bi bi-house-door-fill"> Consejo Escolar </span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -66,7 +121,6 @@ try {
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">
         <tr>
-          <th>ID</th>
           <th>Nombre</th>
           <th>Contraseña</th>
           <th>Tipo</th>
@@ -78,16 +132,14 @@ try {
       <tbody>
         <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
           <tr>
-            <td><?= htmlspecialchars($row['id_usuario']) ?></td>
             <td><?= htmlspecialchars($row['nombre']) ?></td>
-            <td><?= htmlspecialchars($row['contrasena']) ?></td>
+            <td>**************</td>
             <td><?= htmlspecialchars($row['tipo']) ?></td>
             <td><?= htmlspecialchars($row['correo']) ?></td>
             <td><?= htmlspecialchars($row['telefono']) ?></td>
             <td>
-              <a href="verUsuario.php?id_usuario=<?= $row['id_usuario'] ?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
-              <a href="editarUsuario.php?id_usuario=<?= $row['id_usuario'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
-              <a href="eliminarUsuario.php?id_usuario=<?= $row['id_usuario'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
+              <a href="editarUsuario.php?id=<?= $row['id_usuario'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
+              <a href="eliminarUsuario.php?id=<?= $row['id_usuario'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
             </td>
           </tr>
         <?php endwhile; ?>

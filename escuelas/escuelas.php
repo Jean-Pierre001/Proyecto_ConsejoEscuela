@@ -30,7 +30,7 @@ try {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="escuela.css">
   <style>
-        .navbar {
+    .navbar {
       transition: all 0.3s ease;
       background-color: white;
       padding-top: 1rem;

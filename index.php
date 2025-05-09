@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link rel="icon" href="img/consejoicono.ico" />
   <style>
+    
     body {
       background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
       font-family: 'Segoe UI', sans-serif;
