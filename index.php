@@ -6,6 +6,7 @@
   <title>Consejo Escolar</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="icon" href="img/consejoicono.ico" />
   <style>
     body {
       background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -224,6 +225,10 @@
   color: #f6b800;
 }
 
+#logo {
+  text-align:center;
+}
+
   </style>
 </head>
 <body>
@@ -260,10 +265,14 @@
     </div>
   </div> -->
 
+<div id="logo">
+  <img src="img/consejologo.png" alt="Logo del Consejo Escolar" height=15% width=15%></img>
+</div>
+
 
 <!-- Servicios -->
 <section id="servicios">
-  <h2 class="section-title">Nuestros Servicios</h2>
+  <h2 class="section-title">Herramientas de gestión</h2>
   <div class="container">
     <div class="row">
       <div class="col-md-6 mb-4">
