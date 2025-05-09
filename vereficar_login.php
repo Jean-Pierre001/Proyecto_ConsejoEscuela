@@ -1,12 +1,7 @@
 <?php
 
-// jean recorda algo esta cosa tiene una medidad de seguridad llamada hash que cifra la contraseña dentro del sistema para mas seguridad
-// a la hora de crear el "crear_usuario" tienes que ponerle para que te cifre la contraseña con "$password_hash()" asi te la cifra  
 session_start();
 require_once 'baseDatos/conexion.php';
-
-
-
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $usuario = trim($_POST["usuario"]);

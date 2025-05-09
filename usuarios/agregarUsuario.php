@@ -1,57 +1,72 @@
 <?php
-require_once '../baseDatos/conexion.php';
+include '../baseDatos/conexion.php';
 
-$cue = isset($_POST['id_usuarios']) ? $_POST['id_usuarios'] : '';
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre = $_POST['nombre'];
+    $contrasena_plana = $_POST['contrasena'];
+    $tipo = $_POST['tipo'];
+    $correo = $_POST['correo'];
+    $telefono = $_POST['telefono'];
 
-$sql = "SELECT id, CUE, turno, servicio, direccion, localidad, telefono, correo_electronico, directivo FROM escuelas WHERE 1=1";
+    // Hashear la contraseña antes de guardarla
+    $contrasena_hash = password_hash($contrasena_plana, PASSWORD_DEFAULT);
 
-// Filtrar por CUE si se ha ingresado uno
-if ($cue) {
-    $sql .= " AND CUE LIKE :cue";
-}
+    $sql_insert = "INSERT INTO usuarios (
+        nombre, contrasena, tipo, correo, telefono
+    ) VALUES (
+        :nombre, :contrasena, :tipo, :correo, :telefono
+    )";
 
-try {
-    $stmt = $pdo->prepare($sql);
-    if ($cue) {
-        $stmt->bindValue(':cue', $cue . '%');
-    }
-    $stmt->execute();
-} catch (PDOException $e) {
-    die("Error al consultar la base de datos: " . $e->getMessage());
-}
-?>
+    $stmt_insert = $pdo->prepare($sql_insert);
+    $stmt_insert->execute([
+        'nombre' => $nombre,
+        'contrasena' => $contrasena_hash,
+        'tipo' => $tipo,
+        'correo' => $correo,
+        'telefono' => $telefono
+    ]);
 
-<!-- archivo: registrar.php -->
-<form method="POST">
-    <label>Usuario:</label>
-    <input type="text" name="usuario" required><br>
-    <label>Contraseña:</label>
-    <input type="password" name="contrasena" required><br>
-    <button type="submit">Registrar</button>
-</form>
-
-<?php
-$conexion = new mysqli("localhost", "tu_usuario", "tu_contraseña", "nombre_base_de_datos");
-
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
-}
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $usuario = $_POST['usuario'];
-    $contrasena = $_POST['contrasena'];
-    $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-
-    $stmt = $conexion->prepare("INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)");
-    $stmt->bind_param("ss", $usuario, $hash);
-
-    if ($stmt->execute()) {
-        echo "✅ Usuario registrado con éxito.";
-    } else {
-        echo "❌ Error: " . $stmt->error;
-    }
-
-    $stmt->close();
-    $conexion->close();
+    header("Location: usuarios.php");
+    exit();
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Usuario</title>
+    <link rel="stylesheet" href="estilos/agregarUsuario.css">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Registrar Nuevo Usuario</h1>
+    </header>
+
+    <form action="" method="POST">
+        <label for="nombre">Nombre de usuario:</label>
+        <input type="text" id="nombre" name="nombre" required>
+
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required>
+
+        <label for="tipo">Tipo de usuario:</label>
+        <select id="tipo" name="tipo" required>
+            <option value="administrador">Administrador</option>
+            <option value="directivo">Directivo</option>
+        </select>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" name="correo" required>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required>
+
+        <button type="submit" class="btn btn-agregar">Registrar Usuario</button>
+    </form>
+</div>
+
+</body>
+</html>
