@@ -29,6 +29,24 @@ try {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <link rel="stylesheet" href="escuela.css">
+
+  <script>
+   function verificarCarpeta(cue) {
+    fetch('verificarCarpeta.php?CUE=' + encodeURIComponent(cue))
+        .then(response => response.json())
+        .then(data => {
+            if (data.existe) {
+                alert("Ya existe una carpeta para este CUE en la carpeta 'folders'.");
+            } else {
+              window.location.href = '../crearCarpeta.php?CUE=' + encodeURIComponent(cue);
+            }
+        })
+        .catch(error => {
+            console.error("Error al verificar la existencia de la carpeta:", error);
+            alert("Ocurrió un error al verificar la carpeta. Intenta nuevamente.");
+        });
+    }
+  </script>
   <style>
     .navbar {
       transition: all 0.3s ease;
@@ -155,9 +173,12 @@ try {
               <a href="../folders.php?CUE=<?= $row['CUE'] ?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
               <a href="EditarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
               <a href="EliminarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
-              <a href="../crearCarpeta.php?CUE=<?= $row['CUE'] ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
+              <button class="btn btn-secondary btn-sm" onclick="verificarCarpeta('<?= $row['CUE'] ?>')" title="Crear carpeta para esta escuela">
                 <i class="bi bi-folder-plus"></i>
-              </a>
+              </button>
+              <!--<a href="../crearCarpeta.php?CUE=<?= $row['CUE'] ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
+                <i class="bi bi-folder-plus"></i>
+              </a>-->
             </td>
           </tr>
         <?php endwhile; ?>
