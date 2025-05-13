@@ -1,15 +1,4 @@
 <?php
-// Crear carpeta
-if (isset($_POST['createFolder'])) {
-  $folderName = $_POST['folderName'];
-  $folderDate = $_POST['folderDate'];
-
-  $foldersEscuela = $_GET['CUE'];
-
-  if (!file_exists("folders/$foldersEscuela/$folderName")) {
-    mkdir("folders/$foldersEscuela/$folderName", 0777, true);
-  }
-}
 
 // Eliminar carpeta
 if (isset($_POST['deleteFolder'])) {
@@ -208,22 +197,6 @@ if ($filterDate !== '') {
   </nav>
 
   <div class="container py-5">
-    <div class="card mb-5 p-4">
-      <div class="section-title">📁 Crear nueva carpeta</div>
-      <form method="POST" action="">
-        <div class="row g-3 align-items-center">
-          <div class="col-md-5">
-            <input type="text" name="folderName" class="form-control" placeholder="Nombre de la carpeta" required>
-          </div> 
-          <div class="col-md-3">
-            <input type="date" name="folderDate" class="form-control">
-          </div>
-          <div class="col-md-2">
-            <button type="submit" name="createFolder" class="btn btn-primary w-100">Crear</button>
-          </div>
-        </div>
-      </form>
-    </div>
 
     <div class="card mb-5 p-4">
       <div class="section-title">🔍 Filtrar carpetas</div>

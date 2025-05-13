@@ -66,6 +66,7 @@ try {
       border-radius: 3px;
       margin-right: 4px;
     }
+
     .nav-item.dropdown:hover .nav-link {
       color: #f6b800 !important;
     }
@@ -84,22 +85,27 @@ try {
 
 <!-- Navbar principal -->
 <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="../index.php">
-        <span class="bi bi-house-door-fill"> Consejo Escolar </span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
-        </ul>
-      </div>
+  <div class="container">
+    <a class="navbar-brand" href="../index.php">
+      <span class="bi bi-house-door-fill"> Consejo Escolar </span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 
 <div class="container my-5">
+
+  <?php if (isset($_GET['mensaje'])): ?>
+    <div class="alert alert-info"><?= htmlspecialchars($_GET['mensaje']) ?></div>
+  <?php endif; ?>
+
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-primary">Listado de Escuelas</h2>
     <a href="agregarEscuela.php" class="btn btn-success">
@@ -149,6 +155,9 @@ try {
               <a href="../folders.php?CUE=<?= $row['CUE'] ?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
               <a href="EditarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
               <a href="EliminarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
+              <a href="../crearCarpeta.php?CUE=<?= $row['CUE'] ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
+                <i class="bi bi-folder-plus"></i>
+              </a>
             </td>
           </tr>
         <?php endwhile; ?>
@@ -160,3 +169,4 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+          
