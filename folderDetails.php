@@ -105,7 +105,7 @@ if (isset($_GET['deleteFolder'])) {
     }
     header {
       background: linear-gradient(90deg, #4A90E2, #50A7F3);
-      padding: 2.5px 0;
+      padding: 2.5% 0;
       color: white;
       text-align: center;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -130,10 +130,10 @@ if (isset($_GET['deleteFolder'])) {
     }
 
     .navbar-brand span {
-      font-size: 0.7rem;
+      font-size: 0.9rem;
       background-color: #1d3a8a;
       color: white;
-      padding: 2px 4px;
+      padding: 6px 6px;
       border-radius: 3px;
       margin-right: 4px;
     }
@@ -151,7 +151,7 @@ if (isset($_GET['deleteFolder'])) {
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.0rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
@@ -229,19 +229,19 @@ if (isset($_GET['deleteFolder'])) {
 <!-- Navbar principal -->
 <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="escuelas/escuelas.php">
-        <span>Consejo</span>Escolar.
+      <a class="navbar-brand" href="index.php">
+      <span class="bi bi-house-door-fill"> Consejo Escolar </span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="folders.php">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="escuelas/escuelas.php">Escuelas</a></li>
         </ul>
       </div>
     </div>
-  </nav>}
+  </nav>
 
 <div class="container py-5">
 
