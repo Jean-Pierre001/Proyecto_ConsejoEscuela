@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once 'baseDatos/conexion.php';
 
@@ -13,8 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        // Consulta con el nuevo campo 'rol'
-        $stmt = $pdo->prepare("SELECT id_usuario, usuario, contrasena, rol FROM usuarios WHERE BINARY usuario = :usuario");
+        $stmt = $pdo->prepare("SELECT id_usuario, nombre, contrasena, tipo FROM usuarios WHERE BINARY nombre = :usuario");
         $stmt->execute(['usuario' => $usuario]);
         $usuarioData = $stmt->fetch();
 
@@ -22,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if (password_verify($contrasena, $usuarioData['contrasena'])) {
                 // Guardar en sesión
                 $_SESSION["id_usuario"] = $usuarioData["id_usuario"];
-                $_SESSION["usuario"] = $usuarioData["usuario"];
-                $_SESSION["rol"] = $usuarioData["rol"]; // guardar rol
+                $_SESSION["usuario"] = $usuarioData["nombre"];
+                $_SESSION["rol"] = $usuarioData["tipo"]; // guardar tipo como rol
 
                 // Redirigir al inicio
                 header("Location: index.php");
