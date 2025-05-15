@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-05-2025 a las 15:42:07
--- Versión del servidor: 10.4.24-MariaDB
--- Versión de PHP: 8.1.6
+-- Tiempo de generación: 15-05-2025 a las 21:46:59
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -40,15 +40,14 @@ CREATE TABLE `escuelas` (
   `directivo` varchar(100) DEFAULT NULL,
   `vicedirectora` varchar(100) DEFAULT NULL,
   `secretaria` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `escuelas`
 --
 
 INSERT INTO `escuelas` (`id`, `turno`, `servicio`, `edificio_compartido`, `CUE`, `direccion`, `localidad`, `telefono`, `correo_electronico`, `directivo`, `vicedirectora`, `secretaria`) VALUES
-(34, 'Mañana', 'Común', NULL, '60924502', 'Villegas 270', 'Carmen de Patagones', '(02920) 461221', '[email protected]', 'Pedro Fernández', 'Lucía González', 'Juan Díaz'),
-(35, 'Mañana', 'Común', NULL, '60924503', 'Río Negro 133', 'Stroeder', '(02920) 491428', '[email protected]', 'Elena García', 'Ricardo López', 'Isabel Martínez'),
+(35, 'Mañana', 'asdasd', 0, '60924503', 'Río Negro 133', 'Stroeder', '(02920) 491428', 'asd@hotmail.com', 'Elena García', 'Ricardo López', 'Isabel Martínez'),
 (36, 'Mañana', 'Común', NULL, '60924504', 'Le Blanc', 'Carmen de Patagones', '(02920) 461575', '[email protected]', 'Carlos Pérez', 'María Rodríguez', 'José Sánchez'),
 (37, 'Mañana', 'Común', NULL, '60924505', 'San Martín', 'Villalonga', '(02928) 492122', '[email protected]', 'Ana López', 'Luis González', 'Marta Díaz'),
 (38, 'Mañana', 'Común', NULL, '60924506', 'Buenos Aires', 'Carmen de Patagones', '(02920) 464834', '[email protected]', 'Juan Martínez', 'Lucía Pérez', 'Carlos Sánchez'),
@@ -70,6 +69,30 @@ INSERT INTO `escuelas` (`id`, `turno`, `servicio`, `edificio_compartido`, `CUE`,
 (54, 'Mañana', 'Común', NULL, '60924522', 'Zona Rural – Cardenal Cagliero', 'Cardenal Cagliero', '(2920) 15446767', '[email protected]', 'Pedro Fernández', 'Lucía González', 'Juan Díaz'),
 (55, 'Mañana', 'Común', NULL, '60924523', 'Colonia 7 de Marzo', 'Cardenal Cagliero', '(2920) 15446520', '[email protected]', 'Elena García', 'Ricardo López', 'Isabel Martínez');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `contrasena` varchar(50) NOT NULL,
+  `tipo` enum('administrador','directivo') NOT NULL,
+  `correo` varchar(50) NOT NULL,
+  `telefono` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `contrasena`, `tipo`, `correo`, `telefono`) VALUES
+(2, 'admin', '$2y$10$wIJQs9/qXsQIlUPrxVV3O.RuP6XlvwY14xC91HgzgOn', 'directivo', 'agustin500cm@gmail.com', 2147483647),
+(3, 'adsasdas', '$2y$10$0ybxvliQeOf74a78ze0APO/eaBfhkpd1wa8ISA3nZ74', 'administrador', 'holanda@gmail.com', 1234567891),
+(4, 'rosas', '$2y$10$3RFCQ0nAE6UazTzKGpO2M.WVPMrWA80HwaUVI6EjZNn', 'administrador', 'rosas4000@gmail.com', 0);
+
 --
 -- Índices para tablas volcadas
 --
@@ -81,6 +104,12 @@ ALTER TABLE `escuelas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -89,6 +118,12 @@ ALTER TABLE `escuelas`
 --
 ALTER TABLE `escuelas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
