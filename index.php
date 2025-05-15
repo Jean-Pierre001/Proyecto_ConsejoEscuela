@@ -248,11 +248,12 @@
           <li class="nav-item"><a class="nav-link" href="index.php">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="usuarios/usuarios.php">Usuarios</a></li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Servicios</a>
+            <!-- SIN USO TEMPORAL
+             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Servicios</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="folders.php">Gestión de carpetas</a></li>
               <li><a class="dropdown-item" href="socios.php">Gestión de socios</a></li>
-           </ul>
+           </ul>-->
           </li>
         </ul>
       </div>
