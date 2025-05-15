@@ -71,14 +71,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Editar Escuela</title>
+    <title>Editar escuela</title>
     <link rel="stylesheet" href="estilos/editarEscuela.css"> <!-- Asegúrate de tener este archivo -->
 </head>
 <body>
+<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="escuelas.php">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span href="escuelas.php" class="navbar-toggler-icon">Volver</span>
+            </button>
+        </a>
+    </div>
 
 <div class="container">
     <header>
-        <h1>Editar Escuela</h1>
+        <h1>Editar escuela</h1>
     </header>
 
     <form method="POST">

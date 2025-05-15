@@ -61,6 +61,11 @@ button:hover {
     transform: scale(1.05);
 }
 
+.mainNavbar button {
+    background-color: #4A90E2;
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .container {

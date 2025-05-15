@@ -48,6 +48,19 @@ try {
     }
   </script>
   <style>
+
+    header i {
+      font-size: 200%;
+    }
+
+    header {
+      font-weight: bold;
+      background: linear-gradient(90deg, #4A90E2, #50A7F3);
+      padding: 2px 0;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
     .navbar {
       transition: all 0.3s ease;
       background-color: white;
@@ -93,12 +106,17 @@ try {
       border: none;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+
+    .btn-primary {
+      background-color: #4A90E2;
+    }
   </style>
 </head>
 <body>
 
 <header class="text-white bg-primary p-4 text-center">
-  <h1><i class="bi bi-people"></i> Gestor de Escuelas</h1>
+  <i class="bi bi-people"></i>
+  <h1>Gestor de Escuelas</h1>
 </header>
 
 <!-- Navbar principal -->

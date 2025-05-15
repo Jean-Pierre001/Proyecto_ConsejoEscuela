@@ -46,14 +46,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Agregar Escuela</title>
+    <title>Agregar escuela</title>
     <link rel="stylesheet" href="estilos/agregarEscuela.css">
 </head>
 <body>
+<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="escuelas.php">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span href="escuelas.php" class="navbar-toggler-icon">Volver</span>
+            </button>
+        </a>
+    </div>
 
 <div class="container">
     <header>
-        <h1>Agregar Nueva Escuela</h1>
+        <h1>Agregar nueva escuela</h1>
     </header>
 
     <form action="" method="POST">
