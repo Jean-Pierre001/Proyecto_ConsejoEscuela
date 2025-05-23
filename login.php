@@ -1,81 +1,61 @@
-<?php require_once 'baseDatos/conexion.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Iniciar Sesión | Cooperativa La Comarca</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <style>
-    body {
-      background: linear-gradient(to right, #c3cfe2, #f5f7fa);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-    }
+  <meta charset="UTF-8">
+  <title>Offcanvas Sidebar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    .login-container {
-      background-color: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .login-container h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #1d3a8a;
-      font-weight: bold;
-    }
-
-    .form-control:focus {
-      border-color: #2C9E3E;
-      box-shadow: 0 0 0 0.2rem rgba(44, 158, 62, 0.25);
-    }
-
-    .btn-primary {
-      background-color: #2C9E3E;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background-color: #23902F;
-    }
-
-    .text-muted a {
-      color: #1d3a8a;
-      text-decoration: none;
-    }
-
-    .text-muted a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="index.css" rel="stylesheet">
 </head>
 <body>
 
-  <div class="login-container"> 
-    <h2>Iniciar Sesión</h2>
-    <form action="vereficar_login.php" method="POST">
-      <div class="mb-3">
-        <label for="usuario" class="form-label">Usuario</label>
-        <input type="text" class="form-control" id="usuario" name="usuario" required>
-      </div>
-      <div class="mb-3">
-        <label for="contrasena" class="form-label">Contraseña</label>
-        <input type="password" class="form-control" id="contrasena" name="contrasena" required>
-      </div>
-      <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary">Ingresar</button>
-      </div>
-    </form>
+<!-- Botón para abrir el sidebar -->
+<button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo" aria-controls="demo">
+  <i class="bi bi-list"></i> Consejo Escolar
+</button>
+
+<!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
+  
+  <!-- Encabezado con imagen centrada -->
+  <div class="offcanvas-header flex-column align-items-center">
+    <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    <div class="w-100 text-center">
+      <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;">
+    </div>
   </div>
+
+  <!-- Cuerpo con menú de navegación -->
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.php"><i class="bi bi-trash-fill"></i> Papelera</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Bootstrap JS (con Popper incluido) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
