@@ -178,35 +178,72 @@ if (isset($_GET['deleteFolder'])) {
     </form>
   </div>
 
-  <div class="card p-4">
-    <h3>Contenido</h3>
-    <div class="file-list">
+<div class="card p-4">
+  <h3>Contenido</h3>
+  <div class="row">
+    <!-- Carpetas -->
+    <div class="col-md-6">
+      <h4>Carpetas</h4>
       <?php
         $items = array_diff(scandir($folderPath), array('.', '..'));
-        foreach ($items as $item) {
-          $itemPath = "$folderPath/$item";
-          $itemUrl = urlencode(trim($folderName === '' ? $item : "$folderName/$item"));
-          if (is_dir($itemPath)) {
-            echo "<div class='folder-item'>
-                    <a href='?folder=$itemUrl'><strong>📁 $item</strong></a>
-                    <div>
-                      <a href='?folder=" . urlencode($folderName) . "&deleteFolder=" . urlencode($item) . "' class='btn btn-sm btn-outline-danger btn-delete'>Eliminar</a>
-                    </div>
-                  </div>";
-          } else {
-            echo "<div class='file-item'>
-                    <a href='$itemPath' download>$item</a>
-                    <div>
-                      <a href='?folder=" . urlencode($folderName) . "&deleteFile=" . urlencode($item) . "' class='btn btn-sm btn-outline-danger btn-delete'>Eliminar</a>
-                    </div>
-                  </div>";
+        $folders = array_filter($items, function($item) use ($folderPath) {
+          return is_dir($folderPath . DIRECTORY_SEPARATOR . $item);
+        });
+        if (count($folders) === 0) {
+          echo "<p>No hay carpetas.</p>";
+        } else {
+          echo '<ul class="list-group">';
+          foreach ($folders as $folder) {
+            $folderUrl = urlencode(trim($folderName === '' ? $folder : "$folderName/$folder"));
+            echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
+                    <a href='?folder=$folderUrl' class='text-decoration-none'>
+                      <i class='bi bi-folder-fill me-2'></i> $folder
+                    </a>
+                    <a href='?folder=" . urlencode($folderName) . "&deleteFolder=" . urlencode($folder) . "' 
+                      class='btn btn-sm btn-outline-danger btn-delete' 
+                      onclick=\"return confirm('¿Seguro que quieres eliminar la carpeta $folder y todo su contenido?');\" 
+                      title='Eliminar carpeta'>
+                      <i class='bi bi-trash'></i>
+                    </a>
+                  </li>";
           }
+          echo '</ul>';
+        }
+      ?>
+    </div>
+
+    <!-- Archivos -->
+    <div class="col-md-6">
+      <h4>Archivos</h4>
+      <?php
+        $files = array_filter($items, function($item) use ($folderPath) {
+          return is_file($folderPath . DIRECTORY_SEPARATOR . $item);
+        });
+        if (count($files) === 0) {
+          echo "<p>No hay archivos.</p>";
+        } else {
+          echo '<ul class="list-group">';
+          foreach ($files as $file) {
+            $filePath = "$folderPath/$file";
+            echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
+                    <a href='$filePath' download class='text-decoration-none'>
+                      <i class='bi bi-file-earmark-fill me-2'></i> $file
+                    </a>
+                    <a href='?folder=" . urlencode($folderName) . "&deleteFile=" . urlencode($file) . "' 
+                      class='btn btn-sm btn-outline-danger btn-delete' 
+                      onclick=\"return confirm('¿Seguro que quieres eliminar el archivo $file?');\" 
+                      title='Eliminar archivo'>
+                      <i class='bi bi-trash'></i>
+                    </a>
+                  </li>";
+          }
+          echo '</ul>';
         }
       ?>
     </div>
   </div>
-
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

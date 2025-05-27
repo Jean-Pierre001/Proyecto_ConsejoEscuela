@@ -5,9 +5,10 @@ require_once 'baseDatos/conexion.php';
 // Recibir datos
 $cue = isset($_GET['CUE']) ? $_GET['CUE'] : '';
 $nombre = isset($_GET['nombreEscuela']) ? $_GET['nombreEscuela'] : '';
+$localidad = isset($_GET['localidad']) ? $_GET['localidad'] : '';
 
 // Validación mínima
-if (empty($cue) || empty($nombre)) {
+if (empty($cue) || empty($nombre) || empty($localidad)) {
     die("Faltan datos obligatorios.");
 }
 
@@ -30,12 +31,12 @@ try {
 
     if ($escuela) {
         // Ya existe: actualizar la carpeta y el nombre
-        $stmt = $pdo->prepare("UPDATE carpetas SET nombre = ?, carpeta = ? WHERE cue = ?");
-        $stmt->execute([$nombre, $carpeta, $cue]);
+        $stmt = $pdo->prepare("UPDATE carpetas SET nombre = ?, carpeta = ?, localidad = ? WHERE cue = ?");
+        $stmt->execute([$nombre, $carpeta, $localidad, $cue]);
     } else {
         // No existe: insertar nuevo registro
-        $stmt = $pdo->prepare("INSERT INTO carpetas (cue, nombre, carpeta) VALUES (?, ?, ?)");
-        $stmt->execute([$cue, $nombre, $carpeta]);
+        $stmt = $pdo->prepare("INSERT INTO carpetas (cue, nombre, carpeta, localidad) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$cue, $nombre, $carpeta, $localidad]);
     }
 
     header("Location: folders.php?mensaje=Carpeta+creada+y+asociada+correctamente");

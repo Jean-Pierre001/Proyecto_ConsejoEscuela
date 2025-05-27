@@ -6,7 +6,7 @@
     }
 
     .folder-card {
-    flex: 0 1 220px;   /* ancho base 220px, no crece y puede encogerse */
+    flex: 0 1 309px;   /* ancho base 220px, no crece y puede encogerse */
     box-sizing: border-box;
     }
 

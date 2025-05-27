@@ -111,8 +111,8 @@ try {
               <a href="../folders.php?CUE=<?= $row['CUE'] ?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
               <a href="EditarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
               <a href="EliminarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
-              <a href="../crearCarpeta.php?CUE=<?= urlencode($row['CUE']) ?>&nombreEscuela=<?= urlencode($row['nombreEscuela']) ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
-              <i class="bi bi-folder-plus"></i>
+              <a href="../crearCarpeta.php?CUE=<?= urlencode($row['CUE']) ?>&nombreEscuela=<?= urlencode($row['nombreEscuela']) ?>&localidad=<?= urlencode($row['localidad']) ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
+                <i class="bi bi-folder-plus"></i>
               </a>
             </td>
           </tr>

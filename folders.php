@@ -10,18 +10,27 @@ if (isset($_POST['deleteFolder'])) {
   }
 }
 
-// Filtrado por nombre y fecha
+// Filtrado por nombre y localidad
 $filterName = isset($_POST['filterName']) ? $_POST['filterName'] : '';
-$filterDate = isset($_POST['filterDate']) ? $_POST['filterDate'] : '';
+$filterLocalidad = isset($_POST['filterLocalidad']) ? $_POST['filterLocalidad'] : '';
 
 // Eliminar filtros
 if (isset($_POST['resetFilters'])) {
   $filterName = '';
-  $filterDate = '';
+  $filterLocalidad = '';
 }
 
 // Obtener las carpetas
 $folders = array_filter(scandir('folders'), fn($f) => $f != '.' && $f != '..');
+
+// Función para obtener localidad desde un archivo dentro de la carpeta
+function getLocalidad($folder) {
+  $localidadFile = "folders/$folder/localidad.txt";
+  if (file_exists($localidadFile)) {
+    return trim(file_get_contents($localidadFile));
+  }
+  return "Sin localidad";
+}
 
 // Filtrar las carpetas por nombre
 if ($filterName !== '') {
@@ -30,10 +39,11 @@ if ($filterName !== '') {
   });
 }
 
-// Filtrar las carpetas por fecha
-if ($filterDate !== '') {
-  $folders = array_filter($folders, function ($folder) use ($filterDate) {
-    return date("Y-m-d", filemtime("folders/$folder")) === $filterDate;
+// Filtrar las carpetas por localidad
+if ($filterLocalidad !== '') {
+  $folders = array_filter($folders, function ($folder) use ($filterLocalidad) {
+    $localidad = getLocalidad($folder);
+    return stripos($localidad, $filterLocalidad) !== false; // filtro parcial, case-insensitive
   });
 }
 ?>
@@ -41,12 +51,12 @@ if ($filterDate !== '') {
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gestor de Carpetas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="folders.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <link href="folders.css" rel="stylesheet" />
 </head>
 <body>
   <header>
@@ -61,7 +71,7 @@ if ($filterDate !== '') {
     <div class="offcanvas-header flex-column align-items-center">
       <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
       <div class="w-100 text-center">
-        <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;">
+        <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;" />
       </div>
     </div>
 
@@ -109,10 +119,22 @@ if ($filterDate !== '') {
       <form method="POST" action="">
         <div class="row g-3 align-items-center">
           <div class="col-md-6">
-            <input type="text" name="filterName" class="form-control" placeholder="Filtrar por letra inicial..." value="<?php echo htmlspecialchars($filterName); ?>">
+            <input
+              type="text"
+              name="filterName"
+              class="form-control"
+              placeholder="Filtrar por letra inicial..."
+              value="<?php echo htmlspecialchars($filterName); ?>"
+            />
           </div>
           <div class="col-md-6">
-            <input type="date" name="filterDate" class="form-control" value="<?php echo htmlspecialchars($filterDate); ?>">
+            <input
+              type="text"
+              name="filterLocalidad"
+              class="form-control"
+              placeholder="Filtrar por localidad..."
+              value="<?php echo htmlspecialchars($filterLocalidad); ?>"
+            />
           </div>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
@@ -121,19 +143,19 @@ if ($filterDate !== '') {
     </div>
 
     <div id="folderList">
-      <?php 
+      <?php
       if (empty($folders)) {
         echo "<div class='no-results'>Sin resultados</div>";
       } else {
         foreach ($folders as $folder) {
-          $folderDate = date("Y-m-d", filemtime("folders/$folder"));
+          $localidad = getLocalidad($folder);
           echo "
-            <div class='folder-card mb-4'>
+            <div class='folder-card mb-5'>
               <a href='folderDetails.php?folder=$folder' class='text-decoration-none'>
                 <i class='bi bi-folder-fill folder-icon'></i>
                 <div class='folder-name'>$folder</div>
               </a>
-              <div class='text-muted'>$folderDate</div>
+              <div class='text-muted'>Localidad: $localidad</div>
               <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
                 <input type='hidden' name='folderToDelete' value='$folder'>
                 <button type='submit' name='deleteFolder' class='btn btn-danger w-100 mt-3'>Eliminar carpeta</button>
