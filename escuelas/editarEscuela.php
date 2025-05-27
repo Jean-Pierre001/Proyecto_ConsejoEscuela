@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" id="vicedirectora" name="vicedirectora" value="<?= htmlspecialchars($escuela['vicedirectora']) ?>" required>
 
         <label for="secretaria">Secretaria:</label>
-        <input type="text" id="secretaria" name="secretaria" value="<?= htmlspecialchars($escuela['secretaria']) ?>" required>
+        <input type="text" id="secretaria" name="secretaria" value="//<?= htmlspecialchars($escuela['secretaria']) ?>" required>
 
         <button type="submit" class="btn btn-editar">Actualizar Escuela</button>
     </form>
