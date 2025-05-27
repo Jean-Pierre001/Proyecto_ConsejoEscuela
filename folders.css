@@ -1,3 +1,15 @@
+    #folderList {
+    display: flex;
+    flex-wrap: wrap;   /* para que haga salto de línea si no caben más en fila */
+    gap: 20px;         /* espacio entre carpetas */
+    justify-content: flex-start; /* o center si quieres centrarlas */
+    }
+
+    .folder-card {
+    flex: 0 1 220px;   /* ancho base 220px, no crece y puede encogerse */
+    box-sizing: border-box;
+    }
+
     .sidebar {
       width: 5%;
       height: 100vh;

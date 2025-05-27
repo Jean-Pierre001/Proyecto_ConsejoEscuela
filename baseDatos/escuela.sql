@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2025 a las 13:45:08
+-- Tiempo de generación: 27-05-2025 a las 13:56:06
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -84,6 +84,20 @@ INSERT INTO `escuelas` (`id`, `nombreEscuela`, `turno`, `servicio`, `edificioCom
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `inspectores`
+--
+
+CREATE TABLE `inspectores` (
+  `idInspector` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `nivelModalidad` varchar(50) NOT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -123,6 +137,12 @@ ALTER TABLE `escuelas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `inspectores`
+--
+ALTER TABLE `inspectores`
+  ADD PRIMARY KEY (`idInspector`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -143,6 +163,12 @@ ALTER TABLE `carpetas`
 --
 ALTER TABLE `escuelas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `inspectores`
+--
+ALTER TABLE `inspectores`
+  MODIFY `idInspector` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

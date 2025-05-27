@@ -128,18 +128,16 @@ if ($filterDate !== '') {
         foreach ($folders as $folder) {
           $folderDate = date("Y-m-d", filemtime("folders/$folder"));
           echo "
-            <div class='col-sm-6 col-md-4 col-lg-3 mb-4 folder-card'>
-              <div class='folder-card'>
-                <a href='folderDetails.php?folder=$folder' class='text-decoration-none'>
-                  <i class='bi bi-folder-fill folder-icon'></i>
-                  <div class='folder-name'>$folder</div>
-                </a>
-                <div class='text-muted'>$folderDate</div>
-                <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
-                  <input type='hidden' name='folderToDelete' value='$folder'>
-                  <button type='submit' name='deleteFolder' class='btn btn-danger w-100 mt-3'>Eliminar carpeta</button>
-                </form>
-              </div>
+            <div class='folder-card mb-4'>
+              <a href='folderDetails.php?folder=$folder' class='text-decoration-none'>
+                <i class='bi bi-folder-fill folder-icon'></i>
+                <div class='folder-name'>$folder</div>
+              </a>
+              <div class='text-muted'>$folderDate</div>
+              <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
+                <input type='hidden' name='folderToDelete' value='$folder'>
+                <button type='submit' name='deleteFolder' class='btn btn-danger w-100 mt-3'>Eliminar carpeta</button>
+              </form>
             </div>
           ";
         }
