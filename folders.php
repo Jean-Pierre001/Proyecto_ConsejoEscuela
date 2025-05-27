@@ -72,16 +72,16 @@ if ($filterDate !== '') {
           <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
+          <a class="nav-link" href="folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
+          <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="index.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="index.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
+          <a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="index.php"><i class="bi bi-trash-fill"></i> Papelera</a>

@@ -3,7 +3,7 @@ require_once '../baseDatos/conexion.php';
 
 $cue = isset($_POST['cue']) ? $_POST['cue'] : '';
 
-$sql = "SELECT id, CUE, turno, servicio, direccion, localidad, telefono, correo_electronico, directivo FROM escuelas WHERE 1=1";
+$sql = "SELECT id, nombreEscuela, CUE, turno, servicio, direccion, localidad, telefono, correoElectronico, directivo FROM escuelas WHERE 1=1";
 
 // Filtrar por CUE si se ha ingresado uno
 if ($cue) {
@@ -83,6 +83,7 @@ try {
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">
         <tr>
+          <th>Nombre escuela</th>
           <th>CUE</th>
           <th>Turno</th>
           <th>Servicio</th>
@@ -97,24 +98,22 @@ try {
       <tbody>
         <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
           <tr>
+            <td><?= htmlspecialchars($row['nombreEscuela']) ?></td>
             <td><?= htmlspecialchars($row['CUE']) ?></td>
             <td><?= htmlspecialchars($row['turno']) ?></td>
             <td><?= htmlspecialchars($row['servicio']) ?></td>
             <td><?= htmlspecialchars($row['direccion']) ?></td>
             <td><?= htmlspecialchars($row['localidad']) ?></td>
             <td><?= htmlspecialchars($row['telefono']) ?></td>
-            <td><?= htmlspecialchars($row['correo_electronico']) ?></td>
+            <td><?= htmlspecialchars($row['correoElectronico']) ?></td>
             <td><?= htmlspecialchars($row['directivo']) ?></td>
             <td>
               <a href="../folders.php?CUE=<?= $row['CUE'] ?>" class="btn btn-info btn-sm"><i class="bi bi-eye-fill"></i></a>
               <a href="EditarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
               <a href="EliminarEscuela.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
-              <button class="btn btn-secondary btn-sm" onclick="verificarCarpeta('<?= $row['CUE'] ?>')" title="Crear carpeta para esta escuela">
-                <i class="bi bi-folder-plus"></i>
-              </button>
-              <!--<a href="../crearCarpeta.php?CUE=<?= $row['CUE'] ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
-                <i class="bi bi-folder-plus"></i>
-              </a>-->
+              <a href="../crearCarpeta.php?CUE=<?= urlencode($row['CUE']) ?>&nombreEscuela=<?= urlencode($row['nombreEscuela']) ?>" class="btn btn-secondary btn-sm" title="Crear carpeta para esta escuela">
+              <i class="bi bi-folder-plus"></i>
+              </a>
             </td>
           </tr>
         <?php endwhile; ?>
