@@ -2,36 +2,38 @@
 include '../baseDatos/conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombreEscuela = $_POST['nombreEscuela'];
     $turno = $_POST['turno'];
     $servicio = $_POST['servicio'];
-    $edificio_compartido = isset($_POST['edificio_compartido']) ? 1 : 0;
+    $edificioCompartido = isset($_POST['edificioCompartido']) ? 1 : 0;
     $cue = $_POST['cue'];
     $direccion = $_POST['direccion'];
     $localidad = $_POST['localidad'];
     $telefono = $_POST['telefono'];
-    $correo_electronico = $_POST['correo_electronico'];
+    $correoElectronico = $_POST['correoElectronico'];
     $directivo = $_POST['directivo'];
     $vicedirectora = $_POST['vicedirectora'];
     $secretaria = $_POST['secretaria'];
 
     $sql_insert = "INSERT INTO escuelas (
-        turno, servicio, edificio_compartido, CUE, direccion, localidad,
-        telefono, correo_electronico, directivo, vicedirectora, secretaria
+        nombreEscuela, turno, servicio, edificioCompartido, CUE, direccion, localidad,
+        telefono, correoElectronico, directivo, vicedirectora, secretaria
     ) VALUES (
-        :turno, :servicio, :edificio_compartido, :cue, :direccion, :localidad,
-        :telefono, :correo_electronico, :directivo, :vicedirectora, :secretaria
+        :nombreEscuela, :turno, :servicio, :edificioCompartido, :cue, :direccion, :localidad,
+        :telefono, :correoElectronico, :directivo, :vicedirectora, :secretaria
     )";
 
     $stmt_insert = $pdo->prepare($sql_insert);
     $stmt_insert->execute([
+        'nombreEscuela' => $nombreEscuela,
         'turno' => $turno,
         'servicio' => $servicio,
-        'edificio_compartido' => $edificio_compartido,
+        'edificioCompartido' => $edificioCompartido,
         'cue' => $cue,
         'direccion' => $direccion,
         'localidad' => $localidad,
         'telefono' => $telefono,
-        'correo_electronico' => $correo_electronico,
+        'correoElectronico' => $correoElectronico,
         'directivo' => $directivo,
         'vicedirectora' => $vicedirectora,
         'secretaria' => $secretaria
@@ -65,6 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </header>
 
     <form action="" method="POST">
+        <label for="nombreEscuela">Nombre Escuela:</label>
+        <input type="text" id="nombreEscuela" name="nombreEscuela" required>
+
         <label for="turno">Turno:</label>
         <input type="text" id="turno" name="turno" required>
 
@@ -72,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" id="servicio" name="servicio" required>
 
         <label>
-            <input type="checkbox" name="edificio_compartido">
+            <input type="checkbox" name="edificioCompartido">
             ¿Edificio compartido?
         </label>
 
@@ -88,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <label for="telefono">Teléfono:</label>
         <input type="text" id="telefono" name="telefono" required>
 
-        <label for="correo_electronico">Correo electrónico:</label>
-        <input type="email" id="correo_electronico" name="correo_electronico" required>
+        <label for="correoElectronico">Correo electrónico:</label>
+        <input type="email" id="correoElectronico" name="correoElectronico" required>
 
         <label for="directivo">Directivo:</label>
         <input type="text" id="directivo" name="directivo" required>

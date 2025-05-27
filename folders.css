@@ -1,0 +1,197 @@
+    .sidebar {
+      width: 5%;
+      height: 100vh;
+      background-color: #9e2f2f;
+      border-right: 1px solid #dee2e6;
+      padding: 30px 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+
+    .sidebar h4 {
+      margin-bottom: 25px;
+      font-weight: bold;
+      color: #343a40;
+    }
+
+    .nav-link {
+      color: #495057;
+      font-size: 18px;
+      padding: 12px 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-link i {
+      font-size: 20px;
+      margin-right: 12px;
+      color: #0d6efd;
+    }
+
+    .nav-link:hover {
+      background-color: #e9ecef;
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    .nav-link:hover i {
+      color: #0a58ca;
+    }
+
+    .offcanvas {
+      background-color: #f8f9fa;
+    }
+
+    .offcanvas-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0d6efd;
+    }
+
+    .nav-link {
+      font-size: 18px;
+      color: #343a40;
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+    }
+
+    .nav-link:hover {   
+      background-color: #bbc3d3;
+      color: #0d6efd;
+      text-decoration: none;
+    }
+
+    .nav-link i {
+      margin-right: 10px;
+      color: #0d6efd;
+    }
+
+    .offcanvas-body  {
+        background-color: #eeeeee;
+    }
+
+    .btn-close {
+        font-size: 75%;
+        color: white;
+        border-radius: 50%;
+        background-color: #e90303;
+    }
+    body {
+      background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    header {
+      background: linear-gradient(90deg, #4A90E2, #50A7F3);
+      padding: 2.5px 0;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+    .navbar {
+      transition: all 0.3s ease;
+      background-color: white;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .navbar.shrink {
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.7rem;
+      color: #1d3a8a;
+    }
+
+    .navbar-brand span {
+      font-size: 0.9rem;
+      background-color: #1d3a8a;
+      color: white;
+      padding: 6px 6px;
+      border-radius: 3px;
+      margin-right: 4px;
+    }
+
+    .nav-item.dropdown:hover .nav-link {
+      color: #f6b800 !important;
+    }
+
+    .dropdown-menu {
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    header i {
+      font-size: 2rem;
+    }
+    .card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.07);
+    }
+    .form-control {
+      border-radius: 12px;
+    }
+    .btn-primary {
+      border-radius: 12px;
+      background-color: #4A90E2;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #357ABD;
+    }
+    .folder-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 25px 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+    .folder-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    .folder-icon {
+      font-size: 60px;
+      color: #f7b731;
+      margin-bottom: 10px;
+    }
+    .folder-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #333;
+    }
+    .text-muted {
+      font-size: 0.9rem;
+    }
+    .section-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    .no-results {
+      font-size: 1.2rem;
+      color: #777;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .btn-danger {
+      background-color: #d9534f;
+      border-radius: 12px;
+    }
+    .btn-danger:hover {
+      background-color: #c9302c;
+    }
