@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-05-2025 a las 21:46:59
+-- Tiempo de generación: 27-05-2025 a las 13:45:08
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,19 +24,42 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `carpetas`
+--
+
+CREATE TABLE `carpetas` (
+  `id` int(11) NOT NULL,
+  `cue` varchar(20) NOT NULL,
+  `nombre` varchar(255) DEFAULT NULL,
+  `carpeta` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `carpetas`
+--
+
+INSERT INTO `carpetas` (`id`, `cue`, `nombre`, `carpeta`) VALUES
+(1, '0621234001234', 'Escuela Técnica Nº 1', 'folders/Escuela Técnica Nº 1'),
+(2, '0621234005678', 'Escuela Secundaria Nº 5', 'folders/Escuela Secundaria Nº 5'),
+(3, '0621234001122', 'Instituto Técnico Industrial', 'folders/Instituto Técnico Industrial');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `escuelas`
 --
 
 CREATE TABLE `escuelas` (
   `id` int(11) NOT NULL,
+  `nombreEscuela` varchar(100) NOT NULL,
   `turno` varchar(20) DEFAULT NULL,
   `servicio` varchar(100) DEFAULT NULL,
-  `edificio_compartido` tinyint(1) DEFAULT NULL,
+  `edificioCompartido` tinyint(1) DEFAULT NULL,
   `CUE` varchar(15) DEFAULT NULL,
   `direccion` varchar(255) DEFAULT NULL,
   `localidad` varchar(100) DEFAULT NULL,
   `telefono` varchar(20) DEFAULT NULL,
-  `correo_electronico` varchar(100) DEFAULT NULL,
+  `correoElectronico` varchar(100) DEFAULT NULL,
   `directivo` varchar(100) DEFAULT NULL,
   `vicedirectora` varchar(100) DEFAULT NULL,
   `secretaria` varchar(100) DEFAULT NULL
@@ -46,28 +69,17 @@ CREATE TABLE `escuelas` (
 -- Volcado de datos para la tabla `escuelas`
 --
 
-INSERT INTO `escuelas` (`id`, `turno`, `servicio`, `edificio_compartido`, `CUE`, `direccion`, `localidad`, `telefono`, `correo_electronico`, `directivo`, `vicedirectora`, `secretaria`) VALUES
-(35, 'Mañana', 'asdasd', 0, '60924503', 'Río Negro 133', 'Stroeder', '(02920) 491428', 'asd@hotmail.com', 'Elena García', 'Ricardo López', 'Isabel Martínez'),
-(36, 'Mañana', 'Común', NULL, '60924504', 'Le Blanc', 'Carmen de Patagones', '(02920) 461575', '[email protected]', 'Carlos Pérez', 'María Rodríguez', 'José Sánchez'),
-(37, 'Mañana', 'Común', NULL, '60924505', 'San Martín', 'Villalonga', '(02928) 492122', '[email protected]', 'Ana López', 'Luis González', 'Marta Díaz'),
-(38, 'Mañana', 'Común', NULL, '60924506', 'Buenos Aires', 'Carmen de Patagones', '(02920) 464834', '[email protected]', 'Juan Martínez', 'Lucía Pérez', 'Carlos Sánchez'),
-(39, 'Mañana', 'Común', NULL, '60924507', 'Comodoro Rivadavia 257', 'Carmen de Patagones', '(02920) 464834', '[email protected]', 'Pedro González', 'Ana Rodríguez', 'José Pérez'),
-(40, 'Mañana', 'Común', NULL, '60924508', 'San Lorenzo 37 (entre Villegas y Bynon)', 'Carmen de Patagones', '(02920) 464837', '[email protected]', 'Romina Castro', 'Federico Luna', 'Laura Torres'),
-(41, 'Mañana', 'Común', NULL, '60924509', '25 de Mayo 548', 'Stroeder', '(02920) 491187', '[email protected]', 'José López', 'Ana González', 'Carlos Martínez'),
-(42, 'Mañana', 'Común', NULL, '60924510', 'Pje. Pozo Coronel', 'Cardenal Cagliero', '(02920) 15446569', '[email protected]', 'María Pérez', 'Luis Rodríguez', 'Marta Sánchez'),
-(43, 'Mañana', 'Común', NULL, '60924511', '25 de Mayo 548', 'Carmen de Patagones', '(02920) 461276', '[email protected]', 'Carlos García', 'Ana López', 'José Martínez'),
-(44, 'Mañana', 'Común', NULL, '60924512', 'San Martín s/n', 'Villalonga', '(02928) 492122', '[email protected]', 'Pedro Fernández', 'Lucía González', 'Juan Díaz'),
-(45, 'Mañana', 'Común', NULL, '60924513', 'Zona Rural – J.B.Casas', 'Cardenal Cagliero', '(02920) 15446569', '[email protected]', 'Elena García', 'Ricardo López', 'Isabel Martínez'),
-(46, 'Mañana', 'Común', NULL, '60924514', 'Jaime Harris 41', 'Carmen de Patagones', '(02920) 464102', '[email protected]', 'Carlos Pérez', 'María Rodríguez', 'José Sánchez'),
-(47, 'Mañana', 'Común', NULL, '60924515', 'Balneario Los Pocitos', 'Los Pocitos', '(02920) 491015', '[email protected]', 'Ana López', 'Luis González', 'Marta Díaz'),
-(48, 'Mañana', 'Común', NULL, '60924516', 'Colonia San Jose', 'Cardenal Cagliero', '(02920) 15446580', '[email protected]', 'Juan Martínez', 'Lucía Pérez', 'Carlos Sánchez'),
-(49, 'Mañana', 'Común', NULL, '60924517', 'Zona Rural – Juan A. Pradere', 'Juan A. Pradere', '(291) 15446570', '[email protected]', 'Pedro González', 'Ana Rodríguez', 'José Pérez'),
-(50, 'Mañana', 'Común', NULL, '60924518', 'Colonia La Graciela', 'Juan A. Pradere', '(2920) 15446511', '[email protected]', 'Romina Castro', 'Federico Luna', 'Laura Torres'),
-(51, 'Mañana', 'Común', NULL, '60924519', 'Paso Alsina', 'Juan A. Pradere', '(2928) 420022', '[email protected]', 'José López', 'Ana González', 'Carlos Martínez'),
-(52, 'Mañana', 'Común', NULL, '60924520', 'Estancia Balbuena', 'Juan A. Pradere', '(2928) 493055', '[email protected]', 'María Pérez', 'Luis Rodríguez', 'Marta Sánchez'),
-(53, 'Mañana', 'Común', NULL, '60924521', 'Zona Rural – Juan A. Pradere', 'Juan A. Pradere', '(291) 15446581', '[email protected]', 'Carlos García', 'Ana López', 'José Martínez'),
-(54, 'Mañana', 'Común', NULL, '60924522', 'Zona Rural – Cardenal Cagliero', 'Cardenal Cagliero', '(2920) 15446767', '[email protected]', 'Pedro Fernández', 'Lucía González', 'Juan Díaz'),
-(55, 'Mañana', 'Común', NULL, '60924523', 'Colonia 7 de Marzo', 'Cardenal Cagliero', '(2920) 15446520', '[email protected]', 'Elena García', 'Ricardo López', 'Isabel Martínez');
+INSERT INTO `escuelas` (`id`, `nombreEscuela`, `turno`, `servicio`, `edificioCompartido`, `CUE`, `direccion`, `localidad`, `telefono`, `correoElectronico`, `directivo`, `vicedirectora`, `secretaria`) VALUES
+(1, 'Escuela Técnica Nº 1', 'Mañana', 'Técnico en Programación', 0, '0621234001234', 'Av. Principal 1234', 'Carmen de Patagones', '2920-123456', 'tecnica1@educacion.edu.ar', 'Ing. Juan Pérez', 'Lic. Ana Gómez', 'Sra. Laura Díaz'),
+(2, 'Escuela Secundaria Nº 5', 'Tarde', 'Bachiller en Ciencias Sociales', 1, '0621234005678', 'Calle Belgrano 345', 'Viedma', '2920-654321', 'secundaria5@educacion.edu.ar', 'Prof. Marta López', 'Prof. Sergio Ríos', 'Sra. Natalia Ferreyra'),
+(3, 'Instituto Técnico Industrial', 'Mañana', 'Electromecánica', 0, '0621234001122', 'Ruta 3 km 10', 'Bahía Blanca', '291-456789', 'iti@educacion.edu.ar', 'Ing. Carlos Méndez', 'Lic. Laura Sosa', 'Srta. Mariana Ortiz'),
+(4, 'Escuela Agrotécnica Nº 2', 'Completo', 'Técnico Agropecuario', 1, '0621234003344', 'Camino Rural S/N', 'General Conesa', '2920-987654', 'agrotecnica2@educacion.edu.ar', 'Ing. Rosa Herrera', 'Prof. Andrés Castillo', 'Sra. Luisa Ramírez'),
+(5, 'Escuela Técnica Nº 3', 'Tarde', 'Maestro Mayor de Obras', 0, '0621234007788', 'Calle Mitre 234', 'San Antonio Oeste', '2934-112233', 'tecnica3@educacion.edu.ar', 'Arq. Julio Godoy', 'Lic. Elena Vargas', 'Srta. Silvia Torres'),
+(6, 'Colegio Politécnico Patagónico', 'Mañana', 'Informática Profesional', 1, '0621234009900', 'Calle Sarmiento 987', 'Bariloche', '294-556677', 'politecnico@educacion.edu.ar', 'Ing. Fernando Ríos', 'Lic. Paola Medina', 'Sra. Viviana Escudero'),
+(7, 'Escuela Técnica Nº 6', 'Noche', 'Electrónica', 0, '0621234012345', 'Av. Libertad 456', 'Choele Choel', '298-112244', 'tecnica6@educacion.edu.ar', 'Ing. Raúl Coria', 'Prof. Clara Olmos', 'Srta. Mariela Funes'),
+(8, 'Escuela Técnica Nº 7', 'Mañana', 'Automotores', 1, '0621234015678', 'Calle Rivadavia 654', 'Río Colorado', '2920-889900', 'tecnica7@educacion.edu.ar', 'Ing. Nicolás Cabrera', 'Lic. Teresa Navarro', 'Sra. Gabriela Molina'),
+(9, 'Escuela Técnica Nº 8', 'Tarde', 'Técnico Químico', 0, '0621234018901', 'Pasaje Los Andes 123', 'Luis Beltrán', '2934-334455', 'tecnica8@educacion.edu.ar', 'Ing. Matías Suárez', 'Prof. Valeria Luján', 'Srta. Daniela Bustos'),
+(10, 'Escuela Técnica Nº 9', 'Completo', 'Técnico en Energías Renovables', 1, '0621234020011', 'Calle Neuquén 789', 'San Carlos de Bariloche', '294-778899', 'tecnica9@educacion.edu.ar', 'Ing. Cecilia Robledo', 'Lic. Jorge Martínez', 'Sra. Beatriz Giménez');
 
 -- --------------------------------------------------------
 
@@ -98,6 +110,13 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre`, `contrasena`, `tipo`, `correo`, 
 --
 
 --
+-- Indices de la tabla `carpetas`
+--
+ALTER TABLE `carpetas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `cue` (`cue`);
+
+--
 -- Indices de la tabla `escuelas`
 --
 ALTER TABLE `escuelas`
@@ -114,10 +133,16 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `carpetas`
+--
+ALTER TABLE `carpetas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT de la tabla `escuelas`
 --
 ALTER TABLE `escuelas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
