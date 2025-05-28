@@ -55,20 +55,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 
-<div class="position-fixed top-50 start-50 translate-middle text-center text-white" style="opacity: 1.0;">
-  <h1 class="display-4">Consejo Escolar</h1>
-</div>
+<!-- Botón para abrir el sidebar -->
+<button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo" aria-controls="demo">
+  <i class="bi bi-list"></i> Consejo Escolar
+</button>
 
-
-<!-- Sidebar fijo a la izquierda -->
-<div class="sidebar bg-light border-end position-fixed vh-100" style="width: 25%; z-index: 1030;">
+<!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
+  
   <!-- Encabezado con imagen centrada -->
-  <div class="d-flex flex-column align-items-center p-3">
-    <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;">
+  <div class="offcanvas-header flex-column align-items-center">
+    <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    <div class="w-100 text-center">
+      <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;">
+    </div>
   </div>
 
-  <!-- Menú de navegación -->
-  <div class="px-3">
+  <!-- Cuerpo con menú de navegación -->
+  <div class="offcanvas-body">
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
@@ -91,14 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </ul>
   </div>
 </div>
-
-<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav border">
-      <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
-    </ul>
-  </div>
-</nav>
 
 <!-- Bootstrap JS (con Popper incluido) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -160,9 +156,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <button type="submit" class="btn btn-agregar">Agregar Escuela</button>
     </form>
-        </div>
+</div>
       </div>
-  </div>
+</div>
 </div>
 </body>
 </html>
