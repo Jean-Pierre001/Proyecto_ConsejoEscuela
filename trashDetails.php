@@ -1,21 +1,21 @@
 <?php
 // Obtener la carpeta actual (incluyendo subcarpetas si las hay)
-$folderName = isset($_GET['folder']) ? $_GET['folder'] : '';
-$folderPath = "folders/$folderName";
+$trashName = isset($_GET['trash']) ? $_GET['trash'] : '';
+$trashPath = "trash/$trashName";
 
 // Verificar si la carpeta existe
-if (!is_dir($folderPath)) {
+if (!is_dir($trashPath)) {
   die("La carpeta no existe.");
 }
 
 // Función para eliminar archivos y subcarpetas recursivamente
-function deleteFolderAndContents($dirPath) {
+function deletetrashAndContents($dirPath) {
   if (!is_dir($dirPath)) return;
   $files = array_diff(scandir($dirPath), array('.', '..'));
   foreach ($files as $file) {
     $filePath = $dirPath . DIRECTORY_SEPARATOR . $file;
     if (is_dir($filePath)) {
-      deleteFolderAndContents($filePath);
+      deletetrashAndContents($filePath);
       rmdir($filePath);
     } else {
       unlink($filePath);
@@ -26,7 +26,7 @@ function deleteFolderAndContents($dirPath) {
 
 // Subir archivo
 if (isset($_POST['uploadFile'])) {
-  $targetDir = "$folderPath/";
+  $targetDir = "$trashPath/";
   $targetFile = $targetDir . basename($_FILES["fileToUpload"]["name"]);
   $uploadOk = 1;
   $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
@@ -56,12 +56,12 @@ if (isset($_POST['uploadFile'])) {
 }
 
 // Crear subcarpeta
-if (isset($_POST['createFolder'])) {
-  $newFolder = $_POST['newFolderName'];
-  $newFolderPath = "$folderPath/$newFolder";
-  if (!is_dir($newFolderPath)) {
-    mkdir($newFolderPath, 0777, true);
-    echo "Subcarpeta '$newFolder' creada con éxito.";
+if (isset($_POST['createtrash'])) {
+  $newtrash = $_POST['newtrashName'];
+  $newtrashPath = "$trashPath/$newtrash";
+  if (!is_dir($newtrashPath)) {
+    mkdir($newtrashPath, 0777, true);
+    echo "Subcarpeta '$newtrash' creada con éxito.";
   } else {
     echo "La subcarpeta ya existe.";
   }
@@ -70,7 +70,7 @@ if (isset($_POST['createFolder'])) {
 // Eliminar archivo
 if (isset($_GET['deleteFile'])) {
   $fileToDelete = $_GET['deleteFile'];
-  $filePathToDelete = "$folderPath/$fileToDelete";
+  $filePathToDelete = "$trashPath/$fileToDelete";
   if (file_exists($filePathToDelete)) {
     unlink($filePathToDelete);
     echo "El archivo '$fileToDelete' ha sido eliminado.";
@@ -80,12 +80,12 @@ if (isset($_GET['deleteFile'])) {
 }
 
 // Eliminar subcarpeta
-if (isset($_GET['deleteFolder'])) {
-  $folderToDelete = $_GET['deleteFolder'];
-  $folderPathToDelete = "$folderPath/$folderToDelete";
-  if (is_dir($folderPathToDelete)) {
-    deleteFolderAndContents($folderPathToDelete);
-    echo "La subcarpeta '$folderToDelete' ha sido eliminada.";
+if (isset($_GET['deletetrash'])) {
+  $trashToDelete = $_GET['deletetrash'];
+  $trashPathToDelete = "$trashPath/$trashToDelete";
+  if (is_dir($trashPathToDelete)) {
+    deletetrashAndContents($trashPathToDelete);
+    echo "La subcarpeta '$trashToDelete' ha sido eliminada.";
   } else {
     echo "La subcarpeta no existe.";
   }
@@ -96,9 +96,9 @@ if (isset($_GET['deleteFolder'])) {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Detalles de la Carpeta - <?php echo htmlspecialchars($folderName); ?></title>
+  <title>Detalles de la Carpeta - <?php echo htmlspecialchars($trashName); ?></title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="folders.css" rel="stylesheet">
+  <link href="trash.css" rel="x stylesheet">
 </head>
 <body>
 
@@ -119,7 +119,7 @@ if (isset($_GET['deleteFolder'])) {
           <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
+          <a class="nav-link" href="folders.php"><i class="bi bi-trash-fill"></i> Gestor de Carpetas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
@@ -138,7 +138,7 @@ if (isset($_GET['deleteFolder'])) {
   </div>
 
 <header>
-  <h1>Detalles de la Carpeta: <?php echo htmlspecialchars($folderName); ?></h1>
+  <h1>Detalles de la Carpeta: <?php echo htmlspecialchars($trashName); ?></h1>
 </header>
 
 <!-- Navbar principal -->
@@ -171,10 +171,10 @@ if (isset($_GET['deleteFolder'])) {
     <h2>Crear subcarpeta</h2>
     <form action="" method="POST">
       <div class="mb-3">
-        <label for="newFolderName" class="form-label">Nombre de la subcarpeta</label>
-        <input type="text" name="newFolderName" id="newFolderName" class="form-control" required>
+        <label for="newtrashName" class="form-label">Nombre de la subcarpeta</label>
+        <input type="text" name="newtrashName" id="newtrashName" class="form-control" required>
       </div>
-      <button type="submit" name="createFolder" class="btn btn-success btn-create-folder">Crear subcarpeta</button>
+      <button type="submit" name="createtrash" class="btn btn-success btn-create-trash">Crear subcarpeta</button>
     </form>
   </div>
 
@@ -185,23 +185,23 @@ if (isset($_GET['deleteFolder'])) {
     <div class="col-md-6">
       <h4>Carpetas</h4>
       <?php
-        $items = array_diff(scandir($folderPath), array('.', '..'));
-        $folders = array_filter($items, function($item) use ($folderPath) {
-          return is_dir($folderPath . DIRECTORY_SEPARATOR . $item);
+        $items = array_diff(scandir($trashPath), array('.', '..'));
+        $trash = array_filter($items, function($item) use ($trashPath) {
+          return is_dir($trashPath . DIRECTORY_SEPARATOR . $item);
         });
-        if (count($folders) === 0) {
+        if (count($trash) === 0) {
           echo "<p>No hay carpetas.</p>";
         } else {
           echo '<ul class="list-group">';
-          foreach ($folders as $folder) {
-            $folderUrl = urlencode(trim($folderName === '' ? $folder : "$folderName/$folder"));
+          foreach ($trash as $trash) {
+            $trashUrl = urlencode(trim($trashName === '' ? $trash : "$trashName/$trash"));
             echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
-                    <a href='?folder=$folderUrl' class='text-decoration-none'>
-                      <i class='bi bi-folder-fill me-2'></i> $folder
+                    <a href='?trash=$trashUrl' class='text-decoration-none'>
+                      <i class='bi bi-trash-fill me-2'></i> $trash
                     </a>
-                    <a href='?folder=" . urlencode($folderName) . "&deleteFolder=" . urlencode($folder) . "' 
+                    <a href='?trash=" . urlencode($trashName) . "&deletetrash=" . urlencode($trash) . "' 
                       class='btn btn-sm btn-outline-danger btn-delete' 
-                      onclick=\"return confirm('¿Seguro que quieres eliminar la carpeta $folder y todo su contenido?');\" 
+                      onclick=\"return confirm('¿Seguro que quieres eliminar la carpeta $trash y todo su contenido?');\" 
                       title='Eliminar carpeta'>
                       <i class='bi bi-trash'></i>
                     </a>
@@ -216,20 +216,20 @@ if (isset($_GET['deleteFolder'])) {
     <div class="col-md-6">
       <h4>Archivos</h4>
       <?php
-        $files = array_filter($items, function($item) use ($folderPath) {
-          return is_file($folderPath . DIRECTORY_SEPARATOR . $item);
+        $files = array_filter($items, function($item) use ($trashPath) {
+          return is_file($trashPath . DIRECTORY_SEPARATOR . $item);
         });
         if (count($files) === 0) {
           echo "<p>No hay archivos.</p>";
         } else {
           echo '<ul class="list-group">';
           foreach ($files as $file) {
-            $filePath = "$folderPath/$file";
+            $filePath = "$trashPath/$file";
             echo "<li class='list-group-item d-flex justify-content-between align-items-center'>
                     <a href='$filePath' download class='text-decoration-none'>
                       <i class='bi bi-file-earmark-fill me-2'></i> $file
                     </a>
-                    <a href='?folder=" . urlencode($folderName) . "&deleteFile=" . urlencode($file) . "' 
+                    <a href='?trash=" . urlencode($trashName) . "&deleteFile=" . urlencode($file) . "' 
                       class='btn btn-sm btn-outline-danger btn-delete' 
                       onclick=\"return confirm('¿Seguro que quieres eliminar el archivo $file?');\" 
                       title='Eliminar archivo'>

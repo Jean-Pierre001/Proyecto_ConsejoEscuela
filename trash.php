@@ -1,22 +1,4 @@
 <?php
-
-// Mover carpeta a la papelera (trash)
-if (isset($_POST['moveFolder'])) {
-  $folderToDelete = $_POST['folderToDelete'];
-  $folderPath = "folders/$folderToDelete";
-  $trashPath = "trash/$folderToDelete";
-
-  // Crear carpeta trash si no existe
-  if (!is_dir('trash')) {
-    mkdir('trash', 0777, true);
-  }
-
-  // Mover la carpeta a trash si existe
-  if (is_dir($folderPath)) {
-    rename($folderPath, $trashPath);
-  }
-}
-
 // Filtrado por nombre y localidad
 $filterName = isset($_POST['filterName']) ? $_POST['filterName'] : '';
 $filterLocalidad = isset($_POST['filterLocalidad']) ? $_POST['filterLocalidad'] : '';
@@ -27,29 +9,29 @@ if (isset($_POST['resetFilters'])) {
   $filterLocalidad = '';
 }
 
-// Obtener las carpetas
-$folders = array_filter(scandir('folders'), fn($f) => $f != '.' && $f != '..');
+// Obtener las Carpetas
+$trash = array_filter(scandir('trash'), fn($f) => $f != '.' && $f != '..');
 
 // Función para obtener localidad desde un archivo dentro de la carpeta
-function getLocalidad($folder) {
-  $localidadFile = "folders/$folder/localidad.txt";
+function getLocalidad($trash) {
+  $localidadFile = "trash/$trash/localidad.txt";
   if (file_exists($localidadFile)) {
     return trim(file_get_contents($localidadFile));
   }
   return "Sin localidad";
 }
 
-// Filtrar las carpetas por nombre
+// Filtrar las Papelera por nombre
 if ($filterName !== '') {
-  $folders = array_filter($folders, function ($folder) use ($filterName) {
-    return stripos($folder, $filterName) === 0; // Filtrar por letras iniciales
+  $trash = array_filter($trash, function ($trash) use ($filterName) {
+    return stripos($trash, $filterName) === 0; // Filtrar por letras iniciales
   });
 }
 
-// Filtrar las carpetas por localidad
+// Filtrar las Papelera por localidad
 if ($filterLocalidad !== '') {
-  $folders = array_filter($folders, function ($folder) use ($filterLocalidad) {
-    $localidad = getLocalidad($folder);
+  $trash = array_filter($trash, function ($trash) use ($filterLocalidad) {
+    $localidad = getLocalidad($trash);
     return stripos($localidad, $filterLocalidad) !== false; // filtro parcial, case-insensitive
   });
 }
@@ -60,16 +42,16 @@ if ($filterLocalidad !== '') {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gestor de Carpetas</title>
+  <title>Gestor de Papelera</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-  <link href="folders.css" rel="stylesheet" />
+  <link href="trash.css" rel="stylesheet" />
 </head>
 <body>
   <header>
-    <i class="bi bi-folder-fill me-2"></i>
-    <h1>Gestor de Carpetas</h1>
-    <p class="lead">Organiza y visualiza tus carpetas y archivos fácilmente</p>
+    <i class="bi bi-trash-fill me-2"></i>
+    <h1>Papelera</h1>
+    <p class="lead">Organiza y visualiza tus Carpetas y archivos fácilmente</p>
   </header>
 
   <!-- Offcanvas Sidebar -->
@@ -89,13 +71,13 @@ if ($filterLocalidad !== '') {
           <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
+          <a class="nav-link" href="folders.php"><i class="bi bi-trash-fill"></i> Gestor de Carpetas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="inspectores/inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
+          <a class="nav-link" href="inspectores/Inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
@@ -122,7 +104,7 @@ if ($filterLocalidad !== '') {
 
   <div class="container py-5">
     <div class="card mb-5 p-4">
-      <div class="section-title">🔍 Filtrar carpetas</div>
+      <div class="section-title">🔍 Filtrar Papelera</div>
       <form method="POST" action="">
         <div class="row g-3 align-items-center">
           <div class="col-md-6">
@@ -149,23 +131,23 @@ if ($filterLocalidad !== '') {
       </form>
     </div>
 
-    <div id="folderList">
+    <div id="trashList">
       <?php
-      if (empty($folders)) {
+      if (empty($trash)) {
         echo "<div class='no-results'>Sin resultados</div>";
       } else {
-        foreach ($folders as $folder) {
-          $localidad = getLocalidad($folder);
+        foreach ($trash as $trash) {
+          $localidad = getLocalidad($trash);
           echo "
-            <div class='folder-card mb-5'>
-              <a href='folderDetails.php?folder=$folder' class='text-decoration-none'>
-                <i class='bi bi-folder-fill folder-icon'></i>
-                <div class='folder-name'>$folder</div>
+            <div class='trash-card mb-5'>
+              <a href='trashDetails.php?trash=$trash' class='text-decoration-none'>
+                <i class='bi bi-trash-fill trash-icon'></i>
+                <div class='trash-name'>$trash</div>
               </a>
               <div class='text-muted'>Localidad: $localidad</div>
               <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
-                <input type='hidden' name='folderToDelete' value='$folder'>
-                <button type='submit' name='moveFolder' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
+                <input type='hidden' name='trashToDelete' value='$trash'>
+                <button type='submit' name='movetrash' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
               </form>
             </div>
           ";
