@@ -1,12 +1,46 @@
 <?php
-// Filtrado por nombre y localidad
+
+// Función para eliminar carpeta y todo su contenido recursivamente
+function deleteFolder($folder) {
+    if (!is_dir($folder)) {
+        return false;
+    }
+    $files = array_diff(scandir($folder), array('.', '..'));
+    foreach ($files as $file) {
+        $path = "$folder/$file";
+        if (is_dir($path)) {
+            deleteFolder($path);
+        } else {
+            unlink($path);
+        }
+    }
+    return rmdir($folder);
+}
+
+// Filtrado por nombre y localidad (debe ir antes del bloque que los usa)
 $filterName = isset($_POST['filterName']) ? $_POST['filterName'] : '';
 $filterLocalidad = isset($_POST['filterLocalidad']) ? $_POST['filterLocalidad'] : '';
 
 // Eliminar filtros
 if (isset($_POST['resetFilters'])) {
-  $filterName = '';
-  $filterLocalidad = '';
+    $filterName = '';
+    $filterLocalidad = '';
+}
+
+// Manejar el formulario para eliminar carpeta
+if (isset($_POST['deleteTrash']) && isset($_POST['trashToDelete'])) {
+    $trashToDelete = $_POST['trashToDelete'];
+    $folderPath = "trash/$trashToDelete";
+
+    if (is_dir($folderPath)) {
+        if (deleteFolder($folderPath)) {
+            echo "<div class='alert alert-success'>La carpeta '$trashToDelete' ha sido eliminada correctamente.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Error al eliminar la carpeta '$trashToDelete'.</div>";
+        }
+    } else {
+        echo "<div class='alert alert-warning'>La carpeta '$trashToDelete' no existe.</div>";
+    }
 }
 
 // Obtener las Carpetas
@@ -14,26 +48,26 @@ $trash = array_filter(scandir('trash'), fn($f) => $f != '.' && $f != '..');
 
 // Función para obtener localidad desde un archivo dentro de la carpeta
 function getLocalidad($trash) {
-  $localidadFile = "trash/$trash/localidad.txt";
-  if (file_exists($localidadFile)) {
-    return trim(file_get_contents($localidadFile));
-  }
-  return "Sin localidad";
+    $localidadFile = "trash/$trash/localidad.txt";
+    if (file_exists($localidadFile)) {
+        return trim(file_get_contents($localidadFile));
+    }
+    return "Sin localidad";
 }
 
-// Filtrar las Papelera por nombre
+// Filtrar las carpetas por nombre
 if ($filterName !== '') {
-  $trash = array_filter($trash, function ($trash) use ($filterName) {
-    return stripos($trash, $filterName) === 0; // Filtrar por letras iniciales
-  });
+    $trash = array_filter($trash, function ($t) use ($filterName) {
+        return stripos($t, $filterName) === 0;
+    });
 }
 
-// Filtrar las Papelera por localidad
+// Filtrar las carpetas por localidad
 if ($filterLocalidad !== '') {
-  $trash = array_filter($trash, function ($trash) use ($filterLocalidad) {
-    $localidad = getLocalidad($trash);
-    return stripos($localidad, $filterLocalidad) !== false; // filtro parcial, case-insensitive
-  });
+    $trash = array_filter($trash, function ($t) use ($filterLocalidad) {
+        $localidad = getLocalidad($t);
+        return stripos($localidad, $filterLocalidad) !== false;
+    });
 }
 ?>
 
@@ -56,7 +90,6 @@ if ($filterLocalidad !== '') {
 
   <!-- Offcanvas Sidebar -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
-    <!-- Encabezado con imagen centrada -->
     <div class="offcanvas-header flex-column align-items-center">
       <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
       <div class="w-100 text-center">
@@ -64,35 +97,20 @@ if ($filterLocalidad !== '') {
       </div>
     </div>
 
-    <!-- Cuerpo con menú de navegación -->
     <div class="offcanvas-body">
       <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="folders.php"><i class="bi bi-trash-fill"></i> Gestor de Carpetas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="inspectores/Inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="trash.php"><i class="bi bi-trash-fill"></i> Papelera</a>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="folders.php"><i class="bi bi-trash-fill"></i> Gestor de Carpetas</a></li>
+        <li class="nav-item"><a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a></li>
+        <li class="nav-item"><a class="nav-link" href="inspectores/Inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a></li>
+        <li class="nav-item"><a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a></li>
+        <li class="nav-item"><a class="nav-link" href="trash.php"><i class="bi bi-trash-fill"></i> Papelera</a></li>
       </ul>
     </div>
   </div>
 
-  <!-- Navbar principal -->
   <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
     <div class="container">
-      <!-- Botón para abrir el sidebar -->
       <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo" aria-controls="demo">
         <i class="bi bi-list"></i> Consejo Escolar
       </button>
@@ -136,18 +154,18 @@ if ($filterLocalidad !== '') {
       if (empty($trash)) {
         echo "<div class='no-results'>Sin resultados</div>";
       } else {
-        foreach ($trash as $trash) {
-          $localidad = getLocalidad($trash);
+        foreach ($trash as $t) {
+          $localidad = getLocalidad($t);
           echo "
             <div class='trash-card mb-5'>
-              <a href='trashDetails.php?trash=$trash' class='text-decoration-none'>
+              <a href='trashDetails.php?trash=$t' class='text-decoration-none'>
                 <i class='bi bi-trash-fill trash-icon'></i>
-                <div class='trash-name'>$trash</div>
+                <div class='trash-name'>$t</div>
               </a>
               <div class='text-muted'>Localidad: $localidad</div>
               <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
-                <input type='hidden' name='trashToDelete' value='$trash'>
-                <button type='submit' name='movetrash' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
+                <input type='hidden' name='trashToDelete' value='$t'>
+                <button type='submit' name='deleteTrash' class='btn btn-danger w-100 mt-3'>Eliminar Carpeta</button>
               </form>
             </div>
           ";
@@ -158,7 +176,6 @@ if ($filterLocalidad !== '') {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     const navbar = document.getElementById('mainNavbar');
     window.addEventListener('scroll', function () {

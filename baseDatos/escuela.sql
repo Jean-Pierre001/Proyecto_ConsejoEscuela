@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2025 a las 13:56:06
+-- Tiempo de generación: 28-05-2025 a las 15:38:05
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -31,17 +31,19 @@ CREATE TABLE `carpetas` (
   `id` int(11) NOT NULL,
   `cue` varchar(20) NOT NULL,
   `nombre` varchar(255) DEFAULT NULL,
-  `carpeta` varchar(255) DEFAULT NULL
+  `carpeta` varchar(255) DEFAULT NULL,
+  `localidad` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `carpetas`
 --
 
-INSERT INTO `carpetas` (`id`, `cue`, `nombre`, `carpeta`) VALUES
-(1, '0621234001234', 'Escuela Técnica Nº 1', 'folders/Escuela Técnica Nº 1'),
-(2, '0621234005678', 'Escuela Secundaria Nº 5', 'folders/Escuela Secundaria Nº 5'),
-(3, '0621234001122', 'Instituto Técnico Industrial', 'folders/Instituto Técnico Industrial');
+INSERT INTO `carpetas` (`id`, `cue`, `nombre`, `carpeta`, `localidad`) VALUES
+(1, '0621234005678', 'Escuela Secundaria Nº 5', 'folders/Escuela Secundaria Nº 5', 'Viedma'),
+(2, '0621234003344', 'Escuela Agrotécnica Nº 2', 'folders/Escuela Agrotécnica Nº 2', 'General Conesa'),
+(3, '0621234001234', 'Escuela Técnica Nº 1', 'folders/Escuela Técnica Nº 1', 'Carmen de Patagones'),
+(4, '0621234001122', 'Instituto Técnico Industrial', 'folders/Instituto Técnico Industrial', 'Bahía Blanca');
 
 -- --------------------------------------------------------
 
@@ -94,6 +96,13 @@ CREATE TABLE `inspectores` (
   `telefono` varchar(30) DEFAULT NULL,
   `correo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `inspectores`
+--
+
+INSERT INTO `inspectores` (`idInspector`, `nombre`, `nivelModalidad`, `telefono`, `correo`) VALUES
+(2, 'juan', 'primaria', '2920541084', 'agustin500cm@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -156,7 +165,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `carpetas`
 --
 ALTER TABLE `carpetas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `escuelas`
@@ -168,7 +177,7 @@ ALTER TABLE `escuelas`
 -- AUTO_INCREMENT de la tabla `inspectores`
 --
 ALTER TABLE `inspectores`
-  MODIFY `idInspector` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idInspector` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
