@@ -10,21 +10,6 @@
     box-sizing: border-box;
     }
 
-    .sidebar {
-      width: 5%;
-      height: 100vh;
-      background-color: #9e2f2f;
-      border-right: 1px solid #dee2e6;
-      padding: 30px 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    }
-
-    .sidebar h4 {
-      margin-bottom: 25px;
-      font-weight: bold;
-      color: #343a40;
-    }
-
     .nav-link {
       color: #495057;
       font-size: 18px;
@@ -97,7 +82,7 @@
       font-family: 'Segoe UI', sans-serif;
     }
     header {
-      background: linear-gradient(90deg, #4A90E2, #50A7F3);
+      background: linear-gradient(90deg, #0d6efd, #0d6efd);
       padding: 2.5px 0;
       color: white;
       text-align: center;
@@ -119,12 +104,12 @@
     .navbar-brand {
       font-weight: bold;
       font-size: 1.7rem;
-      color: #1d3a8a;
+      color: #0d6efd;
     }
 
     .navbar-brand span {
       font-size: 0.9rem;
-      background-color: #1d3a8a;
+      background-color: #0d6efd;
       color: white;
       padding: 6px 6px;
       border-radius: 3px;
@@ -157,11 +142,11 @@
     }
     .btn-primary {
       border-radius: 12px;
-      background-color: #4A90E2;
+      background-color: #0d6efd;
       border: none;
     }
     .btn-primary:hover {
-      background-color: #357ABD;
+      background-color: #0a58ca;
     }
     .folder-card {
       background: #ffffff;

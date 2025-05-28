@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 
 <div class="position-fixed top-50 start-50 translate-middle text-center text-white" style="opacity: 1.0;">
-  <h1 class="display-4">Consejo Escolar</h1>
+  <h1 class="display-4">Bienvenido/a <!-- rellenar con nombre de usuario --></h1>
 </div>
 
 
@@ -80,13 +80,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
+        <a class="nav-link" href="inspectores/inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.php"><i class="bi bi-trash-fill"></i> Papelera</a>
+        <a class="nav-link" href="trash.php"><i class="bi bi-trash-fill"></i> Papelera</a>
       </li>
     </ul>
   </div>
@@ -94,8 +94,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav border">
-      <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
+    <ul class="navbar-nav">
+      <li class="nav-item border mx-5">
+      <a class="nav-link bi bi-bank2" href="../folders.php">Carpetas</a>
+      </li>
+      <li class="nav-item border mx-5">
+      <a class="nav-link bi bi-bank2" href="../folders.php">Carpetas</a>
+      </li>
+      <li class="nav-item border mx-5">
+      <a class="nav-link bi bi-bank2" href="../folders.php">Carpetas</a>
+      </li>
+      <li class="nav-item border mx-5">
+      <a class="nav-link bi bi-bank2" href="../folders.php">Carpetas</a>
+      </li>
+      <li class="nav-item border mx-5">
+      <a class="nav-link bi bi-bank2" href="../folders.php">Carpetas</a>
+      </li>
     </ul>
   </div>
 </nav>

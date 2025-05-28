@@ -66,11 +66,11 @@ if ($filterLocalidad !== '') {
   <link href="folders.css" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <i class="bi bi-folder-fill me-2"></i>
-    <h1>Gestor de Carpetas</h1>
-    <p class="lead">Organiza y visualiza tus carpetas y archivos fácilmente</p>
-  </header>
+
+<header class="text-white bg-primary p-4 text-center">
+  <i class="bi bi-folder-fill me-2"></i>
+  <h1>Gestor de Carpetas</h1>
+</header>
 
   <!-- Offcanvas Sidebar -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
