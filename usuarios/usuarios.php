@@ -138,8 +138,8 @@ try {
             <td><?= htmlspecialchars($row['correo']) ?></td>
             <td><?= htmlspecialchars($row['telefono']) ?></td>
             <td>
-              <a href="editarUsuario.php?id=<?= $row['id_usuario'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
-              <a href="eliminarUsuario.php?id=<?= $row['id_usuario'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
+              <a href="editarUsuario.php?id_usuario=<?= $row['id_usuario'] ?>" class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></a>
+              <a href="eliminarUsuario.php?id_usuario=<?= $row['id_usuario'] ?>" class="btn btn-danger btn-sm"><i class="bi bi-trash-fill"></i></a>
             </td>
           </tr>
         <?php endwhile; ?>

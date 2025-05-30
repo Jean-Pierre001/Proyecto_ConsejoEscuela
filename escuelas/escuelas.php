@@ -5,7 +5,7 @@ $cue = isset($_POST['cue']) ? $_POST['cue'] : '';
 
 $sql = "SELECT id, nombreEscuela, CUE, turno, servicio, direccion, localidad, telefono, correoElectronico, directivo FROM escuelas WHERE 1=1";
 
-// Filtrar por CUE si se ha ingresado uno
+// Filtrar por CUE si se ha ingresado uno, (30/05: cambien esto a otros metodos, los del consejo no usan los CUE, atte: gordo silla).
 if ($cue) {
     $sql .= " AND CUE LIKE :cue";
 }

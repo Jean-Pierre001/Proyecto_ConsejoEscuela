@@ -1,6 +1,23 @@
 <?php
 
-// Función para eliminar carpeta y todo su contenido recursivamente
+// Mover carpeta a la papelera (folders)
+if (isset($_POST['foldersToUndelete'])) {
+  $foldersToUndelete = $_POST['foldersToUndelete'];
+  $trashPath = "trash/$foldersToUndelete";
+  $foldersPath = "folders/$foldersToUndelete";
+
+  // Crear carpeta folders si no existe
+  if (!is_dir('folders')) {
+    mkdir('folders', 0777, true);
+  }
+
+  // Mover la carpeta a trash si existe
+  if (is_dir($trashPath)) {
+    rename($trashPath, $foldersPath,);
+  }
+}
+
+// Función para eliminar carpeta y todo su contenido recursivamentes
 function deleteFolder($folder) {
     if (!is_dir($folder)) {
         return false;
@@ -100,7 +117,7 @@ if ($filterLocalidad !== '') {
     <div class="offcanvas-body">
       <ul class="nav flex-column">
         <li class="nav-item"><a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a></li>
-        <li class="nav-item"><a class="nav-link" href="folders.php"><i class="bi bi-trash-fill"></i> Gestor de Carpetas</a></li>
+        <li class="nav-item"><a class="nav-link" href="folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a></li>
         <li class="nav-item"><a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a></li>
         <li class="nav-item"><a class="nav-link" href="inspectores/Inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a></li>
         <li class="nav-item"><a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a></li>
@@ -166,6 +183,10 @@ if ($filterLocalidad !== '') {
               <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
                 <input type='hidden' name='trashToDelete' value='$t'>
                 <button type='submit' name='deleteTrash' class='btn btn-danger w-100 mt-3'>Eliminar Carpeta</button>
+              </form>
+              <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas restaurar esta carpeta?\")'>
+                <input type='hidden' name='foldersToUndelete' value='$t'>
+                <button type='submit' name='undeleteFolders' class='btn btn-primary w-100 mt-3'>Restaurar Carpeta</button>
               </form>
             </div>
           ";
