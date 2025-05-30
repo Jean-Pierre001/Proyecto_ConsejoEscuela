@@ -24,7 +24,7 @@ try {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Gestor de Inspectoress</title>
+  <title>Gestor de Inspectores</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
   <style>
@@ -56,18 +56,6 @@ try {
       margin-right: 4px;
     }
 
-    .nav-link {
-      padding: 6px 6px;
-      background-color: #1d3a8a;
-      color:rgb(231, 234, 241) !important;
-      font-weight: bold;
-      border-radius: 3px;
-      margin-right: 4px;
-    }
-    .nav-item.dropdown:hover .nav-link {
-      color: #f6b800 !important;
-    }
-
     .dropdown-menu {
       border: none;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
@@ -77,29 +65,60 @@ try {
 <body>
 
 <header class="text-white bg-primary p-4 text-center">
-  <h1><i class="bi bi-person-badge-fill"></i> Gestor de Inspectoress</h1>
+  <h1><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</h1>
 </header>
 
-<!-- Navbar principal -->
-<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
-  <div class="container">
-    <a class="navbar-brand" href="../index.php">
-      <span class="bi bi-house-door-fill"> Consejo Escolar </span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="../folders.php">Carpetas</a></li>
+ <!-- Offcanvas Sidebar -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
+    <!-- Encabezado con imagen centrada -->
+    <div class="offcanvas-header flex-column align-items-center">
+      <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+      <div class="w-100 text-center">
+        <img src="../img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;" />
+      </div>
+    </div>
+
+    <!-- Cuerpo con menú de navegación -->
+    <div class="offcanvas-body">
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="../index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../trash.php"><i class="bi bi-trash-fill"></i> Papelera</a>
+        </li>
       </ul>
     </div>
   </div>
-</nav>
+
+  <!-- Navbar principal -->
+  <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
+    <div class="container"> <!-- CAMBIAR CLASE -->
+      <!-- Botón para abrir el sidebar -->
+      <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo" aria-controls="demo">
+        <i class="bi bi-list"></i> Consejo Escolar
+      </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>  
 
 <div class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-primary">Listado de Inspectoress</h2>
+    <h2 class="text-primary">Listado de Inspectores</h2>
     <a href="agregarInspectores.php" class="btn btn-success">
       <i class="bi bi-person-plus-fill"></i> Agregar Inspectores
     </a>
