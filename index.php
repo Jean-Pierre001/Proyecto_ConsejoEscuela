@@ -38,6 +38,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ]);
         exit();
 }
+if (isset($_SESSION['nombre'])) {
+    $nombre_usuario = $_SESSION['nombre'];
+}
+
+// Verificamos si el ID del usuario está guardado en la sesión
+if (isset($_SESSION['id_usuario'])) {
+    $id = $_SESSION['id_usuario'];
+
+    $stmt = $pdo->prepare("SELECT nombre FROM usuarios WHERE id_usuario = :id");
+    $stmt->execute(['id' => $id]);
+
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $nombre_usuario = $row['nombre'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -53,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="index.css" rel="stylesheet">
 </head>
-<body>
+<body>  
 
 <div class="position-fixed top-50 start-50 translate-middle text-center text-white" style="opacity: 1.0;">
-  <h1 class="display-4">Bienvenido/a <!-- rellenar con nombre de usuario --></h1>
+  <h1 class="display-4">Bienvenido/a <?= htmlspecialchars($nombre_usuario) ?> </h1>
 </div>
 
 
