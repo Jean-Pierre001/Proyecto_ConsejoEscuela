@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $pdo->prepare("SELECT id_usuario, nombre, contrasena, tipo, correo, telefono FROM usuarios WHERE nombre = ?");
         $stmt->execute([$usuario]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $id_usuario = 'id_usuario';
 
         if ($user && password_verify($contrasena, $user['contrasena'])) {
             $_SESSION['id_usuario'] = $user['id_usuario'];
@@ -17,8 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION['tipo'] = $user['tipo'];
             $_SESSION['correo'] = $user['correo'];
             $_SESSION['telefono'] = $user['telefono'];
-
-            header("Location: index.php");
+            
+            header("Location: index.php?nombre_usuario=" . urlencode($usuario));
             exit;
         } else {
             header("Location: login.php?error=Credenciales incorrectas");

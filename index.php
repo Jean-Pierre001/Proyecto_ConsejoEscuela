@@ -1,58 +1,13 @@
 <?php
+session_start();
 include 'baseDatos/conexion.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $turno = $_POST['turno'];
-    $servicio = $_POST['servicio'];
-    $edificio_compartido = isset($_POST['edificio_compartido']) ? 1 : 0;
-    $cue = $_POST['cue'];
-    $direccion = $_POST['direccion'];
-    $localidad = $_POST['localidad'];
-    $telefono = $_POST['telefono'];
-    $correo_electronico = $_POST['correo_electronico'];
-    $directivo = $_POST['directivo'];
-    $vicedirectora = $_POST['vicedirectora'];
-    $secretaria = $_POST['secretaria'];
+if (isset($_GET['nombre_usuario'])) {
+    $nombre_usuario = $_GET['nombre_usuario'];
+    $_SESSION['nombre_usuario'] = $nombre_usuario; 
 
-    $sql_insert = "INSERT INTO escuelas (
-        turno, servicio, edificio_compartido, CUE, direccion, localidad,
-        telefono, correo_electronico, directivo, vicedirectora, secretaria
-    ) VALUES (
-        :turno, :servicio, :edificio_compartido, :cue, :direccion, :localidad,
-        :telefono, :correo_electronico, :directivo, :vicedirectora, :secretaria
-    )";
-
-    $stmt_insert = $pdo->prepare($sql_insert);
-    $stmt_insert->execute([
-        'turno' => $turno,
-        'servicio' => $servicio,
-        'edificio_compartido' => $edificio_compartido,
-        'cue' => $cue,
-        'direccion' => $direccion,
-        'localidad' => $localidad,
-        'telefono' => $telefono,
-        'correo_electronico' => $correo_electronico,
-        'directivo' => $directivo,
-        'vicedirectora' => $vicedirectora,
-        'secretaria' => $secretaria
-    ]);
-        exit();
-}
-if (isset($_SESSION['nombre'])) {
-    $nombre_usuario = $_SESSION['nombre'];
 }
 
-// Verificamos si el ID del usuario está guardado en la sesión
-if (isset($_SESSION['id_usuario'])) {
-    $id = $_SESSION['id_usuario'];
-
-    $stmt = $pdo->prepare("SELECT nombre FROM usuarios WHERE id_usuario = :id");
-    $stmt->execute(['id' => $id]);
-
-    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $nombre_usuario = $row['nombre'];
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -71,7 +26,7 @@ if (isset($_SESSION['id_usuario'])) {
 <body>  
 
 <div class="position-fixed top-50 start-50 translate-middle text-center text-white" style="opacity: 1.0;">
-  <h1 class="display-4">Bienvenido/a <?= htmlspecialchars($nombre_usuario) ?> </h1>
+  <h1 class="display-4">Bienvenido/a <?= htmlspecialchars($_SESSION['nombre_usuario']) ?> </h1>
 </div>
 
 
