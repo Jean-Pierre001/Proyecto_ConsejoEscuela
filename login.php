@@ -15,7 +15,6 @@
         border-radius: 1rem;
         background: white;
     }
-
 </style>
 <body class="d-flex align-items-center justify-content-center vh-100 bg-light">
     <div class="card shadow p-4" style="width: 22rem;">
