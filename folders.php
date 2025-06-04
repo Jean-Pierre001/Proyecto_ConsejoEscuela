@@ -1,4 +1,5 @@
 <?php
+require_once 'baseDatos/conexion.php';
 
 // Mover carpeta a la papelera (trash)
 if (isset($_POST['moveFolder'])) {
@@ -6,53 +7,41 @@ if (isset($_POST['moveFolder'])) {
   $folderPath = "folders/$folderToDelete";
   $trashPath = "trash/$folderToDelete";
 
-  // Crear carpeta trash si no existe
   if (!is_dir('trash')) {
     mkdir('trash', 0777, true);
   }
 
-  // Mover la carpeta a trash si existe
   if (is_dir($folderPath)) {
     rename($folderPath, $trashPath);
   }
 }
 
-// Filtrado por nombre y localidad
-$filterName = isset($_POST['filterName']) ? $_POST['filterName'] : '';
-$filterLocalidad = isset($_POST['filterLocalidad']) ? $_POST['filterLocalidad'] : '';
+// Filtrado
+$filterName = $_POST['filterName'] ?? '';
+$filterLocalidad = $_POST['filterLocalidad'] ?? '';
 
-// Eliminar filtros
 if (isset($_POST['resetFilters'])) {
   $filterName = '';
   $filterLocalidad = '';
 }
 
-// Obtener las carpetas
-$folders = array_filter(scandir('folders'), fn($f) => $f != '.' && $f != '..');
+// Consulta a la base de datos
+$query = "SELECT nombre, localidad FROM carpetas WHERE 1=1";
+$params = [];
 
-// Función para obtener localidad desde un archivo dentro de la carpeta
-function getLocalidad($folder) {
-  $localidadFile = "folders/$folder/localidad.txt";
-  if (file_exists($localidadFile)) {
-    return trim(file_get_contents($localidadFile));
-  }
-  return "Sin localidad";
-}
-
-// Filtrar las carpetas por nombre
 if ($filterName !== '') {
-  $folders = array_filter($folders, function ($folder) use ($filterName) {
-    return stripos($folder, $filterName) === 0; // Filtrar por letras iniciales
-  });
+  $query .= " AND nombre LIKE :nombre";
+  $params[':nombre'] = "$filterName%";
 }
 
-// Filtrar las carpetas por localidad
 if ($filterLocalidad !== '') {
-  $folders = array_filter($folders, function ($folder) use ($filterLocalidad) {
-    $localidad = getLocalidad($folder);
-    return stripos($localidad, $filterLocalidad) !== false; // filtro parcial, case-insensitive
-  });
+  $query .= " AND localidad LIKE :localidad";
+  $params[':localidad'] = "%$filterLocalidad%";
 }
+
+$stmt = $pdo->prepare($query);
+$stmt->execute($params);
+$folders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -155,21 +144,24 @@ if ($filterLocalidad !== '') {
         echo "<div class='no-results'>Sin resultados</div>";
       } else {
         foreach ($folders as $folder) {
-          $localidad = getLocalidad($folder);
-          echo "
-            <div class='folder-card mb-5'>
-              <a href='folderDetails.php?folder=$folder' class='text-decoration-none'>
-                <i class='bi bi-folder-fill folder-icon'></i>
-                <div class='folder-name'>$folder</div>
-              </a>
-              <div class='text-muted'>Localidad: $localidad</div>
-              <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
-                <input type='hidden' name='folderToDelete' value='$folder'>
-                <button type='submit' name='moveFolder' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
-              </form>
-            </div>
-          ";
-        }
+  $nombre = htmlspecialchars($folder['nombre']);
+  $localidad = htmlspecialchars($folder['localidad']);
+
+  echo "
+    <div class='folder-card mb-5'>
+      <a href='folderDetails.php?folder=$nombre' class='text-decoration-none'>
+        <i class='bi bi-folder-fill folder-icon'></i>
+        <div class='folder-name'>$nombre</div>
+      </a>
+      <div class='text-muted'>Localidad: $localidad</div>
+      <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
+        <input type='hidden' name='folderToDelete' value='$nombre'>
+        <button type='submit' name='moveFolder' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
+      </form>
+    </div>
+  ";
+}
+
       }
       ?>
     </div>
