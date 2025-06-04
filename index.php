@@ -62,7 +62,7 @@ if (isset($_GET['nombre_usuario'])) {
   </div>
 </div>
 
-<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
+<!--<nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav">
       <li class="nav-item border mx-5">
@@ -82,7 +82,7 @@ if (isset($_GET['nombre_usuario'])) {
       </li>
     </ul>
   </div>
-</nav>
+</nav>--> 
 
 <!-- Bootstrap JS (con Popper incluido) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

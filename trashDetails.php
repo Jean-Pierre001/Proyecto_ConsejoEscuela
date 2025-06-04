@@ -97,10 +97,16 @@ if (isset($_GET['deletetrash'])) {
 <head>
   <meta charset="UTF-8">
   <title>Detalles de la Carpeta - <?php echo htmlspecialchars($trashName); ?></title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link href="trash.css" rel="x stylesheet">
 </head>
 <body>
+
+<header>
+  <i class="bi bi-folder-fill me-2"></i>
+  <h1>Detalles de la Carpeta: <?php echo htmlspecialchars($trashName); ?></h1>
+</header>
 
 <!-- Offcanvas Sidebar -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
@@ -137,9 +143,7 @@ if (isset($_GET['deletetrash'])) {
     </div>
   </div>
 
-<header>
-  <h1>Detalles de la Carpeta: <?php echo htmlspecialchars($trashName); ?></h1>
-</header>
+
 
 <!-- Navbar principal -->
 <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">

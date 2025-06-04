@@ -86,7 +86,6 @@ if ($filterName !== '') {
   <header>
     <i class="bi bi-trash-fill me-2"></i>
     <h1>Papelera</h1>
-    <p class="lead">Organiza y visualiza tus Carpetas y archivos fácilmente</p>
   </header>
 
   <!-- Offcanvas Sidebar -->

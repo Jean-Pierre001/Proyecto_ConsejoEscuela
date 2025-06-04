@@ -13,7 +13,7 @@ if ($nombreEscuela) {
 try {
     $stmt = $pdo->prepare($sql);
     if ($nombreEscuela) {
-        $stmt->bindValue(':nombreEscuela', $nombreEscuela . '%');
+        $stmt->bindValue(':nombreEscuela', '%'. $nombreEscuela . '%');
     }
     $stmt->execute();
 } catch (PDOException $e) {

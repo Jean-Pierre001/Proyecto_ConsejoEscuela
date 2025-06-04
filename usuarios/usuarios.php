@@ -27,11 +27,13 @@ try {
   <title>Gestor de Usuarios</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="estilos/usuarios.css">
 </head>
 <body>
 
 <header class="text-white bg-primary p-4 text-center">
-  <h1><i class="bi bi-person-badge-fill"></i> Gestor de Usuarios</h1>
+  <i class="bi bi-person-badge-fill"></i>
+  <h1> Gestor de Usuarios</h1>
 </header>
  <!-- Offcanvas Sidebar -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
@@ -53,7 +55,7 @@ try {
           <a class="nav-link" href="../folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
+          <a class="nav-link" href="../escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="../inspectores/inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
@@ -101,7 +103,7 @@ try {
     </div>
   </form>
 
-  <div class="table-responsive">
+  <div class="table-responsive rounded-3">
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">
         <tr>

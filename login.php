@@ -8,7 +8,7 @@
 </head>
 <style>
     body {
-        background: linear-gradient(to right, #74ebd5, #ACB6E5);
+        background: linear-gradient(to right, #0d6efd,rgb(17, 16, 129));
     }
 
     .card {

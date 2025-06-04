@@ -10,47 +10,6 @@
     box-sizing: border-box;
     }
 
-    .sidebar {
-      width: 5%;
-      height: 100vh;
-      background-color: #9e2f2f;
-      border-right: 1px solid #dee2e6;
-      padding: 30px 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    }
-
-    .sidebar h4 {
-      margin-bottom: 25px;
-      font-weight: bold;
-      color: #343a40;
-    }
-
-    .nav-link {
-      color: #495057;
-      font-size: 18px;
-      padding: 12px 10px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-link i {
-      font-size: 20px;
-      margin-right: 12px;
-      color: #0d6efd;
-    }
-
-    .nav-link:hover {
-      background-color: #e9ecef;
-      color: #0d6efd;
-      text-decoration: none;
-    }
-
-    .nav-link:hover i {
-      color: #0a58ca;
-    }
-
     .offcanvas {
       background-color: #f8f9fa;
     }
@@ -96,39 +55,13 @@
       background: linear-gradient(180deg, #f5f7fa 0%, #c3cfe2 100%);
       font-family: 'Segoe UI', sans-serif;
     }
-    header {
-      background: linear-gradient(90deg, #4A90E2, #50A7F3);
-      padding: 2.5px 0;
-      color: white;
-      text-align: center;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    }
+
     .navbar {
       transition: all 0.3s ease;
       background-color: white;
       padding-top: 1rem;
       padding-bottom: 1rem;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .navbar.shrink {
-      padding-top: 0.3rem;
-      padding-bottom: 0.3rem;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.7rem;
-      color: #1d3a8a;
-    }
-
-    .navbar-brand span {
-      font-size: 0.9rem;
-      background-color: #1d3a8a;
-      color: white;
-      padding: 6px 6px;
-      border-radius: 3px;
-      margin-right: 4px;
     }
 
     .nav-item.dropdown:hover .nav-link {
@@ -139,12 +72,23 @@
       border: none;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
+
+    header {
+      background: linear-gradient(90deg, #0d6efd, #0d6efd);
+      padding: 1.5rem;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
     header h1 {
       font-size: 2.5rem;
       font-weight: bold;
       margin-bottom: 10px;
     }
+
     header i {
+      font-weight: bold;
       font-size: 2rem;
     }
     .card {
@@ -157,11 +101,11 @@
     }
     .btn-primary {
       border-radius: 12px;
-      background-color: #4A90E2;
+      background-color: #0d6efd;
       border: none;
     }
     .btn-primary:hover {
-      background-color: #357ABD;
+      background-color: #0a58ca;
     }
     .trash-card {
       background: #ffffff;
@@ -204,6 +148,11 @@
       background-color: #d9534f;
       border-radius: 12px;
     }
+
+    .btn {
+      border-radius: 12px;
+    }
+
     .btn-danger:hover {
       background-color: #c9302c;
     }

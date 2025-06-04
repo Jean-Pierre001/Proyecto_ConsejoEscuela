@@ -27,11 +27,13 @@ try {
   <title>Gestor de Inspectores</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="estilos/inspectores.css">
 </head>
 <body>
 
 <header class="text-white bg-primary p-4 text-center">
-  <h1><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</h1>
+  <i class="bi bi-person-badge-fill"></i>
+  <h1> Gestor de Inspectores</h1>
 </header>
 
  <!-- Offcanvas Sidebar -->
@@ -101,8 +103,7 @@ try {
       </div>
     </div>
   </form>
-
-  <div class="table-responsive">
+  <div class="table-responsive rounded-3">
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">
         <tr>
