@@ -55,7 +55,7 @@ try {
           <a class="nav-link" href="../folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="../escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
+          <a class="nav-link" href="../escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="../inspectores/inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
