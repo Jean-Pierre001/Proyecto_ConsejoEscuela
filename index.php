@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include 'baseDatos/conexion.php';
 
 if (isset($_GET['nombre_usuario'])) {
@@ -7,7 +8,6 @@ if (isset($_GET['nombre_usuario'])) {
     $_SESSION['nombre_usuario'] = $nombre_usuario; 
 
 }
-
 ?>
 
 <!DOCTYPE html>

@@ -63,15 +63,6 @@ if (isset($_POST['deleteTrash']) && isset($_POST['trashToDelete'])) {
 // Obtener las Carpetas
 $trash = array_filter(scandir('trash'), fn($f) => $f != '.' && $f != '..');
 
-// Función para obtener localidad desde un archivo dentro de la carpeta
-function getLocalidad($trash) {
-    $localidadFile = "trash/$trash/localidad.txt";
-    if (file_exists($localidadFile)) {
-        return trim(file_get_contents($localidadFile));
-    }
-    return "Sin localidad";
-}
-
 // Filtrar las carpetas por nombre
 if ($filterName !== '') {
     $trash = array_filter($trash, function ($t) use ($filterName) {
@@ -79,13 +70,6 @@ if ($filterName !== '') {
     });
 }
 
-// Filtrar las carpetas por localidad
-if ($filterLocalidad !== '') {
-    $trash = array_filter($trash, function ($t) use ($filterLocalidad) {
-        $localidad = getLocalidad($t);
-        return stripos($localidad, $filterLocalidad) !== false;
-    });
-}
 ?>
 
 <!DOCTYPE html>
@@ -151,15 +135,6 @@ if ($filterLocalidad !== '') {
               value="<?php echo htmlspecialchars($filterName); ?>"
             />
           </div>
-          <div class="col-md-6">
-            <input
-              type="text"
-              name="filterLocalidad"
-              class="form-control"
-              placeholder="Filtrar por localidad..."
-              value="<?php echo htmlspecialchars($filterLocalidad); ?>"
-            />
-          </div>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
         <button type="submit" name="resetFilters" class="btn btn-secondary mt-3">Eliminar filtros</button>
@@ -172,14 +147,12 @@ if ($filterLocalidad !== '') {
         echo "<div class='no-results'>Sin resultados</div>";
       } else {
         foreach ($trash as $t) {
-          $localidad = getLocalidad($t);
           echo "
             <div class='trash-card mb-5'>
               <a href='trashDetails.php?trash=$t' class='text-decoration-none'>
                 <i class='bi bi-trash-fill trash-icon'></i>
                 <div class='trash-name'>$t</div>
               </a>
-              <div class='text-muted'>Localidad: $localidad</div>
               <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
                 <input type='hidden' name='trashToDelete' value='$t'>
                 <button type='submit' name='deleteTrash' class='btn btn-danger w-100 mt-3'>Eliminar Carpeta</button>

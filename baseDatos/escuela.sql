@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-05-2025 a las 15:38:05
+-- Tiempo de generación: 04-06-2025 a las 15:06:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -40,10 +40,11 @@ CREATE TABLE `carpetas` (
 --
 
 INSERT INTO `carpetas` (`id`, `cue`, `nombre`, `carpeta`, `localidad`) VALUES
-(1, '0621234005678', 'Escuela Secundaria Nº 5', 'folders/Escuela Secundaria Nº 5', 'Viedma'),
-(2, '0621234003344', 'Escuela Agrotécnica Nº 2', 'folders/Escuela Agrotécnica Nº 2', 'General Conesa'),
-(3, '0621234001234', 'Escuela Técnica Nº 1', 'folders/Escuela Técnica Nº 1', 'Carmen de Patagones'),
-(4, '0621234001122', 'Instituto Técnico Industrial', 'folders/Instituto Técnico Industrial', 'Bahía Blanca');
+(5, '0621234001234', 'Escuela Técnica Nº 1', 'folders/Escuela Técnica Nº 1', 'Carmen de Patagones'),
+(6, '0621234009900', 'Colegio Politécnico Patagónico', 'folders/Colegio Politécnico Patagónico', 'Bariloche'),
+(7, '0621234003344', 'Escuela Agrotécnica Nº 2', 'folders/Escuela Agrotécnica Nº 2', 'General Conesa'),
+(8, '0621234015678', 'Escuela Técnica Nº 7', 'folders/Escuela Técnica Nº 7', 'Río Colorado'),
+(9, '0621234018901', 'Escuela Técnica Nº 8', 'folders/Escuela Técnica Nº 8', 'Luis Beltrán');
 
 -- --------------------------------------------------------
 
@@ -113,7 +114,7 @@ INSERT INTO `inspectores` (`idInspector`, `nombre`, `nivelModalidad`, `telefono`
 CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(50) NOT NULL,
-  `contrasena` varchar(50) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
   `tipo` enum('administrador','directivo') NOT NULL,
   `correo` varchar(50) NOT NULL,
   `telefono` int(11) NOT NULL
@@ -124,9 +125,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `contrasena`, `tipo`, `correo`, `telefono`) VALUES
-(2, 'admin', '$2y$10$wIJQs9/qXsQIlUPrxVV3O.RuP6XlvwY14xC91HgzgOn', 'directivo', 'agustin500cm@gmail.com', 2147483647),
-(3, 'adsasdas', '$2y$10$0ybxvliQeOf74a78ze0APO/eaBfhkpd1wa8ISA3nZ74', 'administrador', 'holanda@gmail.com', 1234567891),
-(4, 'rosas', '$2y$10$3RFCQ0nAE6UazTzKGpO2M.WVPMrWA80HwaUVI6EjZNn', 'administrador', 'rosas4000@gmail.com', 0);
+(5, 'admin', '$2y$10$VYMlahnPkx9Q3BdCOyH.kuuyXBszZ8BMB2CEQgTR/oP.TcJczIGMa', 'administrador', 'agustin500cm@gmail.com', 0);
 
 --
 -- Índices para tablas volcadas
@@ -165,7 +164,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `carpetas`
 --
 ALTER TABLE `carpetas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `escuelas`
@@ -183,7 +182,7 @@ ALTER TABLE `inspectores`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
