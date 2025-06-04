@@ -1,19 +1,19 @@
 <?php
 require_once '../baseDatos/conexion.php';
 
-$cue = isset($_POST['cue']) ? $_POST['cue'] : '';
+$nombreEscuela = isset($_POST['nombreEscuela']) ? $_POST['nombreEscuela'] : '';
 
 $sql = "SELECT id, nombreEscuela, CUE, turno, servicio, direccion, localidad, telefono, correoElectronico, directivo FROM escuelas WHERE 1=1";
 
-// Filtrar por CUE si se ha ingresado uno, (30/05: cambien esto a otros metodos, los del consejo no usan los CUE, atte: gordo silla).
-if ($cue) {
-    $sql .= " AND CUE LIKE :cue";
+// Filtrar por nombreEscuela si se ha ingresado uno, (30/05: cambien esto a otros metodos, los del consejo no usan los CUE, atte: gordo silla). (BACKJP: echo pa)
+if ($nombreEscuela) {
+    $sql .= " AND nombreEscuela LIKE :nombreEscuela";
 }
 
 try {
     $stmt = $pdo->prepare($sql);
-    if ($cue) {
-        $stmt->bindValue(':cue', $cue . '%');
+    if ($nombreEscuela) {
+        $stmt->bindValue(':nombreEscuela', $nombreEscuela . '%');
     }
     $stmt->execute();
 } catch (PDOException $e) {
@@ -99,7 +99,7 @@ try {
   <form method="POST" class="mb-4">
     <div class="row">
       <div class="col-md-4 mb-3">
-        <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" value="<?= htmlspecialchars($cue) ?>">
+        <input type="text" name="nombreEscuela" class="form-control" placeholder="Filtrar por Nombre de Escuela" value="<?= htmlspecialchars($nombreEscuela) ?>">
       </div>
       <div class="col-md-4 mb-3">
         <button type="submit" class="btn btn-primary w-100">Filtrar</button>

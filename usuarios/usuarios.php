@@ -27,42 +27,6 @@ try {
   <title>Gestor de Usuarios</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <style>
-    .navbar {
-      transition: all 0.3s ease;
-      background-color: white;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-
-    .navbar.shrink {
-      padding-top: 0.3rem;
-      padding-bottom: 0.3rem;
-    }
-
-    .navbar-brand {
-      font-weight: bold;
-      font-size: 1.7rem;
-      color: #1d3a8a;
-    }
-
-    .navbar-brand span {
-      font-size: 0.9rem;
-      background-color: #1d3a8a;
-      color: white;
-      padding: 6px 6px;
-      border-radius: 3px;
-      margin-right: 4px;
-    }
-
-
-
-    .dropdown-menu {
-      border: none;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-  </style>
 </head>
 <body>
 
