@@ -88,6 +88,7 @@ try {
     <div class="alert alert-info"><?= htmlspecialchars($_GET['mensaje']) ?></div>
   <?php endif; ?>
 
+  <div class="card mb-5 p-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-primary">Listado de Escuelas</h2>
     <a href="agregarEscuela.php" class="btn btn-success">
@@ -107,6 +108,8 @@ try {
     </div>
   </form>
 </div>
+  </div>
+
   <div class="container my-5">
   <div class="table-responsive rounded-3">
     <table class="table table-bordered table-hover align-middle text-center">
