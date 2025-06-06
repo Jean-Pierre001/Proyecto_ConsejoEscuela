@@ -84,8 +84,8 @@ try {
     </div>
   </nav>  
 
-  <div class="card mb-5 p-4">
-    <div class="container my-5">
+  <div class="container my-5">
+    <div class="card mb-5 p-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-primary">Listado de Inspectores</h2>
         <a href="agregarInspectores.php" class="btn btn-success">
@@ -104,8 +104,10 @@ try {
           </div>
         </div>
       </form>
+    </div>
   </div>
-</div>
+
+<div class="container my-5">
   <div class="table-responsive rounded-3">
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">

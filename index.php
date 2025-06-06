@@ -148,5 +148,6 @@ if (isset($_GET['nombre_usuario'])) {
       </div>
   </div>
 </div>
+
 </body>
 </html>

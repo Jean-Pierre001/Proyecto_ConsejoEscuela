@@ -84,25 +84,27 @@ try {
   </nav>
 
 <div class="container my-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-primary">Listado de Usuarios</h2>
-    <a href="agregarUsuario.php" class="btn btn-success">
-      <i class="bi bi-person-plus-fill"></i> Agregar usuario
-    </a>
-  </div>
-
-  <!-- Formulario de búsqueda -->
-  <form method="POST" class="mb-4">
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" value="<?= htmlspecialchars($nombre) ?>">
-      </div>
-      <div class="col-md-4 mb-3">
-        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
-      </div>
+  <div class="card mb-5 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="text-primary">Listado de Usuarios</h2>
+      <a href="agregarUsuario.php" class="btn btn-success">
+        <i class="bi bi-person-plus-fill"></i> Agregar usuario
+      </a>
     </div>
-  </form>
 
+
+    <!-- Formulario de búsqueda -->
+    <form method="POST" class="mb-4">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" value="<?= htmlspecialchars($nombre) ?>">
+        </div>
+        <div class="col-md-4 mb-3">
+          <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+      </div>
+    </form>
+  </div>
   <div class="table-responsive rounded-3">
     <table class="table table-bordered table-hover align-middle text-center">
       <thead class="table-dark">
