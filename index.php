@@ -26,7 +26,7 @@ if (isset($_GET['nombre_usuario'])) {
 <body>  
 
 <div class="position-fixed top-50 start-50 translate-middle text-center text-white" style="opacity: 1.0;">
-  <h1 class="display-4">Bienvenido/a <?= htmlspecialchars($_SESSION['nombre_usuario']) ?> </h1>
+  <h1 class="display-4">Bienvenido/a, <?= htmlspecialchars($_SESSION['nombre_usuario']) ?> </h1>
 </div>
 
 
