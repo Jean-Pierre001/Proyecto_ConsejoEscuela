@@ -78,16 +78,46 @@
 
 <div class="content-wrapper">
   <h2>Gestor de Carpetas</h2>
+
+  <!--formulario de filtro-->
+    <form method="GET" class="form-inline" style="margin-bottom: 20px;">
+      <div class="form-group">
+        <input type="text" name="buscar" class="form-control" placeholder="Buscar por nombre..." value="<?= htmlspecialchars($_GET['buscar'] ?? '') ?>" style="min-width: 500px;">
+      </div>
+      <button type="submit" class="btn btn-primary">Buscar</button>
+      <a href="folders.php" class="btn btn-default">Limpiar</a>
+    </form>
+
   <p>Carpetas registradas en el sistema:</p>
+
+  <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+    <?php unset($_SESSION['error']); ?>
+  <?php endif; ?>
+
+  <?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+    <?php unset($_SESSION['success']); ?>
+  <?php endif; ?>
 
   <div class="folder-grid">
     <?php
       require_once 'includes/conn.php';
 
       // Consultar todas las carpetas desde la base de datos
-      $sql = "SELECT * FROM folders";
-      $stmt = $pdo->query($sql);
+      $buscar = $_GET['buscar'] ?? '';
+
+      if (!empty($buscar)) {
+        $sql = "SELECT * FROM folders WHERE name LIKE :buscar";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':buscar' => '%' . $buscar . '%']);
+      } else {
+        $sql = "SELECT * FROM folders";
+        $stmt = $pdo->query($sql);
+      }
+
       $folders = $stmt->fetchAll();
+
 
       if (count($folders) === 0) {
         echo "<p>No hay carpetas registradas.</p>";

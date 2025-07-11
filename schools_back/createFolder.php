@@ -37,12 +37,14 @@ if ($folderExists) {
 $basePath = __DIR__ . '/../folders/';
 $folderSystemName = sanitizeFolderName($name);
 
-// Evitar duplicados si ya existe físicamente
-$originalName = $folderSystemName;
-$counter = 1;
-while (is_dir($basePath . $folderSystemName)) {
-    $folderSystemName = $originalName . '_' . $counter;
-    $counter++;
+// Verificar si ya existe carpeta física con ese nombre exacto
+$folderSystemName = sanitizeFolderName($name);
+$fullPath = $basePath . $folderSystemName;
+
+if (is_dir($fullPath)) {
+    $_SESSION['error'] = "Ya existe una carpeta con el nombre '$folderSystemName'.";
+    header("Location: ../schools.php");
+    exit;
 }
 
 $fullPath = $basePath . $folderSystemName;            // Ruta absoluta

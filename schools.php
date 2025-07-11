@@ -53,17 +53,7 @@ $schools = $stmt->fetchAll();
 
 <?php include 'includes/modals/modalschools.php'; ?>
 
-
-<?php if (isset($_SESSION['error'])): ?>
-  <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
-  <?php unset($_SESSION['error']); ?>
-<?php endif; ?>
-
-<?php if (isset($_SESSION['success'])): ?>
-  <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
-  <?php unset($_SESSION['success']); ?>
-<?php endif; ?>
-
+<?php include 'includes/sidebar.php'; ?>
 
 <div class="content-wrapper">
   <h2>Gestor de Escuelas</h2>
@@ -77,6 +67,16 @@ $schools = $stmt->fetchAll();
     }
   ?>
 
+  <?php if (isset($_SESSION['error'])): ?>
+    <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+    <?php unset($_SESSION['error']); ?>
+  <?php endif; ?>
+
+  <?php if (isset($_SESSION['success'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+    <?php unset($_SESSION['success']); ?>
+  <?php endif; ?>
+
   <form method="POST" class="form-inline mb-3">
     <div class="form-group">
       <input
@@ -85,7 +85,7 @@ $schools = $stmt->fetchAll();
         class="form-control"
         placeholder="Filtrar por nombre de escuela"
         value="<?= htmlspecialchars($filterName) ?>"
-        style="min-width: 300px;"
+        style="min-width: 500px;"
       />
     </div>
     <button type="submit" class="btn btn-primary ml-2">Filtrar</button>
@@ -184,6 +184,9 @@ $schools = $stmt->fetchAll();
     $('#modalEditarEscuela').modal('show');
   }
 </script>
+
+<?php include 'includes/footer.php'; ?>
+<?php include 'includes/scripts.php'; ?>
 
 </body>
 </html>

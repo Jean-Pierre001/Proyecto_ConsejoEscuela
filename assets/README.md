@@ -1,6 +1,6 @@
 # Assets Folder
 
-Esta carpeta contiene todos los recursos del proyecto, incluyendo estilos CSS, fuentes, scripts de terceros, librerias externas, etc.
+Esta carpeta contiene todos los recursos del proyecto, incluyendo estilos CSS, imagenes, fuentes, scripts de terceros, librerias externas, etc.
 
 ---
 
@@ -37,4 +37,3 @@ Ejemplo:
 <link rel="stylesheet" href="assets/vendor/tcpdf.php">
 <link rel="stylesheet" href="assets/custom/login.css">
 <img src="assets/custom/imagen.png" alt="Descripción de la imagen">
-

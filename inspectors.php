@@ -71,7 +71,7 @@ $inspectors = $stmt->fetchAll();
         class="form-control"
         placeholder="Filtrar por nombre del inspector"
         value="<?= htmlspecialchars($filterName) ?>"
-        style="min-width: 300px;"
+        style="min-width: 500px;"
       />
     </div>
     <button type="submit" class="btn btn-primary ml-2">Filtrar</button>
@@ -137,7 +137,8 @@ $inspectors = $stmt->fetchAll();
   }
 </script>
 
-
+<?php include 'includes/footer.php'; ?>
+<?php include 'includes/scripts.php'; ?>
 
 </body>
 </html>
