@@ -2,12 +2,12 @@
 .background-image {
   position: fixed;
   top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('ruta/a/tu-imagen-fondo.jpg') no-repeat center center;
+  width: 100%;
+  height: 100%;
+  background: url('../images/consejofuera.png') no-repeat center center;
   background-size: cover;
   filter: brightness(0.5) blur(3px);
-  z-index: -1;
+  z-index: -1;  
 }
 
 /* Ajustamos el contenedor de login para centrarlo */

@@ -12,7 +12,7 @@ include 'modals/profile_modal.php';
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
-        <img src="images/consejologo.png" alt="ERROR" style="height:50px;">
+        <img src="assets/images/consejologo.png" alt="ERROR" style="height:50px;">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavbar">
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -31,7 +31,7 @@ include 'modals/profile_modal.php';
           <?php
             if (isset($_SESSION['user_data']) && is_array($_SESSION['user_data'])) {
               $user = $_SESSION['user_data'];
-              $image = (!empty($user['photo'])) ? 'images/'.$user['photo'] : 'images/profile.jpg';
+              $image = (!empty($user['photo'])) ? 'assets/images/'.$user['photo'] : 'assets/images/profile.jpg';
               echo '
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">

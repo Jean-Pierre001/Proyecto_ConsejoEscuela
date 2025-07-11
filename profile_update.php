@@ -43,13 +43,13 @@ if (isset($_POST['save'])) {
             $photo_name = $_FILES['photo']['name'];
             $ext = pathinfo($photo_name, PATHINFO_EXTENSION);
             $new_photo_name = uniqid() . '.' . $ext;
-            $upload_path = 'images/' . $new_photo_name;
+            $upload_path = 'assets/images/' . $new_photo_name;
 
             if (move_uploaded_file($photo_tmp, $upload_path)) {
                 $photo_to_save = $new_photo_name;
                 // Borrar foto anterior si existe
-                if (!empty($admin['photo']) && file_exists('images/' . $admin['photo'])) {
-                    unlink('images/' . $admin['photo']);
+                if (!empty($admin['photo']) && file_exists('assets/images/' . $admin['photo'])) {
+                    unlink('assets/images/' . $admin['photo']);
                 }
             } else {
                 $_SESSION['error'] = "Error al subir la foto.";
