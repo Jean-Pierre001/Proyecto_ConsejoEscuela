@@ -18,8 +18,8 @@ Este proyecto es un sistema de gestión escolar desarrollado en **PHP**, pensado
     - [Estructura de carpetas](#estructura-de-carpetas)
     - [Cómo usar](#cómo-usar)
 8.  [Características Adicionales](#características-adicionales)
-9.  [🖼️ Estética y Usabilidad](#️estética-y-usabilidad)
-10. [📄 Licencia](#️licencia)
+9.  [Estética y Usabilidad](#️estética-y-usabilidad)
+10. [Licencia](#️licencia)
 
 ---
 
@@ -29,15 +29,15 @@ Este proyecto es un sistema de gestión escolar desarrollado en **PHP**, pensado
 Proyecto_ConsejoEscuela/
 ├── assets/                  # Recursos como imágenes, estilos CSS y librerias 
    ├── images/               # Aqui se encuentran todas las imagenes del proyecto
-   ├── vendor/               # Librerias externas como TCPDF
+   ├── vendor/               # Librerias externas del proyecto (TCPDF)
    ├── custom/               # Archivos CSS custom para este proyecto
 ├── BACKUP_DATABASE/         # Scripts de respaldo de la base de datos
 ├── folders/                 # Contenedor físico de carpetas institucionales
 ├── trash/                   # Papelera lógica y física de carpetas eliminadas
 ├── includes/                # Módulos reutilizables: conexión, sesión, headers
    ├── modals/               # Incluyen todos los modals del sistema 
-├── inspectores_back/        # Logica separada de inspectores
-├── schools_back/            # Logica separada de escuela
+├── inspectors_back/         # Logica de inspectors (Eliminar, Editar, Agregar)
+├── schools_back/            # Logica de schools (Eliminar, Editar, Agregar)
 ├── *.php                    # Páginas funcionales (login, perfil, CRUD, etc.)
 ```
 
@@ -168,6 +168,8 @@ Ejemplo:
 <link rel="stylesheet" href="assets/vendor/tcpdf.php">
 <link rel="stylesheet" href="assets/custom/login.css">
 <img src="assets/custom/imagen.png" alt="Descripción de la imagen">
+
+---
 
 ## 8. Características Adicionales
 
