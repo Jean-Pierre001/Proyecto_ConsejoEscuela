@@ -1,211 +1,121 @@
-  <?php
-  require_once 'baseDatos/conexion.php';
+<?php include 'includes/session.php'; ?>
+<?php include 'includes/header.php'; ?>
+<?php include 'includes/navbar.php'; ?>
 
-  // Mover carpeta a la papelera (trash) ahora junto tambien se modifican los datos
-  
-if (isset($_POST['moveFolder'])) {
-  $folderToDelete = $_POST['folderToDelete'];
-  $folderPath = "folders/$folderToDelete";
-  $trashPath = "trash/$folderToDelete";
-
-  // Asegúrate de que la carpeta 'trash' exista
-  if (!is_dir('trash')) {
-    mkdir('trash', 0777, true);
-  }
-
-  // Función para mover una carpeta completa
-  function moveFolder($src, $dst) {
-    if (!file_exists($src)) return false;
-
-    mkdir($dst, 0777, true);
-    foreach (scandir($src) as $file) {
-      if ($file == '.' || $file == '..') continue;
-
-      $srcPath = $src . DIRECTORY_SEPARATOR . $file;
-      $dstPath = $dst . DIRECTORY_SEPARATOR . $file;
-
-      if (is_dir($srcPath)) {
-        moveFolder($srcPath, $dstPath);
-      } else {
-        rename($srcPath, $dstPath);
-      }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestor de Carpetas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    body {
+      padding-top: 50px;
+      background-color: #e8f0fe;
     }
-    // Eliminar carpeta original después de mover contenido
-    return rmdir($src);
-  }
 
-  if (is_dir($folderPath)) {
-    moveFolder($folderPath, $trashPath);
-  }
+    .content-wrapper {
+      margin-left: 230px;
+      padding: 30px;
+    }
 
-  // Eliminar de la base de datos
-  $stmtDelete = $pdo->prepare("DELETE FROM carpetas WHERE nombre = :nombre");
-  $stmtDelete->execute([':nombre' => $folderToDelete]);
-}
+    .folder-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
 
+    .folder-card {
+      background: #ffffff;
+      width: 160px;
+      height: 160px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      text-align: center;
+      padding: 20px 10px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
 
+    .folder-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      background: linear-gradient(to bottom, #fff7e6, #ffe0b2);
+    }
 
-  // Filtrado
-  $filterName = $_POST['filterName'] ?? '';
-  $filterLocalidad = $_POST['filterLocalidad'] ?? '';
+    .folder-icon {
+      font-size: 55px;
+      color: #f1c40f;
+      margin-bottom: 10px;
+    }
 
-  if (isset($_POST['resetFilters'])) {
-    $filterName = '';
-    $filterLocalidad = '';
-  }
+    .folder-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #2c3e50;
+      word-break: break-word;
+    }
 
-  // Consulta a la base de datos
-  $query = "SELECT nombre, localidad FROM carpetas WHERE 1=1";
-  $params = [];
+    .delete-button {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
 
-  if ($filterName !== '') {
-    $query .= " AND nombre LIKE :nombre";
-    $params[':nombre'] = "$filterName%";
-  }
+<?php include 'includes/sidebar.php'; ?>
 
-  if ($filterLocalidad !== '') {
-    $query .= " AND localidad LIKE :localidad";
-    $params[':localidad'] = "%$filterLocalidad%";
-  }
+<div class="content-wrapper">
+  <h2>Gestor de Carpetas</h2>
+  <p>Carpetas registradas en el sistema:</p>
 
-  $stmt = $pdo->prepare($query);
-  $stmt->execute($params);
-  $folders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  ?>
+  <div class="folder-grid">
+    <?php
+      require_once 'includes/conn.php';
 
-  <!DOCTYPE html>
-  <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gestor de Carpetas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-    <link href="folders.css" rel="stylesheet" />
-  </head>
-  <body>
+      // Consultar todas las carpetas desde la base de datos
+      $sql = "SELECT * FROM folders";
+      $stmt = $pdo->query($sql);
+      $folders = $stmt->fetchAll();
 
-  <header class="text-white bg-primary p-4 text-center">
-    <i class="bi bi-folder-fill me-2"></i>
-    <h1>Gestor de Carpetas</h1>
-  </header>
+      if (count($folders) === 0) {
+        echo "<p>No hay carpetas registradas.</p>";
+      }
 
-    <!-- Offcanvas Sidebar -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="demo" aria-labelledby="demoLabel">
-      <!-- Encabezado con imagen centrada -->
-      <div class="offcanvas-header flex-column align-items-center">
-        <button type="button" class="btn-close text-reset mt-3" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-        <div class="w-100 text-center">
-          <img src="img/consejologo.png" alt="Icono del Consejo" class="img-fluid" style="max-width: 50%;" />
-        </div>
-      </div>
+      foreach ($folders as $folder) {
+        $folder_name = $folder['name']; // nombre visible
+        $folder_system_name = $folder['folder_system_name']; // nombre físico
+        $encoded_name = urlencode($folder_system_name);
+        $folder_id = $folder['id'];
 
-      <!-- Cuerpo con menú de navegación -->
-      <div class="offcanvas-body">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link" href="index.php"><i class="bi bi-house-door-fill"></i> Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="folders.php"><i class="bi bi-folder-fill"></i> Gestor de Carpetas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="escuelas/escuelas.php"><i class="bi bi-building"></i> Gestor de Escuelas</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="inspectores/inspectores.php"><i class="bi bi-person-badge-fill"></i> Gestor de Inspectores</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="usuarios/usuarios.php"><i class="bi bi-people-fill"></i> Gestor de Usuarios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="trash.php"><i class="bi bi-trash-fill"></i> Papelera</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Navbar principal -->
-    <nav id="mainNavbar" class="navbar navbar-expand-lg sticky-top">
-      <div class="container">
-        <!-- Botón para abrir el sidebar -->
-        <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo" aria-controls="demo">
-          <i class="bi bi-list"></i> Consejo Escolar
-        </button>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-      </div>
-    </nav>
-
-    <div class="container py-5">
-      <div class="card mb-5 p-4">
-        <div class="section-title">🔍 Filtrar carpetas</div>
-        <form method="POST" action="">
-          <div class="row g-3 align-items-center">
-            <div class="col-md-6">
-              <input
-                type="text"
-                name="filterName"
-                class="form-control"
-                placeholder="Filtrar por letra inicial..."
-                value="<?php echo htmlspecialchars($filterName); ?>"
-              />
-            </div>
-            <div class="col-md-6">
-              <input
-                type="text"
-                name="filterLocalidad"
-                class="form-control"
-                placeholder="Filtrar por localidad..."
-                value="<?php echo htmlspecialchars($filterLocalidad); ?>"
-              />
-            </div>
+        echo '
+          <div style="position: relative; display: inline-block; margin: 10px;">
+            <a href="detailsfolders.php?folder=' . $encoded_name . '" class="folder-card" style="display: block;">
+              <div class="folder-icon">
+                <span class="glyphicon glyphicon-folder-open"></span>
+              </div>
+              <div class="folder-name">' . htmlspecialchars($folder_name) . '</div>
+            </a>
+            <form method="POST" action="delete_folder.php" onsubmit="return confirm(\'¿Eliminar carpeta ' . addslashes(htmlspecialchars($folder_name)) . '?\');" class="delete-button">
+              <input type="hidden" name="folder_id" value="<?= $folder_id ?>">
+              <button type="submit" class="btn btn-danger btn-sm">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </form>
           </div>
-          <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
-          <button type="submit" name="resetFilters" class="btn btn-secondary mt-3">Eliminar filtros</button>
-        </form>
-      </div>
+        ';
+      }
+    ?>
+  </div>
+</div>
 
-      <div id="folderList">
-        <?php
-        if (empty($folders)) {
-          echo "<div class='no-results'>Sin resultados</div>";
-        } else {
-          foreach ($folders as $folder) {
-          $nombre = htmlspecialchars($folder['nombre']);
-          $localidad = htmlspecialchars($folder['localidad']);
+<?php include 'includes/footer.php'; ?>
+<?php include 'includes/scripts.php'; ?>
 
-          echo "
-            <div class='folder-card mb-5'>
-              <a href='folderDetails.php?folder=$nombre' class='text-decoration-none'>
-                <i class='bi bi-folder-fill folder-icon'></i>
-                <div class='folder-name'>$nombre</div>
-              </a>
-              <div class='text-muted'>Localidad: $localidad</div>
-              <form method='POST' action='' onsubmit='return confirm(\"¿Estás seguro de que deseas eliminar esta carpeta?\")'>
-                <input type='hidden' name='folderToDelete' value='$nombre'>
-                <button type='submit' name='moveFolder' class='btn btn-danger w-100 mt-3'>Mover a papelera</button>
-              </form>
-            </div>
-          ";
-        }
-        }
-        ?>
-      </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-      const navbar = document.getElementById('mainNavbar');
-      window.addEventListener('scroll', function () {
-        if (window.scrollY > 50) {
-          navbar.classList.add('shrink');
-        } else {
-          navbar.classList.remove('shrink');
-        }
-      });
-    </script>
-  </body>
-  </html>
+</body>
+</html>
