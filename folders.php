@@ -27,8 +27,8 @@
 
     .folder-card {
       background: #ffffff;
-      width: 160px;
-      height: 160px;
+      width: 180px;
+      height: 180px;
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.08);
       transition: all 0.3s ease;
@@ -63,6 +63,12 @@
       position: absolute;
       top: 5px;
       right: 10px;
+    }
+    .folder-location {
+      font-size: 13px;
+      color: #7f8c8d;
+      margin-top: 5px;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -100,9 +106,10 @@
                 <span class="glyphicon glyphicon-folder-open"></span>
               </div>
               <div class="folder-name">' . htmlspecialchars($folder_name) . '</div>
+              <div class="folder-location">' . htmlspecialchars($folder['location']) . '</div>
             </a>
             <form method="POST" action="delete_folder.php" onsubmit="return confirm(\'¿Eliminar carpeta ' . addslashes(htmlspecialchars($folder_name)) . '?\');" class="delete-button">
-              <input type="hidden" name="folder_id" value="<?= $folder_id ?>">
+              <input type="hidden" name="folder_id" value="' . $folder_id . '">
               <button type="submit" class="btn btn-danger btn-sm">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
