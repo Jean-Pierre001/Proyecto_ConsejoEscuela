@@ -62,10 +62,6 @@ include 'includes/modals/indexmodal.php';
       <h5>Carpetas</h5>
       <ul id="folder-list" class="list-group"></ul>
     </section>
-    <section class="mb-4">
-      <h5>Escuelas del Consejo Escolar</h5>
-      <div id="schools-table-container" class="table-responsive"></div>
-    </section>
     <section>
     <h5>Archivos
       <button id="delete-selected" class="btn btn-danger btn-sm ms-3" disabled>Eliminar seleccionados</button>
@@ -239,8 +235,6 @@ function loadFolder(folder) {
         });
       });
 
-      // ...eliminado renombrar carpeta...
-
       // Click en botón eliminar carpeta
       document.querySelectorAll('.delete-folder-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
@@ -298,47 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSchoolsTable();
 });
 
-function loadSchoolsTable() {
-  fetch('list_schools.php')
-    .then(res => res.json())
-    .then(data => {
-      if (!data.success || !Array.isArray(data.schools)) {
-        toastr.error('No se pudieron cargar las escuelas');
-        return;
-      }
-      const schools = data.schools;
-      if (schools.length === 0) {
-        document.getElementById('schools-table-container').innerHTML = '<p>No hay escuelas registradas.</p>';
-        return;
-      }
-      let tableHtml = `<table class="table table-striped table-hover align-middle">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>CUE</th>
-            <th>Dirección</th>
-            <th>Teléfono</th>
-            <th>Director/a</th>
-            <th>Nivel</th>
-          </tr>
-        </thead>
-        <tbody>`;
-      tableHtml += schools.map(s => `
-        <tr>
-          <td>${s.nombre}</td>
-          <td>${s.cue}</td>
-          <td>${s.direccion}</td>
-          <td>${s.telefono}</td>
-          <td>${s.director}</td>
-          <td>${s.nivel}</td>
-        </tr>
-      `).join('');
-      tableHtml += '</tbody></table>';
-      document.getElementById('schools-table-container').innerHTML = tableHtml;
-    })
-    .catch(() => toastr.error('Error al cargar la tabla de escuelas'));
-}
-
 document.getElementById('create-folder-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const name = this.folder_name.value.trim();
@@ -368,7 +321,7 @@ Dropzone.options.myDropzone = {
   acceptedFiles: "image/*,application/pdf,text/plain,video/mp4,audio/mpeg",
   uploadMultiple: true,
   parallelUploads: 5,
-  dictDefaultMessage: "Arrastra tus archivos aquí o haz clic para seleccionar",
+  dictDefaultMessage: "Arrastra tus archivos aquí o haz clic para seleccionar", 
   init: function () {
     this.on("sending", function (file, xhr, formData) {
       formData.append("targetFolder", currentFolder);
