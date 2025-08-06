@@ -7,40 +7,33 @@ include 'includes/modals/indexmodal.php';
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Gestor de Archivos</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
-  <style>
-    body, html { height: 100%; margin: 0; }
-    .d-flex { height: 100vh; overflow: hidden; }
-    .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 30px; }
-    .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
-    .breadcrumb-item a { text-decoration: none; }
-    .action-buttons button { margin-right: 0.3rem; }
-      .selected-filename {
-    color: blue !important;
-    font-weight: bold;
-  }
-  .folder-item {
-    height: 48px !important;         /* Fuerza una altura exacta */
-    line-height: 28px !important;    /* Centra verticalmente el contenido */
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    font-size: 15px;                 /* Opcional: más chico para que entre mejor */
-  }
-  .folder-item span {
-    flex-grow: 1;                    /* Permite que el texto ocupe el espacio disponible */
-    overflow: hidden;                /* Oculta el desbordamiento */
-    text-overflow: ellipsis;         /* Agrega puntos suspensivos al final si es necesario */
-    white-space: nowrap;             /* Evita que el texto se divida en varias líneas */
-  }
+<?php $pageTitle = 'Gestor de Archivos'; include 'includes/header.php'; ?>
+<style>
+  body, html { height: 100%; margin: 0; }
+  .d-flex { height: 100vh; overflow: hidden; }
+  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 30px; }
+  .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
+  .breadcrumb-item a { text-decoration: none; }
+  .action-buttons button { margin-right: 0.3rem; }
+    .selected-filename {
+  color: blue !important;
+  font-weight: bold;
+}
+.folder-item {
+  height: 48px !important;         /* Fuerza una altura exacta */
+  line-height: 28px !important;    /* Centra verticalmente el contenido */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  font-size: 15px;                 /* Opcional: más chico para que entre mejor */
+}
+.folder-item span {
+  flex-grow: 1;                    /* Permite que el texto ocupe el espacio disponible */
+  overflow: hidden;                /* Oculta el desbordamiento */
+  text-overflow: ellipsis;         /* Agrega puntos suspensivos al final si es necesario */
+  white-space: nowrap;             /* Evita que el texto se divida en varias líneas */
+}
 
-  </style>
-</head>
-<body>
+</style>
   <!-- HABILITAR CUANDO YA ESTE HOSTEADO EN CASO CONTRARIO DA ERRORES INDESEADOS -->
 <!--  <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=URL_DEL_ARCHIVO" width="100%" height="600px" frameborder="0"></iframe> -->
 
@@ -68,6 +61,10 @@ include 'includes/modals/indexmodal.php';
     <section class="mb-3">
       <h5>Carpetas</h5>
       <ul id="folder-list" class="list-group"></ul>
+    </section>
+    <section class="mb-4">
+      <h5>Escuelas del Consejo Escolar</h5>
+      <div id="schools-table-container" class="table-responsive"></div>
     </section>
     <section>
     <h5>Archivos
@@ -295,6 +292,52 @@ function addRenameFolderListeners() {
 }
 
 document.addEventListener('DOMContentLoaded', () => loadFolder(currentFolder));
+// Cargar tabla de escuelas al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  loadFolder(currentFolder);
+  loadSchoolsTable();
+});
+
+function loadSchoolsTable() {
+  fetch('list_schools.php')
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success || !Array.isArray(data.schools)) {
+        toastr.error('No se pudieron cargar las escuelas');
+        return;
+      }
+      const schools = data.schools;
+      if (schools.length === 0) {
+        document.getElementById('schools-table-container').innerHTML = '<p>No hay escuelas registradas.</p>';
+        return;
+      }
+      let tableHtml = `<table class="table table-striped table-hover align-middle">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>CUE</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Director/a</th>
+            <th>Nivel</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      tableHtml += schools.map(s => `
+        <tr>
+          <td>${s.nombre}</td>
+          <td>${s.cue}</td>
+          <td>${s.direccion}</td>
+          <td>${s.telefono}</td>
+          <td>${s.director}</td>
+          <td>${s.nivel}</td>
+        </tr>
+      `).join('');
+      tableHtml += '</tbody></table>';
+      document.getElementById('schools-table-container').innerHTML = tableHtml;
+    })
+    .catch(() => toastr.error('Error al cargar la tabla de escuelas'));
+}
 
 document.getElementById('create-folder-form').addEventListener('submit', function(e) {
   e.preventDefault();
