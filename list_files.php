@@ -45,10 +45,7 @@ if ($dh = opendir($fullPath)) {
         $relativePath = 'uploads/' . ($folder ? $folder . '/' : '') . $file;
 
         if (is_dir($filePath)) {
-            $folders[] = [
-                'foldername' => $folder,
-                'path' => $relativePath
-            ];
+            $folders[] = $file;
         } elseif (is_file($filePath)) {
             $files[] = [
                 'filename' => $file,

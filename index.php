@@ -8,7 +8,7 @@ include 'includes/modals/indexmodal.php';
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Gestor de Archivos V0.5</title>
+  <title>Gestor de Archivos</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -166,11 +166,10 @@ function loadFolder(folder) {
         }
       }).join('');
 
-      // Carpetass
+      // Carpetas
       const folderList = document.getElementById('folder-list');
       folderList.innerHTML = data.folders.length
-        ? data.folders.map(folder => `
-        <li class="list-group-item folder-item" data-folder="${folder}">📁 ${folder}</li>`).join('')
+        ? data.folders.map(f => `<li class="list-group-item folder-item" data-folder="${f}">📁 ${f}</li>`).join('')
         : '<p>No hay carpetas.</p>';
 
       // Archivos
