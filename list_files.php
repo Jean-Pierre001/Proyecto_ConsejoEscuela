@@ -45,7 +45,22 @@ if ($dh = opendir($fullPath)) {
         $relativePath = 'uploads/' . ($folder ? $folder . '/' : '') . $file;
 
         if (is_dir($filePath)) {
-            $folders[] = $file;
+            // Verifica si la carpeta tiene contenido
+            $hasContent = false;
+            if ($subdh = opendir($filePath)) {
+                while (($subfile = readdir($subdh)) !== false) {
+                    if ($subfile !== '.' && $subfile !== '..') {
+                        $hasContent = true;
+                        break;
+                    }
+                }
+                closedir($subdh);
+            }
+            $folders[] = [
+                'name' => $file,
+                'hasContent' => $hasContent,
+                'path' => $relativePath
+            ];
         } elseif (is_file($filePath)) {
             $files[] = [
                 'filename' => $file,
@@ -60,14 +75,13 @@ if ($dh = opendir($fullPath)) {
 }
 
 // Ordenar alfabéticamente
-sort($folders);
+usort($folders, fn($a, $b) => strcasecmp($a['name'], $b['name']));
 usort($files, fn($a, $b) => strcasecmp($a['filename'], $b['filename']));
 
 // Devolver respuesta JSON
 echo json_encode([
     'current_folder' => $folder,
     'breadcrumbs' => buildBreadcrumbs($folder),
-    'folders' => $folders,  // 👈 ESTO ENVÍA LAS CARPETAS
-    'files' => $files       // Esto son los archivos
+    'folders' => $folders,  // 👈 Ahora es array de objetos con hasContent y path
+    'files' => $files
 ]);
-

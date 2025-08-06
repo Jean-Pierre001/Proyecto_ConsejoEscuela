@@ -1,26 +1,39 @@
 <?php
+// Configuraciones de seguridad para la sesión
+ini_set('session.cookie_httponly', 1); // Bloquea acceso vía JS a la cookie de sesión
+ini_set('session.use_strict_mode', 1); // No permite reuse de IDs de sesión inválidos
 session_start();
-require 'includes/conn.php';
+
+require 'includes/conn.php'; // Asegúrate de que use PDO y conexión segura
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
+    $username = htmlspecialchars(trim($_POST['username'] ?? ''));
     $password = $_POST['password'] ?? '';
 
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->execute([$username]);
-    $user = $stmt->fetch();
+    if ($username !== '' && $password !== '') {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
 
-    if ($user && password_verify($password, $user['password'])) {
-        // Guardar datos en sesión
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
-        $_SESSION['role'] = $user['role'];
-        header("Location: index.php");
-        exit();
+        if ($user && password_verify($password, $user['password'])) {
+            // Seguridad: regenerar ID de sesión para prevenir session fixation
+            session_regenerate_id(true);
+
+            // Guardar variables seguras en la sesión
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+
+            // Redirigir al panel principal
+            header("Location: index.php");
+            exit();
+        } else {
+            $error = "Usuario o contraseña incorrectos.";
+        }
     } else {
-        $error = "Usuario o contraseña incorrectos.";
+        $error = "Todos los campos son obligatorios.";
     }
 }
 ?>
@@ -40,12 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
     <div class="mb-3">
-      <label>Usuario</label>
-      <input type="text" name="username" class="form-control" required autofocus />
+      <label for="username">Usuario</label>
+      <input type="text" id="username" name="username" class="form-control" required autofocus />
     </div>
     <div class="mb-3">
-      <label>Contraseña</label>
-      <input type="password" name="password" class="form-control" required />
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" class="form-control" required />
     </div>
     <button class="btn btn-primary w-100">Ingresar</button>
   </form>

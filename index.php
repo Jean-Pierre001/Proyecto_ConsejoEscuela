@@ -2,6 +2,7 @@
 include 'includes/session.php';
 include 'includes/conn.php';
 include 'includes/modals/indexmodal.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +24,20 @@ include 'includes/modals/indexmodal.php';
     color: blue !important;
     font-weight: bold;
   }
+  .folder-item {
+    height: 48px !important;         /* Fuerza una altura exacta */
+    line-height: 28px !important;    /* Centra verticalmente el contenido */
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    font-size: 15px;                 /* Opcional: más chico para que entre mejor */
+  }
+  .folder-item span {
+    flex-grow: 1;                    /* Permite que el texto ocupe el espacio disponible */
+    overflow: hidden;                /* Oculta el desbordamiento */
+    text-overflow: ellipsis;         /* Agrega puntos suspensivos al final si es necesario */
+    white-space: nowrap;             /* Evita que el texto se divida en varias líneas */
+  }
+
   </style>
 </head>
 <body>
@@ -169,7 +184,14 @@ function loadFolder(folder) {
       // Carpetas
       const folderList = document.getElementById('folder-list');
       folderList.innerHTML = data.folders.length
-        ? data.folders.map(f => `<li class="list-group-item folder-item" data-folder="${f}">📁 ${f}</li>`).join('')
+        ? data.folders.map(f => `
+            <li class="list-group-item folder-item d-flex justify-content-between align-items-center" data-folder="${f.name}">
+              <span style="cursor:pointer">📁 ${f.name}</span>
+              <button class="btn btn-sm btn-danger delete-folder-btn" data-folder="${f.name}" data-hascontent="${f.hasContent}" title="Eliminar carpeta">
+                Eliminar
+              </button>
+            </li>
+          `).join('')
         : '<p>No hay carpetas.</p>';
 
       // Archivos
@@ -206,20 +228,51 @@ function loadFolder(folder) {
       `</tbody></table>`
   : '<p>No hay archivos.</p>';
 
-
       // Actualizar input hidden Dropzone
       const targetFolderInput = document.querySelector('#my-dropzone input[name="targetFolder"]');
       if (targetFolderInput) targetFolderInput.value = currentFolder;
 
-      // Click en carpetas para navegar
-      document.querySelectorAll('.folder-item').forEach(el => {
-        el.addEventListener('click', () => {
-          const rawPath = (currentFolder ? currentFolder + '/' : '') + el.dataset.folder;
+      // Click en carpetas para navegar SOLO si el click fue en el <span>
+      document.querySelectorAll('.folder-item span').forEach(el => {
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const rawPath = (currentFolder ? currentFolder + '/' : '') + el.parentElement.dataset.folder;
           const newFolder = normalizePath(rawPath);
           loadFolder(newFolder);
         });
       });
 
+      // ...eliminado renombrar carpeta...
+
+      // Click en botón eliminar carpeta
+      document.querySelectorAll('.delete-folder-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const folderName = this.dataset.folder;
+          const hasContent = this.dataset.hascontent === "true";
+          const folderPath = (currentFolder ? currentFolder + '/' : '') + folderName;
+          let msg = `¿Seguro que deseas eliminar la carpeta "${folderName}"?`;
+          if (hasContent) {
+            msg += "\nADVERTENCIA: La carpeta contiene archivos o subcarpetas y se eliminará todo su contenido.";
+          }
+          if (!confirm(msg)) return;
+          fetch('delete_folder.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ path: folderPath })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              toastr.success('Carpeta eliminada');
+              loadFolder(currentFolder);
+            } else {
+              toastr.error(data.error || 'No se pudo eliminar la carpeta');
+            }
+          })
+          .catch(() => toastr.error('Error al eliminar carpeta'));
+        });
+      });
 
       // Click en breadcrumb para navegar
       breadcrumbContainer.querySelectorAll('a').forEach(el => {
@@ -233,6 +286,12 @@ function loadFolder(folder) {
 
     })
     .catch(() => toastr.error('Error al cargar contenido'));
+}
+
+// ...existing code...
+// Definir la función fuera de loadFolder
+function addRenameFolderListeners() {
+  // ...eliminado renombrar carpeta...
 }
 
 document.addEventListener('DOMContentLoaded', () => loadFolder(currentFolder));
@@ -306,43 +365,7 @@ function deleteFile(path) {
   .catch(() => toastr.error('Error al eliminar archivo'));
 }
 
-// Guardamos instancia del modal para abrir/cerrar
-const renameModal = new bootstrap.Modal(document.getElementById('renameModal'));
-const renameForm = document.getElementById('renameForm');
-const newNameInput = document.getElementById('newNameInput');
-const renamePathInput = document.getElementById('renamePath');
-
-function renameFile(path, oldName) {
-  renamePathInput.value = path;
-  newNameInput.value = oldName;
-  renameModal.show();
-}
-
-renameForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const path = renamePathInput.value;
-  const newName = newNameInput.value.trim();
-  if (!newName) {
-    toastr.warning('El nombre no puede estar vacío');
-    return;
-  }
-  fetch('rename_file.php', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    body: new URLSearchParams({ oldPath: path, newNameInput: newName })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      toastr.success('Archivo renombrado');
-      renameModal.hide();
-      loadFolder(currentFolder, true);
-    } else {
-      toastr.error(data.error || 'Error al renombrar');
-    }
-  })
-  .catch(() => toastr.error('Error al renombrar archivo'));
-});
+// ...eliminado renombrar carpeta...
 
 function previewFile(path, type) {
   const win = window.open('', '_blank');
