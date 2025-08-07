@@ -11,7 +11,7 @@ include 'includes/modals/schoolsmodals.php';
 <?php $pageTitle = 'Listado de Escuelas'; include 'includes/header.php'; ?>
 <style>
   body, html { height: 100%; margin: 0; background: #f8f9fa; }
-  .main-container { min-height: 100vh; background: #f8f9fa; }
+  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: 12px; }
   .action-btns { min-width: 120px; }
   .schools-empty {
     text-align: center;
