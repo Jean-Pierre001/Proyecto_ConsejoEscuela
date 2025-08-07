@@ -1,17 +1,16 @@
 <?php
 include 'includes/session.php';
 include 'includes/conn.php';
-include 'includes/modals/indexmodal.php';
+include 'includes/modals/indexmodals.php';
 
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <?php $pageTitle = 'Gestor de Archivos'; include 'includes/header.php'; ?>
 <style>
   body, html { height: 100%; margin: 0; }
   .d-flex { height: 100vh; overflow: hidden; }
-  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 30px; }
+  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 50px; }
   .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
   .breadcrumb-item a { text-decoration: none; }
   .action-buttons button { margin-right: 0.3rem; }
@@ -34,6 +33,7 @@ include 'includes/modals/indexmodal.php';
 }
 
 </style>
+
   <!-- HABILITAR CUANDO YA ESTE HOSTEADO EN CASO CONTRARIO DA ERRORES INDESEADOS -->
 <!--  <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=URL_DEL_ARCHIVO" width="100%" height="600px" frameborder="0"></iframe> -->
 
@@ -321,10 +321,11 @@ Dropzone.options.myDropzone = {
   acceptedFiles: "image/*,application/pdf,text/plain,video/mp4,audio/mpeg",
   uploadMultiple: true,
   parallelUploads: 5,
-  dictDefaultMessage: "Arrastra tus archivos aquí o haz clic para seleccionar", 
+  dictDefaultMessage: "Arrastra tus archivos aquí o haz clic para seleccionar",  
+  previewsContainer: false,
   init: function () {
     this.on("sending", function (file, xhr, formData) {
-      formData.append("targetFolder", currentFolder);
+      formData.append("targetFolder", currentFolder); 
     });
     this.on("successmultiple", function (files, response) {
       if (response.success) {
