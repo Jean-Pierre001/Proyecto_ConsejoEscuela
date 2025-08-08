@@ -289,7 +289,7 @@ folderList.innerHTML = data.folders.length
                 toastr.error(data.error || 'Error al renombrar carpeta');
               }
             })
-            .catch(() => toastr.error('Error en la petición de renombrar carpeta'));
+            .catch(() => toastr.error('Error al renombrar carpeta'));
           });
         });
 
@@ -326,7 +326,7 @@ function renameFile(path, filename) {
 // Manejar el envío del formulario
 document.getElementById('renameForm').addEventListener('submit', function (e) {
   e.preventDefault();
-
+s
   const formData = new FormData(this);
 
   fetch('rename_file.php', {

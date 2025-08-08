@@ -109,6 +109,7 @@ include 'includes/modals/schoolsmodals.php';
                              <i class="fa fa-edit"></i>
                           </a>
                           <a href="school_delete.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
+                          <a href="school_files.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos"><i class="fa fa-file"></i></a>
                         </td>
                       </tr>';
           }
