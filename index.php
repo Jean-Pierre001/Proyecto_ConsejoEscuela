@@ -176,16 +176,18 @@ function loadFolder(folder) {
 
       // Carpetas
       const folderList = document.getElementById('folder-list');
-      folderList.innerHTML = data.folders.length
-        ? data.folders.map(f => `
-            <li class="list-group-item folder-item d-flex justify-content-between align-items-center" data-folder="${f.name}">
-              <span style="cursor:pointer">📁 ${f.name}</span>
-              <button class="btn btn-sm btn-danger delete-folder-btn" data-folder="${f.name}" data-hascontent="${f.hasContent}" title="Eliminar carpeta">
-                Eliminar
-              </button>
-            </li>
-          `).join('')
-        : '<p>No hay carpetas.</p>';
+folderList.innerHTML = data.folders.length
+  ? data.folders.map(f => `
+      <li class="list-group-item folder-item d-flex justify-content-between align-items-center" data-folder="${f.name}">
+        <span style="cursor:pointer">📁 ${f.name}</span>
+        <div>
+          <button class="btn btn-sm btn-primary rename-folder-btn me-1" data-folder="${f.name}">Renombrar</button>
+          <button class="btn btn-sm btn-danger delete-folder-btn" data-folder="${f.name}" data-hascontent="${f.hasContent}">Eliminar</button>
+        </div>
+      </li>
+    `).join('')
+  : '<p>No hay carpetas.</p>';
+
 
       // Archivos
       const fileList = document.getElementById('file-list');
@@ -265,6 +267,32 @@ function loadFolder(folder) {
         });
       });
 
+        // Click en botón renombrar carpeta
+        document.querySelectorAll('.rename-folder-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const oldName = this.dataset.folder;
+            const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
+            const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
+            if (!newName || newName.trim() === '' || newName === oldName) return;
+            fetch('rename_folder.php', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                toastr.success('Carpeta renombrada');
+                loadFolder(currentFolder);
+              } else {
+                toastr.error(data.error || 'Error al renombrar carpeta');
+              }
+            })
+            .catch(() => toastr.error('Error en la petición de renombrar carpeta'));
+          });
+        });
+
       // Click en breadcrumb para navegar
       breadcrumbContainer.querySelectorAll('a').forEach(el => {
         el.addEventListener('click', e => {
@@ -289,7 +317,6 @@ document.addEventListener('DOMContentLoaded', () => loadFolder(currentFolder));
 // Cargar tabla de escuelas al iniciar
 document.addEventListener('DOMContentLoaded', () => {
   loadFolder(currentFolder);
-  loadSchoolsTable();
 });
 
 document.getElementById('create-folder-form').addEventListener('submit', function(e) {
