@@ -10,7 +10,7 @@ include 'includes/modals/indexmodals.php';
 <style>
   body, html { height: 100%; margin: 0; }
   .d-flex { height: 100vh; overflow: hidden; }
-  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 50px; }
+  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 200px; }
   .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
   .breadcrumb-item a { text-decoration: none; }
   .action-buttons button { margin-right: 0.3rem; }
@@ -53,9 +53,7 @@ include 'includes/modals/indexmodals.php';
     </div>
     <section class="mb-4">
       <h5>Subir archivos</h5>
-      <form action="upload_files.php" class="dropzone" id="my-dropzone" enctype="multipart/form-data">
-        <input type="hidden" name="targetFolder" value="" />
-      </form>
+       <button id="openDropzoneModalBtn" class="btn btn-success btn-sm ms-3">Subir archivo</button>
     </section>
     <hr />
     <section class="mb-3">
@@ -179,6 +177,11 @@ document.getElementById('paste-files').addEventListener('click', () => {
   .catch(() => toastr.error('Error en la petición'));
 });
 
+
+  document.getElementById('openDropzoneModalBtn').addEventListener('click', function() {
+    var dropzoneModal = new bootstrap.Modal(document.getElementById('dropzoneModal'));
+    dropzoneModal.show();
+  });
 
 function loadFolder(folder) {
   // Leer filtros actuales (o valores por defecto)

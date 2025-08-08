@@ -105,7 +105,7 @@ include 'includes/modals/schoolsmodals.php';
                              data-secretary="' . htmlspecialchars($s['secretary'] ?? '') . '"
                              data-service="' . htmlspecialchars($s['nivel']) . '"
                              data-sharedbuilding="' . htmlspecialchars($s['sharedBuilding'] ?? '') . '"
-                             data-email="' . htmlspecialchars($s['email'] ?? '') . '">
+                             data-em  ail="' . htmlspecialchars($s['email'] ?? '') . '">
                              <i class="fa fa-edit"></i>
                           </a>
                           <a href="school_delete.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>

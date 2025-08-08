@@ -33,3 +33,19 @@
   </div>
 </div>
 
+<!-- Modal dropzone--> 
+<div class="modal fade" id="dropzoneModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" id="previewContent" style="min-height: 400px; overflow:auto;">
+        <form action="upload_files.php" class="dropzone" id="my-dropzone-form" enctype="multipart/form-data">
+          <input type="hidden" name="targetFolder" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
