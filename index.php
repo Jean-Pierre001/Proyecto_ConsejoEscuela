@@ -307,11 +307,48 @@ folderList.innerHTML = data.folders.length
     .catch(() => toastr.error('Error al cargar contenido'));
 }
 
+
 // ...existing code...
 // Definir la función fuera de loadFolder
 function addRenameFolderListeners() {
   // ...eliminado renombrar carpeta...
 }
+
+function renameFile(path, filename) {
+  document.getElementById('renamePath').value = path;
+  document.getElementById('newNameInput').value = filename;
+
+  // Mostrar el modal usando Bootstrap
+  let modal = new bootstrap.Modal(document.getElementById('renameModal'));
+  modal.show();
+}
+
+// Manejar el envío del formulario
+document.getElementById('renameForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+
+  fetch('rename_file.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      // Cerrar modal
+      bootstrap.Modal.getInstance(document.getElementById('renameModal')).hide();
+      // Recargar o refrescar lista
+      loadFolder(currentFolder);
+    } else {
+      alert('Error al renombrar: ' + (data.error || 'Desconocido'));
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error en la petición.');
+  });
+});
 
 document.addEventListener('DOMContentLoaded', () => loadFolder(currentFolder));
 // Cargar tabla de escuelas al iniciar

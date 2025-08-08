@@ -1,45 +1,22 @@
 <?php
-include 'includes/session.php';
-include 'includes/conn.php';
-
 header('Content-Type: application/json');
 
-$baseDir = realpath(__DIR__ . '/uploads/');
-$oldPath = $_POST['oldPath'] ?? '';
-$newName = $_POST['newNameInput'] ?? '';
-
-if (!$oldPath || !$newName) {
-    echo json_encode(['success' => false, 'error' => 'Faltan parámetros']);
+if (!isset($_POST['path'], $_POST['new_name'])) {
+    echo json_encode(['success' => false, 'error' => 'Datos incompletos']);
     exit;
 }
 
-if (strpos($oldPath, '..') !== false || strpos($newName, '..') !== false) {
-    echo json_encode(['success' => false, 'error' => 'Ruta inválida']);
-    exit;
+$path = $_POST['path'];
+$newName = basename($_POST['new_name']); // Sanitizar nombre
+$dir = dirname($path);
+$newPath = $dir . DIRECTORY_SEPARATOR . $newName;
+
+if (file_exists($path)) {
+    if (rename($path, $newPath)) {
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false, 'error' => 'No se pudo renombrar']);
+    }
+} else {
+    echo json_encode(['success' => false, 'error' => 'Archivo no encontrado']);
 }
-
-$fullOldPath = realpath(__DIR__ . '/' . $oldPath);
-if (!$fullOldPath || strpos($fullOldPath, $baseDir) !== 0) {
-    echo json_encode(['success' => false, 'error' => 'Ruta inválida']);
-    exit;
-}
-
-// Obtener ruta relativa base para actualizar en la DB
-$relativeDir = dirname($oldPath);
-$relativeNewPath = ($relativeDir !== '.' ? $relativeDir . '/' : '') . $newName;
-
-// Obtener ruta absoluta destino
-$fullNewPath = dirname($fullOldPath) . '/' . $newName;
-
-// Verificamos que no exista ya un archivo con ese nombre
-if (file_exists($fullNewPath)) {
-    echo json_encode(['success' => false, 'error' => 'Ya existe un archivo con ese nombre']);
-    exit;
-}
-
-// Intentar renombrar físicamente
-if (!rename($fullOldPath, $fullNewPath)) {
-    echo json_encode(['success' => false, 'error' => 'No se pudo renombrar el archivo']);
-    exit;
-}
-    echo json_encode(['success' => true]);
