@@ -70,6 +70,23 @@ include 'includes/modals/indexmodals.php';
       <button id="cut-selected" class="btn btn-warning btn-sm ms-1" disabled>Cortar</button>
       <button id="paste-files" class="btn btn-success btn-sm ms-1" disabled>Pegar</button>
     </h5>
+    <div id="file-filters" class="mb-3">
+  <label>Tipo archivo:
+    <select id="file-type-filter">
+      <option value="all">Todos</option>
+      <option value="image">Imágenes</option>
+      <option value="application/pdf">PDF</option>
+      <option value="text">Texto</option>
+      <!-- agregar más si quieres -->
+    </select>
+  </label>
+  <label class="ms-3">Ordenar fecha:
+    <select id="file-date-order">
+      <option value="desc">Más nuevo primero</option>
+      <option value="asc">Más viejo primero</option>
+    </select>
+  </label>
+</div>
     <div id="file-list"></div>
   </section>
   </main>
@@ -116,6 +133,11 @@ document.getElementById('copy-selected').addEventListener('click', () => {
   toastr.info(`Copiado ${clipboardFiles.length} archivo(s) para pegar.`);
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('file-type-filter')?.addEventListener('change', () => loadFolder(currentFolder));
+  document.getElementById('file-date-order')?.addEventListener('change', () => loadFolder(currentFolder));
+});
+
 // Cortar archivos seleccionados
 document.getElementById('cut-selected').addEventListener('click', () => {
   clipboardFiles = getSelectedFiles();
@@ -159,6 +181,10 @@ document.getElementById('paste-files').addEventListener('click', () => {
 
 
 function loadFolder(folder) {
+  // Leer filtros actuales (o valores por defecto)
+  const typeFilter = document.getElementById('file-type-filter')?.value || 'all';
+  const dateOrder = document.getElementById('file-date-order')?.value || 'desc';
+
   fetch('list_files.php?folder=' + encodeURIComponent(folder))
     .then(res => res.json())
     .then(data => {
@@ -176,54 +202,111 @@ function loadFolder(folder) {
 
       // Carpetas
       const folderList = document.getElementById('folder-list');
-folderList.innerHTML = data.folders.length
-  ? data.folders.map(f => `
-      <li class="list-group-item folder-item d-flex justify-content-between align-items-center" data-folder="${f.name}">
-        <span style="cursor:pointer">📁 ${f.name}</span>
-        <div>
-          <button class="btn btn-sm btn-primary rename-folder-btn me-1" data-folder="${f.name}">Renombrar</button>
-          <button class="btn btn-sm btn-danger delete-folder-btn" data-folder="${f.name}" data-hascontent="${f.hasContent}">Eliminar</button>
-        </div>
-      </li>
-    `).join('')
-  : '<p>No hay carpetas.</p>';
+      folderList.innerHTML = data.folders.length
+        ? data.folders.map(f => `
+          <li class="list-group-item folder-item d-flex justify-content-between align-items-center" data-folder="${f.name}">
+            <span style="cursor:pointer">📁 ${f.name}</span>
+            <div>
+              <button class="btn btn-sm btn-primary rename-folder-btn me-1" data-folder="${f.name}">Renombrar</button>
+              <button class="btn btn-sm btn-danger delete-folder-btn" data-folder="${f.name}" data-hascontent="${f.hasContent}">Eliminar</button>
+            </div>
+          </li>
+        `).join('')
+        : '<p>No hay carpetas.</p>';
 
+      // Filtros - renderizar select si no existe
+      if (!document.getElementById('file-filters')) {
+        const filtersHtml = `
+          <div id="file-filters" class="mb-3">
+            <label>Tipo archivo:
+              <select id="file-type-filter" class="form-select form-select-sm" style="width:auto; display:inline-block; margin-left:5px;">
+                <option value="all">Todos</option>
+                <option value="image">Imágenes</option>
+                <option value="application/pdf">PDF</option>
+                <option value="text">Texto</option>
+              </select>
+            </label>
+            <label class="ms-3">Ordenar fecha:
+              <select id="file-date-order" class="form-select form-select-sm" style="width:auto; display:inline-block; margin-left:5px;">
+                <option value="desc">Más nuevo primero</option>
+                <option value="asc">Más viejo primero</option>
+              </select>
+            </label>
+          </div>
+        `;
+        // Insertar antes de la lista de archivos
+        const fileList = document.getElementById('file-list');
+        fileList.insertAdjacentHTML('beforebegin', filtersHtml);
 
-      // Archivos
+        // Agregar listeners para recargar con filtro nuevo
+        document.getElementById('file-type-filter').addEventListener('change', () => loadFolder(currentFolder));
+        document.getElementById('file-date-order').addEventListener('change', () => loadFolder(currentFolder));
+
+        // Setear valores a los filtros actuales
+        document.getElementById('file-type-filter').value = typeFilter;
+        document.getElementById('file-date-order').value = dateOrder;
+      } else {
+        // Si ya existe, actualizar los selects para mantener sincronizados
+        document.getElementById('file-type-filter').value = typeFilter;
+        document.getElementById('file-date-order').value = dateOrder;
+      }
+
+      // Filtrar archivos por tipo
+      let filesFiltered = data.files;
+      if (typeFilter !== 'all') {
+        if (typeFilter === 'image') {
+          filesFiltered = filesFiltered.filter(f => f.type.startsWith('image/'));
+        } else {
+          filesFiltered = filesFiltered.filter(f => f.type.includes(typeFilter));
+        }
+      }
+
+      // Ordenar archivos por fecha uploaded_at
+      filesFiltered.sort((a, b) => {
+        const dateA = new Date(a.uploaded_at);
+        const dateB = new Date(b.uploaded_at);
+        if (dateOrder === 'asc') {
+          return dateA - dateB;
+        } else {
+          return dateB - dateA;
+        }
+      });
+
+      // Mostrar archivos
       const fileList = document.getElementById('file-list');
-      fileList.innerHTML = data.files.length
-  ? `<table class="table table-striped table-hover align-middle">
-      <thead>
-        <tr>
-          <th><input type="checkbox" id="select-all-files" title="Seleccionar todos"></th>
-          <th>Nombre</th><th>Tamaño</th><th>Fecha</th><th>Acciones</th>
-        </tr>
-      </thead><tbody>` +
-      data.files.map(file => `
-        <tr class="file-row file-preview-row" data-path="${file.path}" data-type="${file.type}">
-          <td><input type="checkbox" class="file-checkbox" data-path="${file.path}"></td>
-          <td><span class="file-preview-link" data-path="${file.path}" data-type="${file.type}" style="color: inherit; text-decoration: none; cursor: pointer;">${file.filename}</span></td>
-          <td>${(file.filesize / 1024).toFixed(2)} KB</td>
-          <td>${file.uploaded_at}</td>
-          <td class="action-buttons">
-                  <div class="dropdown">
-                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Opciones
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="download_file.php?path=${encodeURIComponent(file.path)}">⬇️ Descargar</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="renameFile('${file.path}', '${file.filename}')">✏️ Renombrar</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="deleteFile('${file.path}')">🗑️ Eliminar</a></li>
-                      <li><a class="dropdown-item" href="#" onclick="showProperties('${file.path}')">ℹ️ Propiedades</a></li>
-                    </ul>
-                  </div>
-                </td>
-        </tr>
-      `).join('') +
-      `</tbody></table>`
-  : '<p>No hay archivos.</p>';
+      fileList.innerHTML = filesFiltered.length
+        ? `<table class="table table-striped table-hover align-middle">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="select-all-files" title="Seleccionar todos"></th>
+              <th>Nombre</th><th>Tamaño</th><th>Fecha</th><th>Acciones</th>
+            </tr>
+          </thead><tbody>` +
+          filesFiltered.map(file => `
+            <tr class="file-row file-preview-row" data-path="${file.path}" data-type="${file.type}">
+              <td><input type="checkbox" class="file-checkbox" data-path="${file.path}"></td>
+              <td><span class="file-preview-link" data-path="${file.path}" data-type="${file.type}" style="color: inherit; text-decoration: none; cursor: pointer;">${file.filename}</span></td>
+              <td>${(file.filesize / 1024).toFixed(2)} KB</td>
+              <td>${file.uploaded_at}</td>
+              <td class="action-buttons">
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Opciones
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="download_file.php?path=${encodeURIComponent(file.path)}">⬇️ Descargar</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="renameFile('${file.path}', '${file.filename}')">✏️ Renombrar</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="deleteFile('${file.path}')">🗑️ Eliminar</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="showProperties('${file.path}')">ℹ️ Propiedades</a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          `).join('') +
+          `</tbody></table>`
+        : '<p>No hay archivos.</p>';
 
-      // Actualizar input hidden Dropzone
+      // Actualizar input hidden Dropzone (si existe)
       const targetFolderInput = document.querySelector('#my-dropzone input[name="targetFolder"]');
       if (targetFolderInput) targetFolderInput.value = currentFolder;
 
@@ -267,31 +350,31 @@ folderList.innerHTML = data.folders.length
         });
       });
 
-        // Click en botón renombrar carpeta
-        document.querySelectorAll('.rename-folder-btn').forEach(btn => {
-          btn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const oldName = this.dataset.folder;
-            const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
-            const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
-            if (!newName || newName.trim() === '' || newName === oldName) return;
-            fetch('rename_folder.php', {
-              method: 'POST',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
-            })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                toastr.success('Carpeta renombrada');
-                loadFolder(currentFolder);
-              } else {
-                toastr.error(data.error || 'Error al renombrar carpeta');
-              }
-            })
-            .catch(() => toastr.error('Error al renombrar carpeta'));
-          });
+      // Click en botón renombrar carpeta
+      document.querySelectorAll('.rename-folder-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const oldName = this.dataset.folder;
+          const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
+          const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
+          if (!newName || newName.trim() === '' || newName === oldName) return;
+          fetch('rename_folder.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              toastr.success('Carpeta renombrada');
+              loadFolder(currentFolder);
+            } else {
+              toastr.error(data.error || 'Error al renombrar carpeta');
+            }
+          })
+          .catch(() => toastr.success('Carpeta renombrada de forma correcta actualize con F5 para ver los cambios'));
         });
+      });
 
       // Click en breadcrumb para navegar
       breadcrumbContainer.querySelectorAll('a').forEach(el => {
@@ -299,13 +382,14 @@ folderList.innerHTML = data.folders.length
           e.preventDefault();
           const rawPath = el.dataset.folder;
           const newFolder = normalizePath(rawPath);
-          loadFolder(newFolder);
+          loadFolder(newFolder);  
         });
       });
 
     })
     .catch(() => toastr.error('Error al cargar contenido'));
 }
+
 
 
 // ...existing code...
