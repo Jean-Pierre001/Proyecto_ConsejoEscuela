@@ -26,6 +26,18 @@ include 'includes/modals/schoolsmodals.php';
   <?php include 'includes/sidebar.php'; ?>
   <main class="main-container flex-grow-1 p-4">
     <h3><i class="fa-solid fa-school"></i> Listado de Escuelas</h3>
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'folder_exists'): ?>
+  <div class="alert alert-warning" role="alert">
+    La carpeta para esta escuela ya existe.
+  </div>
+<?php endif; ?>
+
+<?php if (isset($_GET['created_folder'])): ?>
+  <div class="alert alert-success" role="alert">
+    Se creó la carpeta: <strong><?= htmlspecialchars($_GET['created_folder']) ?></strong>
+  </div>
+<?php endif; ?>
+
     <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddSchool">
         <i class="fa fa-plus"></i> Agregar escuela
@@ -82,36 +94,38 @@ include 'includes/modals/schoolsmodals.php';
                   </tr>
                 </thead>
                 <tbody>';
-          foreach ($schools as $s) {
-                echo '<tr>
-                        <td><i class="fa-solid fa-school"></i> ' . htmlspecialchars($s['nombre']) . '</td>
-                        <td>' . htmlspecialchars($s['cue']) . '</td>
-                        <td>' . htmlspecialchars($s['direccion']) . '</td>
-                        <td>' . htmlspecialchars($s['telefono']) . '</td>
-                        <td>' . htmlspecialchars($s['director']) . '</td>
-                        <td>' . htmlspecialchars($s['nivel']) . '</td>
-                        <td class="action-btns">
-                          <a href="#" class="btn btn-sm btn-primary me-1" 
-                             data-bs-toggle="modal" data-bs-target="#modalEditSchool"
-                             data-id="' . $s['id'] . '"
-                             data-nombre="' . htmlspecialchars($s['nombre']) . '"
-                             data-cue="' . htmlspecialchars($s['cue']) . '"
-                             data-shift="' . htmlspecialchars($s['shift'] ?? '') . '"
-                             data-address="' . htmlspecialchars($s['direccion']) . '"
-                             data-city="' . htmlspecialchars($s['city'] ?? '') . '"
-                             data-phone="' . htmlspecialchars($s['telefono']) . '"
-                             data-principal="' . htmlspecialchars($s['director']) . '"
-                             data-viceprincipal="' . htmlspecialchars($s['vicePrincipal'] ?? '') . '"
-                             data-secretary="' . htmlspecialchars($s['secretary'] ?? '') . '"
-                             data-service="' . htmlspecialchars($s['nivel']) . '"
-                             data-sharedbuilding="' . htmlspecialchars($s['sharedBuilding'] ?? '') . '"
-                             data-em  ail="' . htmlspecialchars($s['email'] ?? '') . '">
-                             <i class="fa fa-edit"></i>
-                          </a>
-                          <a href="school_delete.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
-                          <a href="school_files.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos"><i class="fa fa-file"></i></a>
-                        </td>
-                      </tr>';
+                foreach ($schools as $s) {
+                    echo '<tr>
+                            <td><i class="fa-solid fa-school"></i> ' . htmlspecialchars($s['nombre']) . '</td>
+                            <td>' . htmlspecialchars($s['cue']) . '</td>
+                            <td>' . htmlspecialchars($s['direccion']) . '</td>
+                            <td>' . htmlspecialchars($s['telefono']) . '</td>
+                            <td>' . htmlspecialchars($s['director']) . '</td>
+                            <td>' . htmlspecialchars($s['nivel']) . '</td>
+                            <td class="action-btns">
+                              <a href="#" class="btn btn-sm btn-primary me-1" 
+                                data-bs-toggle="modal" data-bs-target="#modalEditSchool"
+                                data-id="' . $s['id'] . '"
+                                data-nombre="' . htmlspecialchars($s['nombre']) . '"
+                                data-cue="' . htmlspecialchars($s['cue']) . '"
+                                data-shift="' . htmlspecialchars($s['shift'] ?? '') . '"
+                                data-address="' . htmlspecialchars($s['direccion']) . '"
+                                data-city="' . htmlspecialchars($s['city'] ?? '') . '"
+                                data-phone="' . htmlspecialchars($s['telefono']) . '"
+                                data-principal="' . htmlspecialchars($s['director']) . '"
+                                data-viceprincipal="' . htmlspecialchars($s['vicePrincipal'] ?? '') . '"
+                                data-secretary="' . htmlspecialchars($s['secretary'] ?? '') . '"
+                                data-service="' . htmlspecialchars($s['nivel']) . '"
+                                data-sharedbuilding="' . htmlspecialchars($s['sharedBuilding'] ?? '') . '"
+                                data-email="' . htmlspecialchars($s['email'] ?? '') . '">
+                                <i class="fa fa-edit"></i>
+                              </a>
+                              <a href="school_delete.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
+                              <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
+                                <i class="fa fa-file"></i>
+                              </a>
+                            </td>
+                          </tr>';
           }
           echo '</tbody></table>';
       }

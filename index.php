@@ -350,41 +350,70 @@ function loadFolder(folder) {
         });
       });
 
+      /*
+      Problema principal de que no servia el renombrar carpeta para recordarlo
+      El servidor estaba enviando una respuesta JSON pero junto con un mensaje de error (warning) en HTML que rompía la estructura del JSON.
+
+      El mensaje era algo así:
+
+      <br />
+      <b>Warning</b>:  preg_match(): Unknown modifier ']' in rename_folder.php on line 17
+      <br />
+      {"success":true}
+      Esto provoca que cuando tu código JavaScript intente hacer response.json(), falle porque el contenido no es JSON válido sino JSON + HTML.
+
+      ¿Por qué apareció ese warning?
+      Porque en el código PHP había un error a la hora de usar "preg_match():"
+
+      preg_match('/[\\\/]/', $newName)
+      Este patrón está mal escapado y PHP interpretó mal el modificador ], causando el warning.
+
+      Cómo se solucionó
+      Se corrigió el patrón a:
+
+      preg_match('/[\\\\\\/]/', $newName)
+      para que las barras invertidas y normales estén bien escapadas y la expresión sea válida.
+
+      Se deshabilitaron los errores visibles de PHP con:
+
+      php
+      error_reporting(0);
+      ini_set('display_errors', 0);
+      para que en caso de que haya otros warnings no rompan la salida JSON.
+      */
+
       // Click en botón renombrar carpeta
-// Click en botón renombrar carpeta
-document.querySelectorAll('.rename-folder-btn').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    const oldName = this.dataset.folder;
-    const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
-    const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
-    if (!newName || newName.trim() === '' || newName === oldName) return;
-    fetch('rename_folder.php', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
-    })
-    .then(res => {
-      if (!res.ok) throw new Error('Error HTTP ' + res.status);
-      return res.json();
-    })
-    .then(data => {
-      if (data.success) {
-        toastr.success('Carpeta renombrada correctamente');
-        alert('La carpeta fue renombrada correctamente. Por favor, recarga la página (F5) para ver los cambios.');
-      } else {
-        toastr.error(data.error || 'Error al renombrar carpeta');
-      }
-    })
-    .catch(err => {
-      console.error('Fetch error:', err);
-      toastr.error('Error al conectar con el servidor');
-    });
-  });
-});
-
-
-
+      document.querySelectorAll('.rename-folder-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const oldName = this.dataset.folder;
+          const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
+          const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
+          if (!newName || newName.trim() === '' || newName === oldName) return;
+          fetch('rename_folder.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
+          })
+          .then(res => {
+            if (!res.ok) throw new Error('Error HTTP ' + res.status);
+            return res.json();
+          })
+          .then(data => {
+            if (data.success) {
+              toastr.success('Carpeta renombrada correctamente');
+              // Aquí llamamos a loadFolder para actualizar automáticamente
+              loadFolder(currentFolder);
+            } else {
+              toastr.error(data.error || 'Error al renombrar carpeta');
+            }
+          })
+          .catch(err => {
+            console.error('Fetch error:', err);
+            toastr.error('Error al conectar con el servidor');
+          });
+        });
+      });
 
 
       // Click en breadcrumb para navegar
