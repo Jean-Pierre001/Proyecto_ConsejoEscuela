@@ -2,9 +2,7 @@
 // schools.php
 include 'includes/session.php';
 include 'includes/conn.php';
-include 'includes/modals/schoolsmodals.php';
-
-
+include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que te paso después
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,142 +18,400 @@ include 'includes/modals/schoolsmodals.php';
     margin-top: 2rem;
   }
   .fa-school { color: #007bff; margin-right: 8px; }
+  .btn-group-top {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
 </style>
 <?php include 'includes/navbar.php'; ?>
 <div class="d-flex">
   <?php include 'includes/sidebar.php'; ?>
   <main class="main-container flex-grow-1 p-4">
+
     <h3><i class="fa-solid fa-school"></i> Listado de Escuelas</h3>
-    <?php if (isset($_GET['error']) && $_GET['error'] === 'folder_exists'): ?>
-  <div class="alert alert-warning" role="alert">
-    La carpeta para esta escuela ya existe.
-  </div>
-<?php endif; ?>
 
-<?php if (isset($_GET['created_folder'])): ?>
-  <div class="alert alert-success" role="alert">
-    Se creó la carpeta: <strong><?= htmlspecialchars($_GET['created_folder']) ?></strong>
-  </div>
-<?php endif; ?>
-
-    <div class="mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <!-- Botones de agregar agrupados -->
+    <div class="btn-group-top">
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddSchool">
-        <i class="fa fa-plus"></i> Agregar escuela
+        <i class="fa fa-plus"></i> Agregar Escuela
       </button>
-      <form method="get" class="d-flex gap-2 flex-wrap">
-        <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" style="max-width:180px;" value="<?= htmlspecialchars($_GET['nombre'] ?? '') ?>">
-        <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" style="max-width:120px;" value="<?= htmlspecialchars($_GET['cue'] ?? '') ?>">
-        <select name="nivel" class="form-select" style="max-width:140px;">
-          <option value="">Todos los niveles</option>
-          <option value="Primario" <?= (($_GET['nivel'] ?? '') === 'Primario') ? 'selected' : '' ?>>Primario</option>
-          <option value="Secundario" <?= (($_GET['nivel'] ?? '') === 'Secundario') ? 'selected' : '' ?>>Secundario</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Filtrar</button>
-      </form>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddCategory">
+        <i class="fa fa-plus"></i> Agregar Categoría
+      </button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddAuthority">
+        <i class="fa fa-plus"></i> Agregar Autoridad
+      </button>
     </div>
+
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'folder_exists'): ?>
+      <div class="alert alert-warning" role="alert">
+        La carpeta para esta escuela ya existe.
+      </div>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['created_folder'])): ?>
+      <div class="alert alert-success" role="alert">
+        Se creó la carpeta: <strong><?= htmlspecialchars($_GET['created_folder']) ?></strong>
+      </div>
+    <?php endif; ?>
+
+    <!-- Filtros -->
+    <form method="get" class="d-flex gap-2 flex-wrap mb-3 align-items-center">
+      <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" style="max-width:180px;" value="<?= htmlspecialchars($_GET['nombre'] ?? '') ?>">
+      <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" style="max-width:120px;" value="<?= htmlspecialchars($_GET['cue'] ?? '') ?>">
+      <select name="nivel" class="form-select" style="max-width:140px;">
+        <option value="">Todos los niveles</option>
+        <?php
+        $stmtCatFilter = $pdo->query("SELECT name FROM categories ORDER BY name ASC");
+        $allCats = $stmtCatFilter->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($allCats as $catName) {
+            $selected = (($_GET['nivel'] ?? '') === $catName) ? 'selected' : '';
+            echo "<option value=\"" . htmlspecialchars($catName) . "\" $selected>" . htmlspecialchars($catName) . "</option>";
+        }
+        ?>
+      </select>
+      <button type="submit" class="btn btn-primary">Filtrar</button>
+    </form>
 
     <div class="table-responsive mt-2">
       <?php
-      // Construir consulta con filtros
-      $sql = "SELECT id, schoolName AS nombre, cue, address AS direccion, phone AS telefono, principal AS director, service AS nivel FROM schools WHERE 1=1";
-      $params = [];
+      $filterCategory = $_GET['nivel'] ?? '';
 
-      if (!empty($_GET['nombre'])) {
-          $sql .= " AND schoolName LIKE :nombre";
-          $params[':nombre'] = '%' . $_GET['nombre'] . '%';
+      $sqlCats = "SELECT * FROM categories";
+      $paramsCats = [];
+      if ($filterCategory !== '') {
+          $sqlCats .= " WHERE name = :catname";
+          $paramsCats[':catname'] = $filterCategory;
       }
-      if (!empty($_GET['cue'])) {
-          $sql .= " AND cue LIKE :cue";
-          $params[':cue'] = '%' . $_GET['cue'] . '%';
-      }
-      if (!empty($_GET['nivel'])) {
-          $sql .= " AND service = :nivel";
-          $params[':nivel'] = $_GET['nivel'];
-      }
+      $sqlCats .= " ORDER BY name ASC";
+      $stmtCats = $pdo->prepare($sqlCats);
+      $stmtCats->execute($paramsCats);
+      $categories = $stmtCats->fetchAll(PDO::FETCH_ASSOC);
 
-      $sql .= " ORDER BY schoolName ASC";
-      $stmt = $pdo->prepare($sql);
-      $stmt->execute($params);
-      $schools = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-      if (count($schools) === 0) {
-          echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay escuelas registradas.</div>';
+      if (!$categories) {
+          echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay categorías ni escuelas registradas.</div>';
       } else {
-          echo '<table class="table table-striped table-hover align-middle">';
-          echo '<thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>CUE</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Director/a</th>
-                    <th>Nivel</th>
-                    <th class="action-btns">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>';
-                foreach ($schools as $s) {
-                    echo '<tr>
-                            <td>' . htmlspecialchars($s['nombre']) . '</td>
-                            <td>' . htmlspecialchars($s['cue']) . '</td>
-                            <td>' . htmlspecialchars($s['direccion']) . '</td>
-                            <td>' . htmlspecialchars($s['telefono']) . '</td>
-                            <td>' . htmlspecialchars($s['director']) . '</td>
-                            <td>' . htmlspecialchars($s['nivel']) . '</td>
-                            <td class="action-btns">
-                              <a href="#" class="btn btn-sm btn-primary me-1" 
-                                data-bs-toggle="modal" data-bs-target="#modalEditSchool"
-                                data-id="' . $s['id'] . '"
-                                data-nombre="' . htmlspecialchars($s['nombre']) . '"
-                                data-cue="' . htmlspecialchars($s['cue']) . '"
-                                data-shift="' . htmlspecialchars($s['shift'] ?? '') . '"
-                                data-address="' . htmlspecialchars($s['direccion']) . '"
-                                data-city="' . htmlspecialchars($s['city'] ?? '') . '"
-                                data-phone="' . htmlspecialchars($s['telefono']) . '"
-                                data-principal="' . htmlspecialchars($s['director']) . '"
-                                data-viceprincipal="' . htmlspecialchars($s['vicePrincipal'] ?? '') . '"
-                                data-secretary="' . htmlspecialchars($s['secretary'] ?? '') . '"
-                                data-service="' . htmlspecialchars($s['nivel']) . '"
-                                data-sharedbuilding="' . htmlspecialchars($s['sharedBuilding'] ?? '') . '"
-                                data-email="' . htmlspecialchars($s['email'] ?? '') . '">
-                                <i class="fa fa-edit"></i>
-                              </a>
-                              <a href="delete_school.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
-                              <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
-                                <i class="fa fa-file"></i>
-                              </a>
-                            </td>
-                          </tr>';
+          foreach ($categories as $cat) {
+              echo '<h3 class="mt-4">' . htmlspecialchars($cat['name']) . '</h3>';
+
+              $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
+              $paramsSchools = [':catid' => $cat['id']];
+
+              if (!empty($_GET['nombre'])) {
+                  $sqlSchools .= " AND service_code LIKE :nombre";
+                  $paramsSchools[':nombre'] = '%' . $_GET['nombre'] . '%';
+              }
+              if (!empty($_GET['cue'])) {
+                  $sqlSchools .= " AND cue_code LIKE :cue";
+                  $paramsSchools[':cue'] = '%' . $_GET['cue'] . '%';
+              }
+
+              $sqlSchools .= " ORDER BY service_code ASC";
+              $stmtSchools = $pdo->prepare($sqlSchools);
+              $stmtSchools->execute($paramsSchools);
+              $schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
+
+              if (count($schools) === 0) {
+                  echo '<div class="schools-empty">No hay escuelas registradas en esta categoría.</div>';
+              } else {
+                  echo '<table class="table table-striped table-hover align-middle">';
+                  echo '<thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Turno</th>
+                            <th>Edificio Compartido</th>
+                            <th>CUE</th>
+                            <th>Dirección</th>
+                            <th>Localidad</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Director/a</th>
+                            <th>Vicedirector/a</th>
+                            <th>Secretario/a</th>
+                            <th class="action-btns">Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>';
+
+                  foreach ($schools as $s) {
+                      $stmtAuth = $pdo->prepare("SELECT id, role, name FROM authorities WHERE school_id = :school_id");
+                      $stmtAuth->execute([':school_id' => $s['id']]);
+                      $authorities = $stmtAuth->fetchAll(PDO::FETCH_ASSOC);
+
+                      $director = $viceDirector = $secretary = '';
+
+                      foreach ($authorities as $auth) {
+                          $role = strtolower($auth['role']);
+                          if (strpos($role, 'director') !== false && $director === '') {
+                              $director = htmlspecialchars($auth['name']);
+                          } elseif ((strpos($role, 'vice') !== false || strpos($role, 'vicedirector') !== false) && $viceDirector === '') {
+                              $viceDirector = htmlspecialchars($auth['name']);
+                          } elseif (strpos($role, 'secretary') !== false && $secretary === '') {
+                              $secretary = htmlspecialchars($auth['name']);
+                          }
+                      }
+
+                      // Pasamos escuela y autoridades serializados para JSON en data-attributes (escapados para JS)
+                      $escuelaJSON = htmlspecialchars(json_encode($s, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+                      $autoridadesJSON = htmlspecialchars(json_encode($authorities, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+
+                      echo '<tr>
+                              <td>' . htmlspecialchars($s['id']) . '</td>
+                              <td>' . htmlspecialchars($s['service_code']) . '</td>
+                              <td>' . htmlspecialchars($s['shift']) . '</td>
+                              <td>' . ($s['shared_building'] ? '<span class="text-success fw-bold">Sí</span>' : '<span class="text-danger">No</span>') . '</td>
+                              <td>' . htmlspecialchars($s['cue_code']) . '</td>
+                              <td>' . htmlspecialchars($s['address']) . '</td>
+                              <td>' . htmlspecialchars($s['locality']) . '</td>
+                              <td>' . htmlspecialchars($s['phone']) . '</td>
+                              <td>' . htmlspecialchars($s['email']) . '</td>
+                              <td>' . $director . '</td>
+                              <td>' . $viceDirector . '</td>
+                              <td>' . $secretary . '</td>
+                              <td class="action-btns">
+                                <button class="btn btn-sm btn-primary me-1"
+                                  data-bs-toggle="modal" data-bs-target="#modalShowModify"
+                                  data-school=\'' . $escuelaJSON . '\'
+                                  data-authorities=\'' . $autoridadesJSON . '\'
+                                >
+                                  <i class="fa fa-edit"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                  data-bs-toggle="modal" data-bs-target="#modalShowDelete"
+                                  data-school=\'' . $escuelaJSON . '\'
+                                  data-authorities=\'' . $autoridadesJSON . '\'
+                                >
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                                <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
+                                  <i class="fa fa-file"></i>
+                                </a>
+                              </td>
+                            </tr>';
+                  }
+                  echo '</tbody></table>';
+              }
           }
-          echo '</tbody></table>';
       }
       ?>
     </div>
   </main>
 </div>
+
 <?php include 'includes/footer.php'; ?>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-  var editModal = document.getElementById('modalEditSchool');
-  editModal.addEventListener('show.bs.modal', function (event) {
-    var button = event.relatedTarget;
-    document.getElementById('edit-id').value = button.getAttribute('data-id');
-    document.getElementById('edit-schoolName').value = button.getAttribute('data-nombre');
-    document.getElementById('edit-cue').value = button.getAttribute('data-cue');
-    document.getElementById('edit-shift').value = button.getAttribute('data-shift');
-    document.getElementById('edit-address').value = button.getAttribute('data-address');
-    document.getElementById('edit-city').value = button.getAttribute('data-city');
-    document.getElementById('edit-phone').value = button.getAttribute('data-phone');
-    document.getElementById('edit-principal').value = button.getAttribute('data-principal');
-    document.getElementById('edit-vicePrincipal').value = button.getAttribute('data-viceprincipal');
-    document.getElementById('edit-secretary').value = button.getAttribute('data-secretary');
-    document.getElementById('edit-service').value = button.getAttribute('data-service');
-    document.getElementById('edit-sharedBuilding').value = button.getAttribute('data-sharedbuilding');
-    document.getElementById('edit-email').value = button.getAttribute('data-email');
+
+  // Modal mostrar para modificar escuela + autoridades
+  var showModifyModal = document.getElementById('modalShowModify');
+  if (showModifyModal) {
+    showModifyModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      var schoolData = button.getAttribute('data-school');
+      var authoritiesData = button.getAttribute('data-authorities');
+
+      var school = {};
+      var authorities = [];
+
+      try {
+        school = JSON.parse(schoolData);
+      } catch(e) { school = {}; }
+
+      try {
+        authorities = JSON.parse(authoritiesData);
+      } catch(e) { authorities = []; }
+
+      // Mostrar datos escuela
+      document.getElementById('show-mod-school-name').textContent = school.service_code || '';
+      document.getElementById('show-mod-school-cue').textContent = school.cue_code || '';
+      document.getElementById('show-mod-school-shift').textContent = school.shift || '';
+      document.getElementById('show-mod-school-address').textContent = school.address || '';
+      document.getElementById('show-mod-school-locality').textContent = school.locality || '';
+      document.getElementById('show-mod-school-phone').textContent = school.phone || '';
+      document.getElementById('show-mod-school-email').textContent = school.email || '';
+      document.getElementById('show-mod-school-shared').textContent = school.shared_building == 1 ? 'Sí' : 'No';
+
+      // Botón modificar escuela
+      var btnModSchool = document.getElementById('btn-modify-school');
+      btnModSchool.dataset.school = schoolData;
+
+      // Mostrar autoridades
+      var authList = document.getElementById('show-mod-authorities-list');
+      authList.innerHTML = '';
+      if(authorities.length === 0){
+        authList.innerHTML = '<p class="text-muted">No hay autoridades asociadas.</p>';
+      } else {
+        authorities.forEach(function(auth){
+          var div = document.createElement('div');
+          div.classList.add('d-flex', 'align-items-center', 'justify-content-between', 'mb-2');
+
+          var span = document.createElement('span');
+          span.textContent = auth.role + ': ' + auth.name;
+
+          var btn = document.createElement('button');
+          btn.className = 'btn btn-sm btn-primary btn-modify-authority';
+          btn.textContent = 'Modificar';
+          btn.dataset.authority = JSON.stringify(auth);
+          btn.dataset.school = schoolData;
+          btn.setAttribute('data-bs-toggle', 'modal');
+          btn.setAttribute('data-bs-target', '#modalModifyAuthority');
+
+          div.appendChild(span);
+          div.appendChild(btn);
+          authList.appendChild(div);
+        });
+      }
+    });
+  }
+
+  // Al clicar el botón modificar escuela dentro del modal de mostrar
+  document.getElementById('btn-modify-school').addEventListener('click', function(){
+    var schoolData = this.dataset.school;
+    var school = {};
+    try {
+      school = JSON.parse(schoolData);
+    } catch(e){ school = {}; }
+
+    // Llenar modal modificar escuela con datos
+    var editModal = new bootstrap.Modal(document.getElementById('modalModifySchool'));
+    document.getElementById('edit-id').value = school.id || '';
+    document.getElementById('edit-service_code').value = school.service_code || '';
+    document.getElementById('edit-shift').value = school.shift || '';
+    document.getElementById('edit-cue_code').value = school.cue_code || '';
+    document.getElementById('edit-address').value = school.address || '';
+    document.getElementById('edit-locality').value = school.locality || '';
+    document.getElementById('edit-phone').value = school.phone || '';
+    document.getElementById('edit-email').value = school.email || '';
+    document.getElementById('edit-shared_building').value = school.shared_building || '0';
+    document.getElementById('edit-category_id').value = school.category_id || '';
+    editModal.show();
+
+    // Cerrar modal mostrar
+    var showModModal = bootstrap.Modal.getInstance(document.getElementById('modalShowModify'));
+    showModModal.hide();
   });
+
+  // Al abrir modal modificar autoridad con botón dinámico
+  document.querySelector('#modalShowModify').addEventListener('click', function(e){
+    if(e.target && e.target.classList.contains('btn-modify-authority')){
+      var authData = e.target.dataset.authority;
+      var auth = {};
+      try { auth = JSON.parse(authData); } catch(e) { auth = {}; }
+
+      var modAuthModal = new bootstrap.Modal(document.getElementById('modalModifyAuthority'));
+
+      document.getElementById('mod-auth-id').value = auth.id || '';
+      document.getElementById('mod-auth-name').value = auth.name || '';
+      document.getElementById('mod-auth-role').value = auth.role || '';
+      document.getElementById('mod-auth-school_id').value = auth.school_id || '';
+
+      modAuthModal.show();
+
+      // Cerrar modal mostrar
+      var showModModal = bootstrap.Modal.getInstance(document.getElementById('modalShowModify'));
+      if(showModModal) showModModal.hide();
+    }
+  });
+
+  // Modal mostrar para eliminar escuela + autoridades
+  var showDeleteModal = document.getElementById('modalShowDelete');
+  if (showDeleteModal) {
+    showDeleteModal.addEventListener('show.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      var schoolData = button.getAttribute('data-school');
+      var authoritiesData = button.getAttribute('data-authorities');
+
+      var school = {};
+      var authorities = [];
+
+      try {
+        school = JSON.parse(schoolData);
+      } catch(e) { school = {}; }
+
+      try {
+        authorities = JSON.parse(authoritiesData);
+      } catch(e) { authorities = []; }
+
+      document.getElementById('show-del-school-name').textContent = school.service_code || '';
+      document.getElementById('show-del-school-cue').textContent = school.cue_code || '';
+
+      var authList = document.getElementById('show-del-authorities-list');
+      authList.innerHTML = '';
+      if(authorities.length === 0){
+        authList.innerHTML = '<p class="text-muted">No hay autoridades asociadas.</p>';
+      } else {
+        authorities.forEach(function(auth){
+          var div = document.createElement('div');
+          div.classList.add('d-flex', 'align-items-center', 'justify-content-between', 'mb-2');
+
+          var span = document.createElement('span');
+          span.textContent = auth.role + ': ' + auth.name;
+
+          var btn = document.createElement('button');
+          btn.className = 'btn btn-sm btn-danger btn-delete-authority';
+          btn.textContent = 'Eliminar';
+          btn.dataset.authority = JSON.stringify(auth);
+          btn.setAttribute('data-bs-toggle', 'modal');
+          btn.setAttribute('data-bs-target', '#modalDeleteAuthority');
+
+          div.appendChild(span);
+          div.appendChild(btn);
+          authList.appendChild(div);
+        });
+      }
+
+      // Botón eliminar escuela
+      var btnDelSchool = document.getElementById('btn-delete-school');
+      btnDelSchool.dataset.school = schoolData;
+    });
+  }
+
+  // Al clicar botón eliminar escuela desde modal mostrar eliminar
+  document.getElementById('btn-delete-school').addEventListener('click', function(){
+    var schoolData = this.dataset.school;
+    var school = {};
+    try {
+      school = JSON.parse(schoolData);
+    } catch(e) { school = {}; }
+
+    var delSchoolModal = new bootstrap.Modal(document.getElementById('modalDeleteSchool'));
+
+    document.getElementById('del-school-id').value = school.id || '';
+    document.getElementById('del-school-name').textContent = school.service_code || '';
+
+    delSchoolModal.show();
+
+    // Cerrar modal mostrar eliminar
+    var showDelModal = bootstrap.Modal.getInstance(document.getElementById('modalShowDelete'));
+    showDelModal.hide();
+  });
+
+  // Al clicar botón eliminar autoridad desde modal mostrar eliminar
+  document.querySelector('#modalShowDelete').addEventListener('click', function(e){
+    if(e.target && e.target.classList.contains('btn-delete-authority')){
+      var authData = e.target.dataset.authority;
+      var auth = {};
+      try { auth = JSON.parse(authData); } catch(e) { auth = {}; }
+
+      var delAuthModal = new bootstrap.Modal(document.getElementById('modalDeleteAuthority'));
+
+      document.getElementById('del-auth-id').value = auth.id || '';
+      document.getElementById('del-auth-name').textContent = auth.name || '';
+
+      delAuthModal.show();
+
+      // Cerrar modal mostrar eliminar
+      var showDelModal = bootstrap.Modal.getInstance(document.getElementById('modalShowDelete'));
+      if(showDelModal) showDelModal.hide();
+    }
+  });
+
 });
 </script>
 

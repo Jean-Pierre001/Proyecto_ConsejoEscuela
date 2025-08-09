@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'includes/session.php';
 include 'includes/conn.php';
 
@@ -9,32 +13,40 @@ if ($id <= 0) {
 }
 
 try {
-    // 1. Obtener el nombre de la escuela antes de eliminarla
-    $stmt = $pdo->prepare("SELECT schoolName FROM schools WHERE id=?");
+    $stmt = $pdo->prepare("SELECT schoolName FROM schools WHERE id = ?");
     $stmt->execute([$id]);
     $school = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($school) {
-        $schoolschoolName = $school['schoolName'];
-
-        // 2. Eliminar la escuela de la base de datos
-        $stmt = $pdo->prepare("DELETE FROM schools WHERE id=?");
-        $stmt->execute([$id]);
-
-        // 3. Construir la ruta de la carpeta
-        $baseDir = __DIR__ . '/uploads/';
-        $folderPath = $baseDir . $schoolschoolName;
-
-        // 4. Eliminar carpeta si existe
-        if (is_dir($folderPath)) {
-            deleteDirectory($folderPath);
-        }
+    if (!$school) {
+        throw new Exception("No se encontró la escuela con id $id");
     }
+
+    $schoolName = $school['schoolName'];
+
+    // Eliminar la escuela (las autoridades deben eliminarse por ON DELETE CASCADE)
+    $stmtDel = $pdo->prepare("DELETE FROM schools WHERE id = ?");
+    if (!$stmtDel->execute([$id])) {
+        $errorInfo = $stmtDel->errorInfo();
+        throw new Exception("Error al eliminar la escuela: " . $errorInfo[2]);
+    }
+
+    // Carpeta (sanitizar nombre para evitar problemas)
+    $safeFolderName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $schoolName);
+    $baseDir = __DIR__ . '/uploads/';
+    $folderPath = $baseDir . $safeFolderName;
+
+    if (is_dir($folderPath)) {
+        deleteDirectory($folderPath);
+    }
+
+    header('Location: schools.php');
+    exit;
+
 } catch (Exception $e) {
-    // Puedes registrar el error si quieres
+    echo "Error inesperado: " . $e->getMessage();
+    exit;
 }
 
-// Función recursiva para borrar una carpeta y todo su contenido
 function deleteDirectory($dir) {
     if (!is_dir($dir)) return;
     $items = scandir($dir);
@@ -49,6 +61,3 @@ function deleteDirectory($dir) {
     }
     rmdir($dir);
 }
-
-header('Location: schools.php');
-exit;
