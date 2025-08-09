@@ -1,4 +1,8 @@
 <?php
+// Evitar mostrar errores visibles que rompan JSON (útil en producción)
+error_reporting(0);
+ini_set('display_errors', 0);
+
 header('Content-Type: application/json');
 
 $baseDir = __DIR__ . '/uploads/';
@@ -13,8 +17,8 @@ if ($oldPath === '' || $newName === '') {
     exit;
 }
 
-// Validar nombre nuevo
-if (strpos($newName, '..') !== false || preg_match('/[\\\/]/', $newName)) {
+// Validar nombre nuevo: no permitir ".." ni barras invertidas o normales
+if (strpos($newName, '..') !== false || preg_match('/[\\\\\\/]/', $newName)) {
     echo json_encode(['error' => 'Nombre de carpeta no válido.']);
     exit;
 }
@@ -38,6 +42,8 @@ if (file_exists($newFullPath)) {
 
 if (rename($oldFullPath, $newFullPath)) {
     echo json_encode(['success' => true]);
+    exit;
 } else {
     echo json_encode(['error' => 'No se pudo renombrar la carpeta.']);
+    exit;
 }

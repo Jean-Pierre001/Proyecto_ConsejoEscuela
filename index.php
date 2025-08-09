@@ -10,7 +10,7 @@ include 'includes/modals/indexmodals.php';
 <style>
   body, html { height: 100%; margin: 0; }
   .d-flex { height: 100vh; overflow: hidden; }
-  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 200px; }
+  .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 50px; }
   .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
   .breadcrumb-item a { text-decoration: none; }
   .action-buttons button { margin-right: 0.3rem; }
@@ -53,7 +53,9 @@ include 'includes/modals/indexmodals.php';
     </div>
     <section class="mb-4">
       <h5>Subir archivos</h5>
-       <button id="openDropzoneModalBtn" class="btn btn-success btn-sm ms-3">Subir archivo</button>
+      <form action="upload_files.php" class="dropzone" id="my-dropzone" enctype="multipart/form-data">
+        <input type="hidden" name="targetFolder" value="" />
+      </form>
     </section>
     <hr />
     <section class="mb-3">
@@ -177,11 +179,6 @@ document.getElementById('paste-files').addEventListener('click', () => {
   .catch(() => toastr.error('Error en la petición'));
 });
 
-
-  document.getElementById('openDropzoneModalBtn').addEventListener('click', function() {
-    var dropzoneModal = new bootstrap.Modal(document.getElementById('dropzoneModal'));
-    dropzoneModal.show();
-  });
 
 function loadFolder(folder) {
   // Leer filtros actuales (o valores por defecto)
@@ -354,30 +351,41 @@ function loadFolder(folder) {
       });
 
       // Click en botón renombrar carpeta
-      document.querySelectorAll('.rename-folder-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const oldName = this.dataset.folder;
-          const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
-          const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
-          if (!newName || newName.trim() === '' || newName === oldName) return;
-          fetch('rename_folder.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              toastr.success('Carpeta renombrada');
-              loadFolder(currentFolder);
-            } else {
-              toastr.error(data.error || 'Error al renombrar carpeta');
-            }
-          })
-          .catch(() => toastr.success('Carpeta renombrada de forma correcta actualize con F5 para ver los cambios'));
-        });
-      });
+// Click en botón renombrar carpeta
+document.querySelectorAll('.rename-folder-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const oldName = this.dataset.folder;
+    const oldPath = (currentFolder ? currentFolder + '/' : '') + oldName;
+    const newName = prompt(`Nuevo nombre para la carpeta "${oldName}":`, oldName);
+    if (!newName || newName.trim() === '' || newName === oldName) return;
+    fetch('rename_folder.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ old_path: oldPath, new_name: newName.trim() })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Error HTTP ' + res.status);
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        toastr.success('Carpeta renombrada correctamente');
+        alert('La carpeta fue renombrada correctamente. Por favor, recarga la página (F5) para ver los cambios.');
+      } else {
+        toastr.error(data.error || 'Error al renombrar carpeta');
+      }
+    })
+    .catch(err => {
+      console.error('Fetch error:', err);
+      toastr.error('Error al conectar con el servidor');
+    });
+  });
+});
+
+
+
+
 
       // Click en breadcrumb para navegar
       breadcrumbContainer.querySelectorAll('a').forEach(el => {
