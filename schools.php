@@ -96,7 +96,7 @@ include 'includes/modals/schoolsmodals.php';
                 <tbody>';
                 foreach ($schools as $s) {
                     echo '<tr>
-                            <td><i class="fa-solid fa-school"></i> ' . htmlspecialchars($s['nombre']) . '</td>
+                            <td>' . htmlspecialchars($s['nombre']) . '</td>
                             <td>' . htmlspecialchars($s['cue']) . '</td>
                             <td>' . htmlspecialchars($s['direccion']) . '</td>
                             <td>' . htmlspecialchars($s['telefono']) . '</td>
@@ -120,7 +120,7 @@ include 'includes/modals/schoolsmodals.php';
                                 data-email="' . htmlspecialchars($s['email'] ?? '') . '">
                                 <i class="fa fa-edit"></i>
                               </a>
-                              <a href="school_delete.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
+                              <a href="delete_school.php?id=' . $s['id'] . '" class="btn btn-sm btn-danger" title="Eliminar" onclick="return confirm(\'¿Seguro que deseas eliminar esta escuela?\')"><i class="fa fa-trash"></i></a>
                               <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
                                 <i class="fa fa-file"></i>
                               </a>

@@ -1,56 +1,46 @@
 <?php
-header('Content-Type: application/json');
+include 'includes/session.php';
+include 'includes/conn.php';
 
-// Directorio base de uploads
-$baseDir = __DIR__ . '/uploads/';
-$baseDirReal = realpath($baseDir);
-
-// Recibe la ruta relativa de la carpeta a eliminar
-$input = json_decode(file_get_contents('php://input'), true);
-$folder = $input['path'] ?? '';
-$folder = trim($folder, '/');
-
-$fullPath = $baseDir . $folder;
-$fullPathReal = realpath($fullPath);
-
-// Validación de seguridad
-if (!$fullPathReal || strpos($fullPathReal, $baseDirReal) !== 0 || !is_dir($fullPathReal)) {
-    echo json_encode(['error' => 'Ruta de carpeta inválida.']);
+$id = intval($_GET['id'] ?? 0);
+if ($id <= 0) {
+    header('Location: schools.php');
     exit;
 }
 
-// Función recursiva para eliminar carpeta y su contenido
-function deleteDir($dir) {
-    $items = scandir($dir);
-    foreach ($items as $item) {
-        if ($item === '.' || $item === '..') continue;
-        $path = $dir . DIRECTORY_SEPARATOR . $item;
-        if (is_dir($path)) {
-            if (!deleteDir($path)) return false;
-        } else {
-            if (!unlink($path)) return false;
-        }
+try {
+    // 1. Obtener el nombre de la escuela antes de borrarla
+    $stmt = $pdo->prepare("SELECT name FROM schools WHERE id=?");
+    $stmt->execute([$id]);
+    $school = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($school) {
+        $schoolName = $school['name'];
+
+        // 2. Borrar escuela de la base de datos
+        $stmt = $pdo->prepare("DELETE FROM schools WHERE id=?");
+        $stmt->execute([$id]);
+
+        // 3. Llamar a delete_folder.php para borrar carpeta
+        $folderPath = trim($schoolName, '/'); // nombre igual al de la carpeta en uploads/
+
+        $url = __DIR__ . '/delete_folder.php'; // ruta absoluta al script
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['path' => $folderPath]));
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        // Podés loguear $response si querés verificar
     }
-    return rmdir($dir);
+
+} catch (Exception $e) {
+    // Registrar error si querés
 }
 
-// Verifica si la carpeta tiene contenido
-$hasContent = false;
-$items = scandir($fullPathReal);
-foreach ($items as $item) {
-    if ($item !== '.' && $item !== '..') {
-        $hasContent = true;
-        break;
-    }
-}
-
-// Elimina la carpeta
-if (deleteDir($fullPathReal)) {
-    $msg = 'Carpeta eliminada correctamente.';
-    if ($hasContent) {
-        $msg .= ' Se eliminó todo el contenido de la carpeta.';
-    }
-    echo json_encode(['success' => true, 'message' => $msg]);
-} else {
-    echo json_encode(['error' => 'No se pudo eliminar la carpeta.']);
-}
+header('Location: schools.php');
+exit;

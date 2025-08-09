@@ -62,6 +62,7 @@ include 'includes/modals/indexmodals.php';
       <h5>Carpetas</h5>
       <ul id="folder-list" class="list-group"></ul>
     </section>
+    <hr>
     <section>
     <h5>Archivos
       <button id="delete-selected" class="btn btn-danger btn-sm ms-3" disabled>Eliminar seleccionados</button>
@@ -95,11 +96,11 @@ include 'includes/modals/indexmodals.php';
 
 <!-- Agrega jQuery antes que los demás -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/dropzone@5.9.3/dist/min/dropzone.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 
 <script>
 let currentFolder = '';
@@ -430,14 +431,6 @@ function loadFolder(folder) {
     .catch(() => toastr.error('Error al cargar contenido'));
 }
 
-
-
-// ...existing code...
-// Definir la función fuera de loadFolder
-function addRenameFolderListeners() {
-  // ...eliminado renombrar carpeta...
-}
-
 function renameFile(path, filename) {
   document.getElementById('renamePath').value = path;
   document.getElementById('newNameInput').value = filename;
@@ -450,7 +443,6 @@ function renameFile(path, filename) {
 // Manejar el envío del formulario
 document.getElementById('renameForm').addEventListener('submit', function (e) {
   e.preventDefault();
-s
   const formData = new FormData(this);
 
   fetch('rename_file.php', {
@@ -462,15 +454,17 @@ s
     if (data.success) {
       // Cerrar modal
       bootstrap.Modal.getInstance(document.getElementById('renameModal')).hide();
+      toastr.success('Archivo renombrado correctamente');
       // Recargar o refrescar lista
       loadFolder(currentFolder);
     } else {
       alert('Error al renombrar: ' + (data.error || 'Desconocido'));
+      toastr.error('Error al renombrar: ' + (data.error || 'Desconocido'));
     }
   })
   .catch(err => {
     console.error(err);
-    alert('Error en la petición.');
+    toastr.error('error al pedir la petición al servidor');
   });
 });
 
