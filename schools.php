@@ -319,6 +319,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  //OPCIONES PARA ELIMINACIÓN
+
   // Modal mostrar para eliminar escuela + autoridades
   var showDeleteModal = document.getElementById('modalShowDelete');
   if (showDeleteModal) {
@@ -373,24 +375,23 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Al clicar botón eliminar escuela desde modal mostrar eliminar
-  document.getElementById('btn-delete-school').addEventListener('click', function(){
-    var schoolData = this.dataset.school;
-    var school = {};
-    try {
-      school = JSON.parse(schoolData);
-    } catch(e) { school = {}; }
+  document.getElementById('btn-delete-school').addEventListener('click', function() {
+      var schoolData = this.dataset.school;
+      var school = {};
+      try {
+        school = JSON.parse(schoolData);
+      } catch(e) { school = {}; }
 
-    var delSchoolModal = new bootstrap.Modal(document.getElementById('modalDeleteSchool'));
+      document.getElementById('del-school-id').value = school.id || '';
+      document.getElementById('del-school-name').textContent = school.service_code || '';
 
-    document.getElementById('del-school-id').value = school.id || '';
-    document.getElementById('del-school-name').textContent = school.service_code || '';
+      var delSchoolModal = new bootstrap.Modal(document.getElementById('modalDeleteSchool'));
+      delSchoolModal.show();
 
-    delSchoolModal.show();
-
-    // Cerrar modal mostrar eliminar
-    var showDelModal = bootstrap.Modal.getInstance(document.getElementById('modalShowDelete'));
-    showDelModal.hide();
+      var showDelModal = bootstrap.Modal.getInstance(document.getElementById('modalShowDelete'));
+      if(showDelModal) showDelModal.hide();
   });
+
 
   // Al clicar botón eliminar autoridad desde modal mostrar eliminar
   document.querySelector('#modalShowDelete').addEventListener('click', function(e){
