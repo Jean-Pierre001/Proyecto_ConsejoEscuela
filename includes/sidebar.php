@@ -15,6 +15,10 @@
         <i class="fa-solid fa-school"></i> Escuelas
       </a>
     </li>
-    <!-- Agregá más opciones aquí -->
+    <li class="nav-item">
+      <a href="https://www.citypopulation.de/es/argentina/admin/buenos_aires/06602__patagones/" class="nav-link">
+        <i class="fa-solid fa-info"></i> Poblacion
+      </a>
+    </li>
   </ul>
 </div>

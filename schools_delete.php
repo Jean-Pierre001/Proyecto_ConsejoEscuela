@@ -6,14 +6,14 @@ error_reporting(E_ALL);
 include 'includes/session.php';
 include 'includes/conn.php';
 
-// Recibir ID, probá primero con POST, si no con GET (para debug)
+// Recibir ID, primero POST, luego GET
 $id = 0;
 if (isset($_POST['id'])) {
-header('Location: schools.php');
+    header('Location: schools.php');
     $id = intval($_POST['id']);
     echo "ID recibido por POST: $id<br>";
 } elseif (isset($_GET['id'])) {
-header('Location: schools.php');
+    header('Location: schools.php');
     $id = intval($_GET['id']);
     echo "ID recibido por GET: $id<br>";
 } else {
@@ -53,7 +53,7 @@ try {
     echo "Escuela eliminada correctamente.<br>";
 
     // Eliminar carpeta asociada
-    $safeFolderName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $schoolName);
+    $safeFolderName =  $schoolName;
     $baseDir = __DIR__ . '/uploads/';
     $folderPath = $baseDir . $safeFolderName;
 
@@ -65,6 +65,10 @@ try {
     }
 
     echo '<a href="schools.php">Volver a listado</a>';
+
+    // Redirigir después de 3 segundos para que se vean los mensajes
+    header("refresh:3;url=schools.php");
+
     exit;
 
 } catch (Exception $e) {
@@ -81,9 +85,15 @@ function deleteDirectory($dir) {
         if (is_dir($path)) {
             deleteDirectory($path);
         } else {
-            unlink($path);
+            if (!unlink($path)) {
+                echo "No se pudo eliminar archivo: $path<br>";
+            }
         }
     }
-    rmdir($dir);
+    if (!rmdir($dir)) {
+        echo "No se pudo eliminar carpeta: $dir<br>";
+    } else {
+        echo "Carpeta eliminada: $dir<br>";
+    }
 }
 ?>
