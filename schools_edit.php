@@ -12,8 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if (isset($_POST['update'])) {
-            // Actualizar escuela
-            $schoolName = trim($_POST['schoolName'] ?? '');
+            // Recibir datos del formulario
             $service_code = trim($_POST['service_code'] ?? '');
             $shift = trim($_POST['shift'] ?? '');
             $cue_code = trim($_POST['cue_code'] ?? '');
@@ -25,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $category_id = intval($_POST['category_id'] ?? 0);
 
             // Validaciones básicas
-            if (!$schoolName || !$service_code || !$shift || !$cue_code || !$address || !$locality || !$category_id) {
+            if (!$service_code || !$shift || !$cue_code || !$address || !$locality || !$category_id) {
                 $_SESSION['error'] = "Complete todos los campos obligatorios.";
                 header('Location: schools.php');
                 exit;
@@ -37,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $stmt = $pdo->prepare("UPDATE schools SET 
-                schoolName = :schoolName,
                 service_code = :service_code,
                 shift = :shift,
                 cue_code = :cue_code,
@@ -50,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE id = :id");
 
             $stmt->execute([
-                ':schoolName' => $schoolName,
                 ':service_code' => $service_code,
                 ':shift' => $shift,
                 ':cue_code' => $cue_code,
@@ -68,22 +65,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['info'] = "No hubo cambios para actualizar.";
             }
-            header('Location: schools.php');
-            exit;
-        }
-
-        if (isset($_POST['delete_school'])) {
-            $pdo->beginTransaction();
-
-            $delAuth = $pdo->prepare("DELETE FROM authorities WHERE school_id = :id");
-            $delAuth->execute([':id' => $id]);
-
-            $delSchool = $pdo->prepare("DELETE FROM schools WHERE id = :id");
-            $delSchool->execute([':id' => $id]);
-
-            $pdo->commit();
-
-            $_SESSION['success'] = "Escuela y sus autoridades eliminadas correctamente.";
             header('Location: schools.php');
             exit;
         }

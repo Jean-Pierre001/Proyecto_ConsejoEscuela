@@ -77,86 +77,6 @@
   </div>
 </div>
 
-<!-- Modal Editar Escuela -->
-<div class="modal fade" id="modalEditSchool" tabindex="-1" aria-labelledby="modalEditSchoolLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <form method="post" action="school_edit.php">
-      <input type="hidden" name="id" id="edit-id">
-      <div class="modal-content">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title" id="modalEditSchoolLabel"><i class="fa fa-edit"></i> Editar Escuela</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Nombre</label>
-              <input type="text" name="schoolName" id="edit-schoolName" class="form-control" required>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">CUE</label>
-              <input type="text" name="cue" id="edit-cue" class="form-control">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Turno</label>
-              <select name="shift" id="edit-shift" class="form-select">
-                <option value="">--</option>
-                <option value="manana">Mañana</option>
-                <option value="tarde">Tarde</option>
-                <option value="noche">Noche</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Dirección</label>
-              <input type="text" name="address" id="edit-address" class="form-control">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Ciudad</label>
-              <input type="text" name="city" id="edit-city" class="form-control">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Teléfono</label>
-              <input type="text" name="phone" id="edit-phone" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Director/a</label>
-              <input type="text" name="principal" id="edit-principal" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Vicedirector/a</label>
-              <input type="text" name="vicePrincipal" id="edit-vicePrincipal" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Secretario/a</label>
-              <input type="text" name="secretary" id="edit-secretary" class="form-control">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Nivel / Servicio</label>
-              <input type="text" name="service" id="edit-service" class="form-control">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">¿Comparte edificio?</label>
-              <select name="sharedBuilding" id="edit-sharedBuilding" class="form-select">
-                <option value="">--</option>
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-              </select>
-            </div>
-            <div class="col-md-12">
-              <label class="form-label">Email</label>
-              <input type="email" name="email" id="edit-email" class="form-control">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar cambios</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
 <!-- Modal Mostrar para Modificar -->
 <div class="modal fade" id="modalShowModify" tabindex="-1" aria-labelledby="modalShowModifyLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -266,6 +186,7 @@
   </div>
 </div>
 
+
 <!-- Modal Modificar Autoridad -->
 <div class="modal fade" id="modalModifyAuthority" tabindex="-1" aria-labelledby="modalModifyAuthorityLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -274,19 +195,24 @@
         <h5 class="modal-title" id="modalModifyAuthorityLabel">Modificar Autoridad</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
+
       <div class="modal-body">
+        <!-- Campo oculto para ID -->
         <input type="hidden" id="mod-auth-id" name="id">
 
+        <!-- Nombre -->
         <div class="mb-3">
           <label for="mod-auth-name" class="form-label">Nombre</label>
           <input type="text" id="mod-auth-name" name="name" class="form-control" required>
         </div>
 
+        <!-- Rol -->
         <div class="mb-3">
           <label for="mod-auth-role" class="form-label">Rol</label>
           <input type="text" id="mod-auth-role" name="role" class="form-control" placeholder="Ej: Director/a" required>
         </div>
 
+        <!-- Escuela -->
         <div class="mb-3">
           <label for="mod-auth-school_id" class="form-label">Escuela</label>
           <select id="mod-auth-school_id" name="school_id" class="form-select" required>
@@ -300,7 +226,20 @@
             ?>
           </select>
         </div>
+
+        <!-- Teléfono personal -->
+        <div class="mb-3">
+          <label for="mod-auth-phone" class="form-label">Teléfono personal</label>
+          <input type="text" id="mod-auth-phone" name="personal_phone" class="form-control" placeholder="Opcional">
+        </div>
+
+        <!-- Email personal -->
+        <div class="mb-3">
+          <label for="mod-auth-email" class="form-label">Email personal</label>
+          <input type="email" id="mod-auth-email" name="personal_email" class="form-control" placeholder="Opcional">
+        </div>
       </div>
+
       <div class="modal-footer">
         <button type="submit" name="update" class="btn btn-primary">Guardar Cambios</button>
         <button type="submit" name="delete_authority" class="btn btn-danger" onclick="return confirm('¿Seguro que querés eliminar esta autoridad? Esta acción es irreversible.')">Eliminar Autoridad</button>
@@ -309,6 +248,8 @@
     </form>
   </div>
 </div>
+
+
 
 <!-- Modal Mostrar para Eliminar -->
 <div class="modal fade" id="modalShowDelete" tabindex="-1" aria-labelledby="modalShowDeleteLabel" aria-hidden="true">
