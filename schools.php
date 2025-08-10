@@ -147,9 +147,9 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                       $role = strtolower($auth['role']);
                       if (strpos($role, 'director') !== false && $director === '') {
                           $director = htmlspecialchars($auth['name']);
-                      } elseif ((strpos($role, 'vice') !== false || strpos($role, 'vicedirector') !== false) && $viceDirector === '') {
+                      } elseif ((strpos($role, 'vicedirector/a') !== false || strpos($role, 'vicedirector/a') !== false) && $viceDirector === '') {
                           $viceDirector = htmlspecialchars($auth['name']);
-                      } elseif (strpos($role, 'secretary') !== false && $secretary === '') {
+                      } elseif (strpos($role, 'secretario/a') !== false && $secretary === '') {
                           $secretary = htmlspecialchars($auth['name']);
                       }
                   }
@@ -231,15 +231,21 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
           authorities = [];
         }
 
-        // Mostrar datos de la escuela
-        document.getElementById('show-mod-school-name').textContent = school.service_code || '';
-        document.getElementById('show-mod-school-cue').textContent = school.cue_code || '';
+        // Mostrar datos de la escuela (todos los campos)
+        document.getElementById('show-mod-school-id').textContent = school.id || '';
+        document.getElementById('show-mod-school-name').textContent = school.schoolName || '';
+        document.getElementById('show-mod-school-category').textContent = school.category_name || school.category_id || '';
+        document.getElementById('show-mod-school-is_disadvantaged').textContent = school.is_disadvantaged == 1 ? 'Sí' : 'No';
         document.getElementById('show-mod-school-shift').textContent = school.shift || '';
+        document.getElementById('show-mod-school-service_code').textContent = school.service_code || '';
+        document.getElementById('show-mod-school-shared_building').textContent = school.shared_building || '';
+        document.getElementById('show-mod-school-cue_code').textContent = school.cue_code || '';
         document.getElementById('show-mod-school-address').textContent = school.address || '';
         document.getElementById('show-mod-school-locality').textContent = school.locality || '';
         document.getElementById('show-mod-school-phone').textContent = school.phone || '';
         document.getElementById('show-mod-school-email').textContent = school.email || '';
-        document.getElementById('show-mod-school-shared').textContent = (school.shared_building == 1) ? 'Sí' : 'No';
+        document.getElementById('show-mod-school-created_at').textContent = school.created_at || '';
+        document.getElementById('show-mod-school-updated_at').textContent = school.updated_at || '';
 
         // Pasar datos para modificar escuela al botón
         var btnModSchool = document.getElementById('btn-modify-school');
@@ -285,6 +291,9 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       });
     }
 
+  });
+
+
     // Abrir modal modificar escuela y cargar datos al botón modificar escuela
     document.getElementById('btn-modify-school').addEventListener('click', function () {
       var schoolData = this.dataset.school;
@@ -298,16 +307,17 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       var editModal = new bootstrap.Modal(document.getElementById('modalModifySchool'));
 
       document.getElementById('edit-id').value = school.id || '';
-      document.getElementById('edit-service_code').value = school.service_code || '';
+      document.getElementById('edit-schoolName').value = school.schoolName || '';
+      document.getElementById('edit-category_id').value = school.category_id || '';
+      document.getElementById('edit-is_disadvantaged').value = school.is_disadvantaged ? '1' : '0';
       document.getElementById('edit-shift').value = school.shift || '';
+      document.getElementById('edit-service_code').value = school.service_code || '';
+      document.getElementById('edit-shared_building').value = school.shared_building || '';
       document.getElementById('edit-cue_code').value = school.cue_code || '';
       document.getElementById('edit-address').value = school.address || '';
       document.getElementById('edit-locality').value = school.locality || '';
       document.getElementById('edit-phone').value = school.phone || '';
       document.getElementById('edit-email').value = school.email || '';
-      document.getElementById('edit-shared_building').value = school.shared_building || '0';
-      document.getElementById('edit-category_id').value = school.category_id || '';
-
       editModal.show();
 
       // Cerrar modal mostrar
@@ -342,8 +352,6 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
         if (showModModal) showModModal.hide();
       }
     });
-
-  });
 
   //OPCIONES PARA ELIMINACIÓN
 

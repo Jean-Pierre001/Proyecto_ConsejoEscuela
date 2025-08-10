@@ -79,7 +79,7 @@
 
 <!-- Modal Mostrar para Modificar -->
 <div class="modal fade" id="modalShowModify" tabindex="-1" aria-labelledby="modalShowModifyLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable"> <!-- acá cambié modal-lg por modal-xl -->
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalShowModifyLabel">Detalles de la Escuela y Autoridades (Modificar)</h5>
@@ -87,16 +87,32 @@
       </div>
       <div class="modal-body">
         <h5>Escuela</h5>
-        <ul class="list-group mb-3">
-          <li class="list-group-item"><strong>Nombre / Código:</strong> <span id="show-mod-school-name"></span></li>
-          <li class="list-group-item"><strong>CUE:</strong> <span id="show-mod-school-cue"></span></li>
-          <li class="list-group-item"><strong>Turno:</strong> <span id="show-mod-school-shift"></span></li>
-          <li class="list-group-item"><strong>Dirección:</strong> <span id="show-mod-school-address"></span></li>
-          <li class="list-group-item"><strong>Localidad:</strong> <span id="show-mod-school-locality"></span></li>
-          <li class="list-group-item"><strong>Teléfono:</strong> <span id="show-mod-school-phone"></span></li>
-          <li class="list-group-item"><strong>Email:</strong> <span id="show-mod-school-email"></span></li>
-          <li class="list-group-item"><strong>Edificio Compartido:</strong> <span id="show-mod-school-shared"></span></li>
-        </ul>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-group mb-3">
+                <li class="list-group-item"><strong>ID:</strong> <span id="show-mod-school-id"></span></li>
+                <li class="list-group-item"><strong>Nombre:</strong> <span id="show-mod-school-name"></span></li>
+                <li class="list-group-item"><strong>Categoría:</strong> <span id="show-mod-school-category"></span></li>
+                <li class="list-group-item"><strong>¿Desfavorecida?:</strong> <span id="show-mod-school-is_disadvantaged"></span></li>
+                <li class="list-group-item"><strong>Turno:</strong> <span id="show-mod-school-shift"></span></li>
+                <li class="list-group-item"><strong>Código de Servicio:</strong> <span id="show-mod-school-service_code"></span></li>
+                <li class="list-group-item"><strong>Edificio Compartido:</strong> <span id="show-mod-school-shared_building"></span></li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group mb-3">
+                <li class="list-group-item"><strong>CUE:</strong> <span id="show-mod-school-cue_code"></span></li>
+                <li class="list-group-item"><strong>Dirección:</strong> <span id="show-mod-school-address"></span></li>
+                <li class="list-group-item"><strong>Localidad:</strong> <span id="show-mod-school-locality"></span></li>
+                <li class="list-group-item"><strong>Teléfono:</strong> <span id="show-mod-school-phone"></span></li>
+                <li class="list-group-item"><strong>Email:</strong> <span id="show-mod-school-email"></span></li>
+                <li class="list-group-item"><strong>Creado:</strong> <span id="show-mod-school-created_at"></span></li>
+                <li class="list-group-item"><strong>Actualizado:</strong> <span id="show-mod-school-updated_at"></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
         <button id="btn-modify-school" class="btn btn-primary mb-4">Modificar Escuela</button>
 
         <h5>Autoridades</h5>
@@ -111,7 +127,7 @@
 
 <!-- Modal Modificar Escuela -->
 <div class="modal fade" id="modalModifySchool" tabindex="-1" aria-labelledby="modalModifySchoolLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <form method="post" action="schools_edit.php" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalModifySchoolLabel">Modificar Escuela</h5>
@@ -121,13 +137,46 @@
         <input type="hidden" id="edit-id" name="id">
 
         <div class="mb-3">
-          <label for="edit-service_code" class="form-label">Nombre / Código</label>
-          <input type="text" id="edit-service_code" name="service_code" class="form-control" required>
+          <label for="edit-schoolName" class="form-label">Nombre</label>
+          <input type="text" id="edit-schoolName" name="schoolName" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="edit-category_id" class="form-label">Categoría</label>
+          <select id="edit-category_id" name="category_id" class="form-select" required>
+            <option value="">Seleccione categoría</option>
+            <?php
+            // Cargar categorías para el select
+            $cats = $pdo->query("SELECT id, name FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+            foreach($cats as $c){
+              echo '<option value="'.htmlspecialchars($c['id']).'">'.htmlspecialchars($c['name']).'</option>';
+            }
+            ?>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="edit-is_disadvantaged" class="form-label">¿Desfavorecida?</label>
+          <select id="edit-is_disadvantaged" name="is_disadvantaged" class="form-select" required>
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+          </select>
         </div>
 
         <div class="mb-3">
           <label for="edit-shift" class="form-label">Turno</label>
           <input type="text" id="edit-shift" name="shift" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="edit-service_code" class="form-label">Código de Servicio</label>
+          <input type="text" id="edit-service_code" name="service_code" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="edit-shared_building" class="form-label">Edificio Compartido</label>
+          <input type="text" id="edit-shared_building" name="shared_building" class="form-control">
+          <!-- Si querés que sea sí/no usa un select como antes, pero el campo es varchar(255) -->
         </div>
 
         <div class="mb-3">
@@ -155,27 +204,6 @@
           <input type="email" id="edit-email" name="email" class="form-control">
         </div>
 
-        <div class="mb-3">
-          <label for="edit-shared_building" class="form-label">Edificio Compartido</label>
-          <select id="edit-shared_building" name="shared_building" class="form-select" required>
-            <option value="1">Sí</option>
-            <option value="0">No</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-category_id" class="form-label">Categoría</label>
-          <select id="edit-category_id" name="category_id" class="form-select" required>
-            <option value="">Seleccione categoría</option>
-            <?php
-            // Cargar categorías para el select
-            $cats = $pdo->query("SELECT id, name FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-            foreach($cats as $c){
-              echo '<option value="'.htmlspecialchars($c['id']).'">'.htmlspecialchars($c['name']).'</option>';
-            }
-            ?>
-          </select>
-        </div>
       </div>
       <div class="modal-footer">
         <button type="submit" name="update" class="btn btn-primary">Guardar Cambios</button>
@@ -185,7 +213,6 @@
     </form>
   </div>
 </div>
-
 
 <!-- Modal Modificar Autoridad -->
 <div class="modal fade" id="modalModifyAuthority" tabindex="-1" aria-labelledby="modalModifyAuthorityLabel" aria-hidden="true">
@@ -214,7 +241,7 @@
 
         <!-- Escuela -->
         <div class="mb-3">
-          <label for="mod-auth-school_id" class="form-label">Escuela</label>
+          <label for="mod-auth-school_id" class="form-label">Escuela (Tocar solo si se quiere modificar)</label>
           <select id="mod-auth-school_id" name="school_id" class="form-select" required>
             <option value="">Seleccione una escuela</option>
             <?php
@@ -242,14 +269,11 @@
 
       <div class="modal-footer">
         <button type="submit" name="update" class="btn btn-primary">Guardar Cambios</button>
-        <button type="submit" name="delete_authority" class="btn btn-danger" onclick="return confirm('¿Seguro que querés eliminar esta autoridad? Esta acción es irreversible.')">Eliminar Autoridad</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </form>
   </div>
 </div>
-
-
 
 <!-- Modal Mostrar para Eliminar -->
 <div class="modal fade" id="modalShowDelete" tabindex="-1" aria-labelledby="modalShowDeleteLabel" aria-hidden="true">
@@ -356,7 +380,7 @@
         </div>
         <div class="mb-3">
           <label for="new-auth-role" class="form-label">Rol</label>
-          <input type="text" id="new-auth-role" name="role" class="form-control" placeholder="Ej: Director/a" required>
+          <input type="text" id="new-auth-role" name="role" class="form-control" placeholder="Ej: Director, Vicedirector/a, " required>
         </div>
         <div class="mb-3">
           <label for="new-auth-school_id" class="form-label">Escuela</label>
@@ -369,6 +393,17 @@
             }
             ?>
           </select>
+        </div>
+        <!-- Teléfono personal -->
+        <div class="mb-3">
+          <label for="mod-auth-phone" class="form-label">Teléfono personal</label>
+          <input type="text" id="mod-auth-phone" name="personal_phone" class="form-control" placeholder="Opcional">
+        </div>
+
+        <!-- Email personal -->
+        <div class="mb-3">
+          <label for="mod-auth-email" class="form-label">Email personal</label>
+          <input type="email" id="mod-auth-email" name="personal_email" class="form-control" placeholder="Opcional">
         </div>
       </div>
       <div class="modal-footer">

@@ -13,18 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if (isset($_POST['update'])) {
             // Recibir datos del formulario
-            $service_code = trim($_POST['service_code'] ?? '');
+            $schoolName = trim($_POST['schoolName'] ?? '');
+            $category_id = intval($_POST['category_id'] ?? 0);
+            $is_disadvantaged = ($_POST['is_disadvantaged'] ?? '0') === '1' ? 1 : 0;
             $shift = trim($_POST['shift'] ?? '');
+            $service_code = trim($_POST['service_code'] ?? '');
+            $shared_building = trim($_POST['shared_building'] ?? ''); // varchar(255)
             $cue_code = trim($_POST['cue_code'] ?? '');
             $address = trim($_POST['address'] ?? '');
             $locality = trim($_POST['locality'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
             $email = trim($_POST['email'] ?? '');
-            $shared_building = ($_POST['shared_building'] ?? '0') === '1' ? 1 : 0;
-            $category_id = intval($_POST['category_id'] ?? 0);
 
             // Validaciones básicas
-            if (!$service_code || !$shift || !$cue_code || !$address || !$locality || !$category_id) {
+            if (!$schoolName || !$category_id || !$shift || !$service_code || !$cue_code || !$address || !$locality) {
                 $_SESSION['error'] = "Complete todos los campos obligatorios.";
                 header('Location: schools.php');
                 exit;
@@ -36,27 +38,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $stmt = $pdo->prepare("UPDATE schools SET 
-                service_code = :service_code,
+                schoolName = :schoolName,
+                category_id = :category_id,
+                is_disadvantaged = :is_disadvantaged,
                 shift = :shift,
+                service_code = :service_code,
+                shared_building = :shared_building,
                 cue_code = :cue_code,
                 address = :address,
                 locality = :locality,
                 phone = :phone,
-                email = :email,
-                shared_building = :shared_building,
-                category_id = :category_id
+                email = :email
                 WHERE id = :id");
 
             $stmt->execute([
-                ':service_code' => $service_code,
+                ':schoolName' => $schoolName,
+                ':category_id' => $category_id,
+                ':is_disadvantaged' => $is_disadvantaged,
                 ':shift' => $shift,
+                ':service_code' => $service_code,
+                ':shared_building' => $shared_building,
                 ':cue_code' => $cue_code,
                 ':address' => $address,
                 ':locality' => $locality,
                 ':phone' => $phone,
                 ':email' => $email,
-                ':shared_building' => $shared_building,
-                ':category_id' => $category_id,
                 ':id' => $id
             ]);
 
@@ -65,6 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $_SESSION['info'] = "No hubo cambios para actualizar.";
             }
+            header('Location: schools.php');
+            exit;
+        }
+
+        if (isset($_POST['delete_school'])) {
+            // Código para eliminar la escuela (opcional)
+            $stmt = $pdo->prepare("DELETE FROM schools WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+            $_SESSION['success'] = "Escuela eliminada correctamente.";
             header('Location: schools.php');
             exit;
         }
