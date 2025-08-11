@@ -94,7 +94,31 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay categorías ni escuelas registradas.</div>';
   } else {
       foreach ($categories as $cat) {
-          echo '<h3 class="mt-4">' . htmlspecialchars($cat['name']) . '</h3>';
+          $catNameEsc = htmlspecialchars($cat['name']);
+          $catIdEsc = htmlspecialchars($cat['id']);
+
+          echo '<h3 class="mt-4 d-flex align-items-center justify-content-between">';
+          echo '<span>' . $catNameEsc . '</span>';
+          echo '<span>';
+          // Botón modificar categoría
+          echo '<button class="btn btn-sm btn-primary me-1" 
+                        data-bs-toggle="modal" data-bs-target="#modalModifyCategory" 
+                        data-category-id="' . $catIdEsc . '" 
+                        data-category-name="' . $catNameEsc . '" 
+                        title="Modificar categoría">
+                  <i class="fa fa-edit"></i>
+                </button>';
+
+          // Botón eliminar categoría
+          echo '<button class="btn btn-sm btn-danger" 
+                        data-bs-toggle="modal" data-bs-target="#modalDeleteCategory" 
+                        data-category-id="' . $catIdEsc . '" 
+                        data-category-name="' . $catNameEsc . '" 
+                        title="Eliminar categoría">
+                  <i class="fa fa-trash"></i>
+                </button>';
+          echo '</span>';
+          echo '</h3>';
 
           $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
           $paramsSchools = [':catid' => $cat['id']];

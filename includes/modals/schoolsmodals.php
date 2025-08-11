@@ -1,6 +1,6 @@
 <!-- Modal Agregar Escuela -->
 <div class="modal fade" id="modalAddSchool" tabindex="-1" aria-labelledby="modalAddSchoolLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-xl">
     <form method="post" action="school_add.php">
       <div class="modal-content">
         <div class="modal-header bg-success text-white">
@@ -14,12 +14,31 @@
               <input type="text" name="schoolName" class="form-control" required>
             </div>
             <div class="col-md-3">
-              <label class="form-label">CUE</label>
-              <input type="text" name="cue" class="form-control">
+              <label class="form-label">Número de orden</label>
+              <input type="number" name="order_number" class="form-control" value="0" required>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Categoría</label>
+                <select name="category_id" class="form-select">
+                  <option value="">Sin categoría (opcional)</option>
+                  <?php
+                  $stmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
+                  while ($row = $stmt->fetch()) {
+                    echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
+                  }
+                  ?>
+                </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">¿Desfavorecida?</label>
+              <select name="is_disadvantaged" class="form-select" required>
+                <option value="0" selected>No</option>
+                <option value="1">Sí</option>
+              </select>
             </div>
             <div class="col-md-3">
               <label class="form-label">Turno</label>
-              <select name="shift" class="form-select">
+              <select name="shift" class="form-select" required>
                 <option value="">--</option>
                 <option value="manana">Mañana</option>
                 <option value="tarde">Tarde</option>
@@ -27,40 +46,32 @@
               </select>
             </div>
             <div class="col-md-6">
+              <label class="form-label">Código de Servicio</label>
+              <input type="text" name="service_code" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">¿Comparte edificio?</label>
+              <select name="shared_building" class="form-select">
+                <option value="">--</option>
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">CUE</label>
+              <input type="text" name="cue_code" class="form-control" required>
+            </div>
+            <div class="col-md-6">
               <label class="form-label">Dirección</label>
-              <input type="text" name="address" class="form-control">
+              <input type="text" name="address" class="form-control" required>
             </div>
             <div class="col-md-3">
-              <label class="form-label">Ciudad</label>
-              <input type="text" name="city" class="form-control">
+              <label class="form-label">Localidad</label>
+              <input type="text" name="locality" class="form-control" required>
             </div>
             <div class="col-md-3">
               <label class="form-label">Teléfono</label>
               <input type="text" name="phone" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Director/a</label>
-              <input type="text" name="principal" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Vicedirector/a</label>
-              <input type="text" name="vicePrincipal" class="form-control">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Secretario/a</label>
-              <input type="text" name="secretary" class="form-control">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Nivel / Servicio</label>
-              <input type="text" name="service" class="form-control">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">¿Comparte edificio?</label>
-              <select name="sharedBuilding" class="form-select">
-                <option value="">--</option>
-                <option value="1">Sí</option>
-                <option value="0">No</option>
-              </select>
             </div>
             <div class="col-md-12">
               <label class="form-label">Email</label>
@@ -76,6 +87,7 @@
     </form>
   </div>
 </div>
+
 
 <!-- Modal Mostrar para Modificar -->
 <div class="modal fade" id="modalShowModify" tabindex="-1" aria-labelledby="modalShowModifyLabel" aria-hidden="true">
