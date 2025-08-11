@@ -94,31 +94,36 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay categorías ni escuelas registradas.</div>';
   } else {
       foreach ($categories as $cat) {
-          $catNameEsc = htmlspecialchars($cat['name']);
-          $catIdEsc = htmlspecialchars($cat['id']);
+            $catNameEsc = htmlspecialchars($cat['name']);
+            $catIdEsc = htmlspecialchars($cat['id']);
 
-          echo '<h3 class="mt-4 d-flex align-items-center justify-content-between">';
-          echo '<span>' . $catNameEsc . '</span>';
-          echo '<span>';
-          // Botón modificar categoría
-          echo '<button class="btn btn-sm btn-primary me-1" 
-                        data-bs-toggle="modal" data-bs-target="#modalModifyCategory" 
-                        data-category-id="' . $catIdEsc . '" 
-                        data-category-name="' . $catNameEsc . '" 
-                        title="Modificar categoría">
-                  <i class="fa fa-edit"></i>
-                </button>';
+            echo '<h3 class="mt-4 d-flex align-items-center justify-content-between">';
+            echo '<span>' . $catNameEsc . '</span>';
 
-          // Botón eliminar categoría
-          echo '<button class="btn btn-sm btn-danger" 
-                        data-bs-toggle="modal" data-bs-target="#modalDeleteCategory" 
-                        data-category-id="' . $catIdEsc . '" 
-                        data-category-name="' . $catNameEsc . '" 
-                        title="Eliminar categoría">
-                  <i class="fa fa-trash"></i>
-                </button>';
-          echo '</span>';
-          echo '</h3>';
+            // clase para poder ocultar botones 
+            $hideBtnsClass = ($cat['id'] == 17) ? ' d-none' : '';
+
+            echo '<span class="' . $hideBtnsClass . '">';
+            echo '<button class="btn btn-sm btn-primary me-1" 
+                          data-bs-toggle="modal" data-bs-target="#modalModifyCategory" 
+                          data-category-id="' . $catIdEsc . '" 
+                          data-category-name="' . $catNameEsc . '" 
+                          title="Modificar categoría">
+                    <i class="fa fa-edit"></i>
+                  </button>';
+
+            echo '<button class="btn btn-sm btn-danger" 
+                          data-bs-toggle="modal" data-bs-target="#modalDeleteCategory" 
+                          data-category-id="' . $catIdEsc . '" 
+                          data-category-name="' . $catNameEsc . '" 
+                          title="Eliminar categoría">
+                    <i class="fa fa-trash"></i>
+                  </button>';
+            echo '</span>';
+
+            echo '</h3>';
+        
+
 
           $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
           $paramsSchools = [':catid' => $cat['id']];
@@ -186,7 +191,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                           <td>' . htmlspecialchars($s['id']) . '</td>
                           <td>' . htmlspecialchars($s['service_code']) . '</td>
                           <td>' . htmlspecialchars($s['shift']) . '</td>
-                          <td>' . ($s['shared_building'] ? '<span class="text-success fw-bold">Sí</span>' : '<span class="text-danger">No</span>') . '</td>
+                          <td>' . htmlspecialchars($s['shared_building']) . '</td>
                           <td>' . htmlspecialchars($s['cue_code']) . '</td>
                           <td>' . htmlspecialchars($s['address']) . '</td>
                           <td>' . htmlspecialchars($s['locality']) . '</td>
@@ -470,6 +475,96 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       if(showDelModal) showDelModal.hide();
     }
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const modifyModal = document.getElementById('modalModifyCategory');
+  const deleteModal = document.getElementById('modalDeleteCategory');
+
+  // Rellenar modal modificar al abrir
+  modifyModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-category-id');
+    const name = button.getAttribute('data-category-name');
+
+    document.getElementById('modifyCategoryId').value = id;
+    document.getElementById('modifyCategoryName').value = name;
+    document.getElementById('modifyCategoryDescription').value = ''; // Opcional, si quieres traer descripción real, tendrás que hacer fetch aparte
+
+    document.getElementById('modifyCategoryFeedback').textContent = '';
+  });
+
+  // Rellenar modal eliminar al abrir
+  deleteModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget;
+    const id = button.getAttribute('data-category-id');
+    const name = button.getAttribute('data-category-name');
+
+    document.getElementById('deleteCategoryId').value = id;
+    document.getElementById('deleteCategoryName').textContent = name;
+    document.getElementById('deleteCategoryFeedback').textContent = '';
+  });
+
+  // Enviar formulario modificar
+  document.getElementById('formModifyCategory').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const feedback = document.getElementById('modifyCategoryFeedback');
+
+    try {
+      const res = await fetch('category_update.php', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        feedback.style.color = 'green';
+        feedback.textContent = data.message;
+        // Recargar página para ver cambios o actualizar UI dinámicamente
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        feedback.style.color = 'red';
+        feedback.textContent = data.error || 'Error al modificar la categoría';
+      }
+    } catch (error) {
+      feedback.style.color = 'red';
+      feedback.textContent = 'Error de conexión';
+    }
+  });
+
+  // Enviar formulario eliminar
+  document.getElementById('formDeleteCategory').addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+    const feedback = document.getElementById('deleteCategoryFeedback');
+
+    try {
+      const res = await fetch('category_delete.php', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        feedback.style.color = 'green';
+        feedback.textContent = data.message;
+        // Recargar página para ver cambios o actualizar UI dinámicamente
+        setTimeout(() => location.reload(), 1000);
+      } else {
+        feedback.style.color = 'red';
+        feedback.textContent = data.error || 'Error al eliminar la categoría';
+      }
+    } catch (error) {
+      feedback.style.color = 'red';
+      feedback.textContent = 'Error de conexión';
+    }
+  });
+});
+
 </script>
 
 </body>

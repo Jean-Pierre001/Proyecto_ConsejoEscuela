@@ -51,11 +51,7 @@
             </div>
             <div class="col-md-6">
               <label class="form-label">¿Comparte edificio?</label>
-              <select name="shared_building" class="form-select">
-                <option value="">--</option>
-                <option value="Sí">Sí</option>
-                <option value="No">No</option>
-              </select>
+              <input type="text" name="shared_building" class="form-control" required>
             </div>
             <div class="col-md-6">
               <label class="form-label">CUE</label>
@@ -425,3 +421,53 @@
     </form>
   </div>
 </div>
+
+<!-- Modal modificar categoría -->
+<div class="modal fade" id="modalModifyCategory" tabindex="-1" aria-labelledby="modalModifyCategoryLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="formModifyCategory" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalModifyCategoryLabel">Modificar Categoría</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="id" id="modifyCategoryId">
+        <div class="mb-3">
+          <label for="modifyCategoryName" class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="modifyCategoryName" name="name" required maxlength="100">
+        </div>
+        <div class="mb-3">
+          <label for="modifyCategoryDescription" class="form-label">Descripción (Opcional)</label>
+          <textarea class="form-control" id="modifyCategoryDescription" name="description" rows="3"></textarea placeholder>
+        </div>
+        <div id="modifyCategoryFeedback" class="text-danger"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal eliminar categoría -->
+<div class="modal fade" id="modalDeleteCategory" tabindex="-1" aria-labelledby="modalDeleteCategoryLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form id="formDeleteCategory" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDeleteCategoryLabel">Eliminar Categoría</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" name="id" id="deleteCategoryId">
+        <p>¿Seguro que quieres eliminar la categoría <strong id="deleteCategoryName"></strong>?</p>
+        <div id="deleteCategoryFeedback" class="text-danger"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
