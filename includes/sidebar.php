@@ -16,13 +16,13 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="https://www.citypopulation.de/es/argentina/admin/buenos_aires/06602__patagones/" class="nav-link">
-        <i class="fa-solid fa-info"></i> Poblacion
+      <a href="inspectors.php" class="nav-link<?php echo ($currentPage == 'inspectors.php') ? ' active' : ''; ?>">
+        <i class="fa-solid fa-school"></i> Inspectores
       </a>
     </li>
     <li class="nav-item">
-      <a href="inspectors.php" class="nav-link<?php echo ($currentPage == 'inspectors.php') ? ' active' : ''; ?>">
-        <i class="fa-solid fa-school"></i> Inspectores
+      <a href="https://www.citypopulation.de/es/argentina/admin/buenos_aires/06602__patagones/" class="nav-link">
+        <i class="fa-solid fa-info"></i> Poblacion
       </a>
     </li>
   </ul>

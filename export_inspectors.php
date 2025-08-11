@@ -7,6 +7,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 
 if (!isset($_POST['ids']) || empty($_POST['ids'])) {
     die("No seleccionaste inspectores.");
@@ -22,6 +23,10 @@ $stmt = $pdo->prepare($sql);
 $stmt->execute($ids);
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+if (!$data) {
+    die("No se encontraron inspectores para exportar.");
+}
+
 $spreadsheet = new Spreadsheet();
 $sheet = $spreadsheet->getActiveSheet();
 
@@ -29,12 +34,7 @@ $sheet = $spreadsheet->getActiveSheet();
 $headers = ['ID', 'Nombre', 'Modalidad/Nivel', 'Teléfono', 'Email'];
 $columnLetters = ['A', 'B', 'C', 'D', 'E'];
 
-foreach ($headers as $key => $header) {
-    $cell = $columnLetters[$key] . '1';
-    $sheet->setCellValue($cell, $header);
-}
-
-// Estilo para encabezados
+// Estilos (copiados y adaptados del export escuelas)
 $headerStyle = [
     'font' => [
         'bold' => true,
@@ -57,20 +57,6 @@ $headerStyle = [
     ],
 ];
 
-$sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
-
-// Rellenar datos
-$row = 2;
-foreach ($data as $inspector) {
-    $sheet->setCellValue('A' . $row, $inspector['id']);
-    $sheet->setCellValue('B' . $row, $inspector['name']);
-    $sheet->setCellValue('C' . $row, $inspector['levelModality']);
-    $sheet->setCellValue('D' . $row, $inspector['phone']);
-    $sheet->setCellValue('E' . $row, $inspector['email']);
-    $row++;
-}
-
-// Estilo para datos (bordes y alineación)
 $dataStyle = [
     'borders' => [
         'allBorders' => [
@@ -86,6 +72,24 @@ $dataStyle = [
         'size' => 11,
     ],
 ];
+
+// Poner encabezados con estilo
+foreach ($headers as $i => $header) {
+    $cell = $columnLetters[$i] . '1';
+    $sheet->setCellValue($cell, $header);
+}
+$sheet->getStyle('A1:E1')->applyFromArray($headerStyle);
+
+// Poner datos
+$row = 2;
+foreach ($data as $inspector) {
+    $sheet->setCellValue('A' . $row, $inspector['id']);
+    $sheet->setCellValue('B' . $row, $inspector['name']);
+    $sheet->setCellValue('C' . $row, $inspector['levelModality']);
+    $sheet->setCellValue('D' . $row, $inspector['phone']);
+    $sheet->setCellValue('E' . $row, $inspector['email']);
+    $row++;
+}
 
 $sheet->getStyle("A2:E" . ($row - 1))->applyFromArray($dataStyle);
 

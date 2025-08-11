@@ -94,18 +94,34 @@ $inspectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
               </thead>
               <tbody>
                 <?php foreach ($inspectors as $inst): ?>
-                <tr>
-                  <td><input type="checkbox" name="ids[]" value="<?= htmlspecialchars($inst['id']) ?>"></td>
-                  <td><?= htmlspecialchars($inst['id']) ?></td>
-                  <td><?= htmlspecialchars($inst['name']) ?></td>
-                  <td><?= htmlspecialchars($inst['levelModality']) ?></td>
-                  <td><?= htmlspecialchars($inst['phone']) ?></td>
-                  <td><?= htmlspecialchars($inst['email']) ?></td>
-                  <td class="action-btns">
-                    <!-- Botones de editar/eliminar -->
-                  </td>
-                </tr>
-                <?php endforeach; ?>
+                  <tr>
+                    <td><input type="checkbox" name="ids[]" value="<?= htmlspecialchars($inst['id']) ?>"></td>
+                    <td><?= htmlspecialchars($inst['id']) ?></td>
+                    <td><?= htmlspecialchars($inst['name']) ?></td>
+                    <td><?= htmlspecialchars($inst['levelModality']) ?></td>
+                    <td><?= htmlspecialchars($inst['phone']) ?></td>
+                    <td><?= htmlspecialchars($inst['email']) ?></td>
+                    <td class="action-btns">
+                        <button type="button" class="btn btn-sm btn-primary me-1"
+                            data-bs-toggle="modal" data-bs-target="#modalEditInspector"
+                            data-id="<?= htmlspecialchars($inst['id']) ?>"
+                            data-name="<?= htmlspecialchars($inst['name']) ?>"
+                            data-levelmodality="<?= htmlspecialchars($inst['levelModality']) ?>"
+                            data-phone="<?= htmlspecialchars($inst['phone']) ?>"
+                            data-email="<?= htmlspecialchars($inst['email']) ?>"
+                        >
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button"  class="btn btn-sm btn-danger"
+                            data-bs-toggle="modal" data-bs-target="#modalDeleteInspector"
+                            data-id="<?= htmlspecialchars($inst['id']) ?>"
+                            data-name="<?= htmlspecialchars($inst['name']) ?>"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                  </tr>
+              <?php endforeach; ?>
               </tbody>
             </table>
         <?php endif; ?>
@@ -145,11 +161,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Seleccionar todos
-  document.getElementById('selectAll').addEventListener('change', function() {
-    document.querySelectorAll('input[name="ids[]"]').forEach(cb => cb.checked = this.checked);
+    // Seleccionar todos
+      document.getElementById('selectAll').addEventListener('change', function() {
+      document.querySelectorAll('input[name="ids[]"]').forEach(cb => cb.checked = this.checked);
+    });
   });
-});
+
 </script>
+
 </body>
 </html>

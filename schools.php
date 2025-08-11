@@ -74,34 +74,33 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       </select>
       <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
+<form id="exportForm" method="post" action="export_schools.php">
+  <div class="table-responsive mt-2">
+    <?php
+    $filterCategory = $_GET['nivel'] ?? '';
 
-<div class="table-responsive mt-2">
-  <?php
-  $filterCategory = $_GET['nivel'] ?? '';
+    $sqlCats = "SELECT * FROM categories";
+    $paramsCats = [];
+    if ($filterCategory !== '') {
+        $sqlCats .= " WHERE name = :catname";
+        $paramsCats[':catname'] = $filterCategory;
+    }
+    $sqlCats .= " ORDER BY name ASC";
+    $stmtCats = $pdo->prepare($sqlCats);
+    $stmtCats->execute($paramsCats);
+    $categories = $stmtCats->fetchAll(PDO::FETCH_ASSOC);
 
-  $sqlCats = "SELECT * FROM categories";
-  $paramsCats = [];
-  if ($filterCategory !== '') {
-      $sqlCats .= " WHERE name = :catname";
-      $paramsCats[':catname'] = $filterCategory;
-  }
-  $sqlCats .= " ORDER BY name ASC";
-  $stmtCats = $pdo->prepare($sqlCats);
-  $stmtCats->execute($paramsCats);
-  $categories = $stmtCats->fetchAll(PDO::FETCH_ASSOC);
-
-  if (!$categories) {
-      echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay categorías ni escuelas registradas.</div>';
-  } else {
-      foreach ($categories as $cat) {
+    if (!$categories) {
+        echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay categorías ni escuelas registradas.</div>';
+    } else {
+        foreach ($categories as $cat) {
             $catNameEsc = htmlspecialchars($cat['name']);
-            $catIdEsc = htmlspecialchars($cat['id']);
+            $catIdEsc = (int)$cat['id'];
 
             echo '<h3 class="mt-4 d-flex align-items-center justify-content-between">';
             echo '<span>' . $catNameEsc . '</span>';
 
-            // clase para poder ocultar botones 
-            $hideBtnsClass = ($cat['id'] == 7) ? ' d-none' : '';
+            $hideBtnsClass = ($catIdEsc === 7) ? ' d-none' : '';
 
             echo '<span class="' . $hideBtnsClass . '">';
             echo '<button class="btn btn-sm btn-primary me-1" 
@@ -122,110 +121,117 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
             echo '</span>';
 
             echo '</h3>';
-    
 
-          $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
-          $paramsSchools = [':catid' => $cat['id']];
+            $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
+            $paramsSchools = [':catid' => $catIdEsc];
 
-          if (!empty($_GET['nombre'])) {
-              $sqlSchools .= " AND service_code LIKE :nombre";
-              $paramsSchools[':nombre'] = '%' . $_GET['nombre'] . '%';
-          }
-          if (!empty($_GET['cue'])) {
-              $sqlSchools .= " AND cue_code LIKE :cue";
-              $paramsSchools[':cue'] = '%' . $_GET['cue'] . '%';
-          }
+            if (!empty($_GET['nombre'])) {
+                $sqlSchools .= " AND service_code LIKE :nombre";
+                $paramsSchools[':nombre'] = '%' . $_GET['nombre'] . '%';
+            }
+            if (!empty($_GET['cue'])) {
+                $sqlSchools .= " AND cue_code LIKE :cue";
+                $paramsSchools[':cue'] = '%' . $_GET['cue'] . '%';
+            }
 
-          $sqlSchools .= " ORDER BY service_code ASC";
-          $stmtSchools = $pdo->prepare($sqlSchools);
-          $stmtSchools->execute($paramsSchools);
-          $schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
+            $sqlSchools .= " ORDER BY service_code ASC";
+            $stmtSchools = $pdo->prepare($sqlSchools);
+            $stmtSchools->execute($paramsSchools);
+            $schools = $stmtSchools->fetchAll(PDO::FETCH_ASSOC);
 
-          if (count($schools) === 0) {
-              echo '<div class="schools-empty">No hay escuelas registradas en esta categoría.</div>';
-          } else {
-              echo '<table class="table table-striped table-hover align-middle">';
-              echo '<thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Turno</th>
-                        <th>Edificio Compartido</th>
-                        <th>CUE</th>
-                        <th>Dirección</th>
-                        <th>Localidad</th>
-                        <th>Teléfono</th>
-                        <th>Email</th>
-                        <th>Director/a</th>
-                        <th>Vicedirector/a</th>
-                        <th>Secretario/a</th>
-                        <th class="action-btns">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody>';
+            if (count($schools) === 0) {
+                echo '<div class="schools-empty">No hay escuelas registradas en esta categoría.</div>';
+            } else {
+                // Agregamos id único al checkbox selectAll y clase con id de categoría a checkboxes
+                echo '<table class="table table-striped table-hover align-middle">';
+                echo '<thead>
+                        <tr>
+                          <th><input type="checkbox" class="selectAllCategory" data-cat-id="' . $catIdEsc . '" id="selectAll_' . $catIdEsc . '"></th>
+                          <th>ID</th>
+                          <th>Nombre</th>
+                          <th>Turno</th>
+                          <th>Edificio Compartido</th>
+                          <th>CUE</th>
+                          <th>Dirección</th>
+                          <th>Localidad</th>
+                          <th>Teléfono</th>
+                          <th>Email</th>
+                          <th>Director/a</th>
+                          <th>Vicedirector/a</th>
+                          <th>Secretario/a</th>
+                          <th class="action-btns">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>';
 
-              foreach ($schools as $s) {
-                  $stmtAuth = $pdo->prepare("SELECT id, role, name, school_id, personal_phone, personal_email FROM authorities WHERE school_id = :school_id");
-                  $stmtAuth->execute([':school_id' => $s['id']]);
-                  $authorities = $stmtAuth->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($schools as $s) {
+                    $stmtAuth = $pdo->prepare("SELECT id, role, name, school_id, personal_phone, personal_email FROM authorities WHERE school_id = :school_id");
+                    $stmtAuth->execute([':school_id' => $s['id']]);
+                    $authorities = $stmtAuth->fetchAll(PDO::FETCH_ASSOC);
 
-                  $director = $viceDirector = $secretary = '';
+                    $director = $viceDirector = $secretary = '';
 
-                  foreach ($authorities as $auth) {
-                      $role = strtolower($auth['role']);
-                      if (strpos($role, 'director') !== false && $director === '') {
-                          $director = htmlspecialchars($auth['name']);
-                      } elseif ((strpos($role, 'vicedirector/a') !== false || strpos($role, 'vicedirector/a') !== false) && $viceDirector === '') {
-                          $viceDirector = htmlspecialchars($auth['name']);
-                      } elseif (strpos($role, 'secretario/a') !== false && $secretary === '') {
-                          $secretary = htmlspecialchars($auth['name']);
-                      }
-                  }
+                    foreach ($authorities as $auth) {
+                        $role = strtolower($auth['role']);
+                        if (strpos($role, 'director') !== false && $director === '') {
+                            $director = htmlspecialchars($auth['name']);
+                        } elseif ((strpos($role, 'vicedirector/a') !== false || strpos($role, 'vicedirector/a') !== false) && $viceDirector === '') {
+                            $viceDirector = htmlspecialchars($auth['name']);
+                        } elseif (strpos($role, 'secretario/a') !== false && $secretary === '') {
+                            $secretary = htmlspecialchars($auth['name']);
+                        }
+                    }
 
-                  // Escapamos JSON para pasar con seguridad en data-attributes
-                  $escuelaJSON = htmlspecialchars(json_encode($s, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
-                  $autoridadesJSON = htmlspecialchars(json_encode($authorities, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+                    $escuelaJSON = htmlspecialchars(json_encode($s, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+                    $autoridadesJSON = htmlspecialchars(json_encode($authorities, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
 
-                  echo '<tr>
-                          <td>' . htmlspecialchars($s['id']) . '</td>
-                          <td>' . htmlspecialchars($s['service_code']) . '</td>
-                          <td>' . htmlspecialchars($s['shift']) . '</td>
-                          <td>' . htmlspecialchars($s['shared_building']) . '</td>
-                          <td>' . htmlspecialchars($s['cue_code']) . '</td>
-                          <td>' . htmlspecialchars($s['address']) . '</td>
-                          <td>' . htmlspecialchars($s['locality']) . '</td>
-                          <td>' . htmlspecialchars($s['phone']) . '</td>
-                          <td>' . htmlspecialchars($s['email']) . '</td>
-                          <td>' . $director . '</td>
-                          <td>' . $viceDirector . '</td>
-                          <td>' . $secretary . '</td>
-                          <td class="action-btns">
-                            <button class="btn btn-sm btn-primary me-1"
-                              data-bs-toggle="modal" data-bs-target="#modalShowModify"
-                              data-school=\'' . $escuelaJSON . '\'
-                              data-authorities=\'' . $autoridadesJSON . '\'
-                            >
-                              <i class="fa fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger"
-                              data-bs-toggle="modal" data-bs-target="#modalShowDelete"
-                              data-school=\'' . $escuelaJSON . '\'
-                              data-authorities=\'' . $autoridadesJSON . '\'
-                            >
-                              <i class="fa fa-trash"></i>
-                            </button>
-                            <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
-                              <i class="fa fa-file"></i>
-                            </a>
-                          </td>
-                        </tr>';
-              }
-              echo '</tbody></table>';
-          }
-      }
-  }
-  ?>
-</div>
+                    // Agregamos clase con categoría para filtrar checkboxes
+                    echo '<tr>
+                            <td><input type="checkbox" name="ids[]" value="' . htmlspecialchars($s['id']) . '" class="checkboxCat_' . $catIdEsc . '"></td>
+                            <td>' . htmlspecialchars($s['id']) . '</td>
+                            <td>' . htmlspecialchars($s['service_code']) . '</td>
+                            <td>' . htmlspecialchars($s['shift']) . '</td>
+                            <td>' . htmlspecialchars($s['shared_building']) . '</td>
+                            <td>' . htmlspecialchars($s['cue_code']) . '</td>
+                            <td>' . htmlspecialchars($s['address']) . '</td>
+                            <td>' . htmlspecialchars($s['locality']) . '</td>
+                            <td>' . htmlspecialchars($s['phone']) . '</td>
+                            <td>' . htmlspecialchars($s['email']) . '</td>
+                            <td>' . $director . '</td>
+                            <td>' . $viceDirector . '</td>
+                            <td>' . $secretary . '</td>
+                            <td class="action-btns">
+                              <button type="button" class="btn btn-sm btn-primary me-1"
+                                data-bs-toggle="modal" data-bs-target="#modalShowModify"
+                                data-school=\'' . $escuelaJSON . '\'
+                                data-authorities=\'' . $autoridadesJSON . '\'
+                              >
+                                <i class="fa fa-edit"></i>
+                              </button>
+                              <button type="button" class="btn btn-sm btn-danger"
+                                data-bs-toggle="modal" data-bs-target="#modalShowDelete"
+                                data-school=\'' . $escuelaJSON . '\'
+                                data-authorities=\'' . $autoridadesJSON . '\'
+                              >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                              <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
+                                <i class="fa fa-file"></i>
+                              </a>
+                            </td>
+                          </tr>';
+                }
+                echo '</tbody></table>';
+            }
+        }
+    }
+    ?>
+
+    <button type="submit" class="btn btn-warning mt-2">
+          <i class="fa fa-file-excel"></i> Exportar seleccionados a Excel
+    </button>
+</form>
+
 
 
 <?php include 'includes/footer.php'; ?>
@@ -562,6 +568,15 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     }
   });
 });
+
+  document.querySelectorAll('.selectAllCategory').forEach(selectAllCheckbox => {
+    selectAllCheckbox.addEventListener('change', function() {
+      const catId = this.getAttribute('data-cat-id');
+      const checkboxes = document.querySelectorAll('.checkboxCat_' + catId);
+      checkboxes.forEach(cb => cb.checked = this.checked);
+    });
+  });
+
 
 </script>
 
