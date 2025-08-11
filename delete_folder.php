@@ -36,16 +36,22 @@ function sanitizeFolderName($name) {
 $folderName = basename($folder);
 $sanitizedFolderName = sanitizeFolderName($folderName);
 
-// Verificar si el nombre de la carpeta corresponde a alguna escuela en la DB
-$sql = "SELECT COUNT(*) FROM schools WHERE
-        REPLACE(REPLACE(REPLACE(schoolName, ' ', '_'), '/', '_'), '\\\\', '_') = :folderName";
-$stmt = $pdo->prepare($sql);
+// Verificar si el nombre corresponde a una escuela
+$sqlSchool = "SELECT COUNT(*) FROM schools 
+              WHERE REPLACE(REPLACE(REPLACE(schoolName, ' ', '_'), '/', '_'), '\\\\', '_') = :folderName";
+$stmt = $pdo->prepare($sqlSchool);
 $stmt->execute(['folderName' => $sanitizedFolderName]);
-$count = $stmt->fetchColumn();
+$countSchool = $stmt->fetchColumn();
 
-if ($count > 0) {
-    // La carpeta corresponde a una escuela, no permitir eliminar
-    echo json_encode(['error' => 'No se puede eliminar la carpeta porque corresponde a una escuela registrada.']);
+// Verificar si el nombre corresponde a una categoría
+$sqlCategory = "SELECT COUNT(*) FROM categories 
+                WHERE REPLACE(REPLACE(REPLACE(name, ' ', '_'), '/', '_'), '\\\\', '_') = :folderName";
+$stmt = $pdo->prepare($sqlCategory);
+$stmt->execute(['folderName' => $sanitizedFolderName]);
+$countCategory = $stmt->fetchColumn();
+
+if ($countSchool > 0 || $countCategory > 0) {
+    echo json_encode(['error' => 'No se puede eliminar la carpeta porque corresponde a un registro de escuela o categoría en la base de datos.']);
     exit;
 }
 

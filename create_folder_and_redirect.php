@@ -11,7 +11,13 @@ if (!isset($_GET['id'])) {
 
 $id = intval($_GET['id']);
 
-$stmt = $pdo->prepare("SELECT schoolName FROM schools WHERE id = ?");
+// Obtener nombre de la escuela y de la categoría
+$stmt = $pdo->prepare("
+    SELECT s.schoolName, c.name AS categoryName
+    FROM schools s
+    JOIN categories c ON s.category_id = c.id
+    WHERE s.id = ?
+");
 $stmt->execute([$id]);
 $school = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -20,24 +26,27 @@ if (!$school) {
     exit;
 }
 
-$schoolName = $school['schoolName'];
+$schoolName   = $school['schoolName'];
+$categoryName = $school['categoryName'];
 
-
-$folderName = $schoolName;
-
+// Base uploads
 $basePath = __DIR__ . '/uploads/';
 
-if (!is_dir($basePath)) {
-    mkdir($basePath, 0755, true);
+// Ruta final: uploads/Categoria/Escuela
+$categoryPath = $basePath . $categoryName;
+$fullPath     = $categoryPath . '/' . $schoolName;
+
+// Crear carpeta de la categoría si no existe
+if (!is_dir($categoryPath)) {
+    mkdir($categoryPath, 0755, true);
 }
 
-$fullPath = $basePath . $folderName;
-
+// Verificar si ya existe carpeta de la escuela
 if (file_exists($fullPath)) {
     header('Location: schools.php?id=' . $id . '&error=folder_exists');
     exit;
 } else {
     mkdir($fullPath, 0755, true);
-    header('Location: schools.php?id=' . $id . '&created_folder=' . urlencode($folderName));
+    header('Location: schools.php?id=' . $id . '&created_folder=' . urlencode($schoolName));
     exit;
 }

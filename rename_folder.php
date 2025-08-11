@@ -36,26 +36,38 @@ function sanitizeFolderName($name) {
 
 $sanitizedNewName = sanitizeFolderName($newName);
 
-// EXTRA: obtener el nombre original de la carpeta (sin path)
-// Por ejemplo si $oldPath es "folder1/subfolder", sacamos solo "subfolder"
+// Obtener el nombre original de la carpeta (sin path)
 $oldFolderName = basename($oldPath);
 $sanitizedOldName = sanitizeFolderName($oldFolderName);
 
-// Verificar si el nombre original corresponde a una escuela en DB
-$sql = "SELECT COUNT(*) FROM schools WHERE
-        REPLACE(REPLACE(REPLACE(schoolName, ' ', '_'), '/', '_'), '\\\\', '_') = :oldName";
+// --- Verificar si el nombre original corresponde a una escuela o categoría ---
+$sql = "SELECT COUNT(*) FROM (
+            SELECT id, REPLACE(REPLACE(REPLACE(schoolName, ' ', '_'), '/', '_'), '\\\\', '_') AS folderName
+            FROM schools
+            UNION ALL
+            SELECT id, REPLACE(REPLACE(REPLACE(name, ' ', '_'), '/', '_'), '\\\\', '_') AS folderName
+            FROM categories
+        ) AS combined
+        WHERE folderName = :folderName";
 $stmt = $pdo->prepare($sql);
-$stmt->execute(['oldName' => $sanitizedOldName]);
+$stmt->execute(['folderName' => $sanitizedOldName]);
 $countOldName = $stmt->fetchColumn();
 
 if ($countOldName > 0) {
-    // La carpeta original corresponde a una escuela => no se puede renombrar
-    echo json_encode(['error' => 'No se puede modificar el nombre de esta carpeta porque corresponde a una escuela registrada.']);
+    echo json_encode(['error' => 'No se puede modificar el nombre de esta carpeta porque corresponde a una escuela o categoría registrada.']);
     exit;
 }
 
-// Continuar con validación y renombrado normal
+// --- Verificar si el nuevo nombre coincide con una escuela o categoría ---
+$stmt->execute(['folderName' => $sanitizedNewName]);
+$countNewName = $stmt->fetchColumn();
 
+if ($countNewName > 0) {
+    echo json_encode(['error' => 'No se puede usar ese nombre porque corresponde a una escuela o categoría registrada.']);
+    exit;
+}
+
+// Validar carpeta original en disco
 $oldFullPath = realpath($baseDir . $oldPath);
 $baseDirReal = realpath($baseDir);
 
