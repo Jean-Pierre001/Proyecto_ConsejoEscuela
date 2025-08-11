@@ -33,20 +33,21 @@ $inspectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="es">
-<?php $pageTitle = 'Listado de Escuelas'; include 'includes/header.php'; ?>
+<?php $pageTitle = 'Listado de Inspectores'; include 'includes/header.php'; ?>
 <style>
   body, html { height: 100%; margin: 0; background: #f8f9fa; }
   .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: 12px; }
   .action-btns { min-width: 120px; }
   .schools-empty { text-align: center; color: #888; font-size: 1.1rem; margin-top: 2rem; }
   .btn-group-top { margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  #i-inspectors { color: #007bff; margin-right: 1px; }
 </style>
 <?php include 'includes/navbar.php'; ?>
 <div class="d-flex">
   <?php include 'includes/sidebar.php'; ?>
   <main class="main-container flex-grow-1 p-4">
 
-    <h3><i class="fa-solid fa-school"></i> Listado de Escuelas</h3>
+    <h3><i id="i-inspectors" class="fa-solid fa-user"></i> Listado de Inspectores</h3>
 
     <!-- Botones de agregar agrupados -->
     <div class="btn-group-top">
