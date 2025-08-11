@@ -1,6 +1,6 @@
 <?php
-include 'includes/session.php';
-include 'includes/conn.php';
+include '../includes/session.php';
+include '../includes/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$name || !$role || !$school_id) {
         $_SESSION['error'] = "Complete todos los campos obligatorios.";
-        header('Location: schools.php');
+        header('Location: ../schools.php');
         exit;
     }
 
@@ -25,9 +25,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     $_SESSION['success'] = "Autoridad agregada correctamente.";
-    header('Location: schools.php');
+    header('Location: ../schools.php');
     exit;
 }
 
-header('Location: schools.php');
+header('Location: ../schools.php');
 exit;

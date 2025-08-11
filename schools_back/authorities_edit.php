@@ -1,12 +1,12 @@
 <?php
-include 'includes/session.php';
-include 'includes/conn.php';
+include '../includes/session.php';
+include '../includes/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = intval($_POST['id'] ?? 0);
     if (!$id) {
         $_SESSION['error'] = "ID inválido.";
-        header('Location: schools.php');
+        header('Location: ../schools.php');
         exit;
     }
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (!$name || !$role || !$school_id) {
             $_SESSION['error'] = "Complete todos los campos obligatorios."; 
-            header('Location: schools.php');
+            header('Location: ../schools.php');
             exit;
         }
 
@@ -34,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         $_SESSION['success'] = "Autoridad actualizada correctamente.";
-        header('Location: schools.php');
+        header('Location: ../schools.php');
         exit;
     }
 }
 
-header('Location: schools.php');
+header('Location: ../schools.php');
 exit;

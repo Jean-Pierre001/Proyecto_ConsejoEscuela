@@ -20,5 +20,10 @@
         <i class="fa-solid fa-info"></i> Poblacion
       </a>
     </li>
+    <li class="nav-item">
+      <a href="inspectors.php" class="nav-link<?php echo ($currentPage == 'inspectors.php') ? ' active' : ''; ?>">
+        <i class="fa-solid fa-school"></i> Inspectores
+      </a>
+    </li>
   </ul>
 </div>

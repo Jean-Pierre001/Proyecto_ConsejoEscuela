@@ -1,9 +1,9 @@
 <?php
-include 'includes/session.php';
-include 'includes/conn.php';
+include '../includes/session.php';
+include '../includes/conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: schools.php');
+    header('Location: ../schools.php');
     exit;
 }
 
@@ -23,7 +23,7 @@ $email           = trim($_POST['email'] ?? null);
 
 // Validación básica
 if ($schoolName === '' || $shift === '' || $service_code === '' || $cue_code === '' || $address === '' || $locality === '') {
-    header('Location: schools.php?error=missing_data');
+    header('Location: ../schools.php?error=missing_data');
     exit;
 }
 
@@ -63,9 +63,9 @@ try {
     ]);
 } catch (Exception $e) {
     // Registrar error si quieres
-    header('Location: schools.php?error=insert_failed');
+    header('Location: ../schools.php?error=insert_failed');
     exit;
 }
 
-header('Location: schools.php?created=1');
+header('Location: ../schools.php?created=1');
 exit;

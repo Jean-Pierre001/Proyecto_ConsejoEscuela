@@ -17,7 +17,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     font-size: 1.1rem;
     margin-top: 2rem;
   }
-  .fa-school { color: #007bff; margin-right: 8px; }
+  #i-school { color: #007bff; margin-right: 1px; }
   .btn-group-top {
     margin-bottom: 1.5rem;
     display: flex;
@@ -26,19 +26,19 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
   }
 </style>
 <?php include 'includes/navbar.php'; ?>
-<div class="d-flex">
+<div class="d-flex flex-grow-1">
   <?php include 'includes/sidebar.php'; ?>
   <main class="main-container flex-grow-1 p-4">
 
-    <h3><i class="fa-solid fa-school"></i> Listado de Escuelas</h3>
+    <h3><i id="i-school" class="fa-solid fa-school"></i> Listado de Escuelas</h3>
 
     <!-- Botones de agregar agrupados -->
     <div class="btn-group-top">
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddSchool">
-        <i class="fa fa-plus"></i> Agregar Escuela
-      </button>
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddCategory">
         <i class="fa fa-plus"></i> Agregar Categoría
+      </button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddSchool">
+        <i class="fa fa-plus"></i> Agregar Escuela
       </button>
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddAuthority">
         <i class="fa fa-plus"></i> Agregar Autoridad
@@ -60,8 +60,8 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     <!-- Filtros -->
     <form method="get" class="d-flex gap-2 flex-wrap mb-3 align-items-center">
       <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" style="max-width:180px;" value="<?= htmlspecialchars($_GET['nombre'] ?? '') ?>">
-      <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" style="max-width:120px;" value="<?= htmlspecialchars($_GET['cue'] ?? '') ?>">
-      <select name="nivel" class="form-select" style="max-width:140px;">
+      <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" style="max-width:180px;" value="<?= htmlspecialchars($_GET['cue'] ?? '') ?>">
+      <select name="nivel" class="form-select" style="max-width:180px;">
         <option value="">Todos los niveles</option>
         <?php
         $stmtCatFilter = $pdo->query("SELECT name FROM categories ORDER BY name ASC");
@@ -101,7 +101,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
             echo '<span>' . $catNameEsc . '</span>';
 
             // clase para poder ocultar botones 
-            $hideBtnsClass = ($cat['id'] == 17) ? ' d-none' : '';
+            $hideBtnsClass = ($cat['id'] == 7) ? ' d-none' : '';
 
             echo '<span class="' . $hideBtnsClass . '">';
             echo '<button class="btn btn-sm btn-primary me-1" 
@@ -122,8 +122,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
             echo '</span>';
 
             echo '</h3>';
-        
-
+    
 
           $sqlSchools = "SELECT * FROM schools WHERE category_id = :catid";
           $paramsSchools = [':catid' => $cat['id']];

@@ -1,7 +1,7 @@
-<!-- Modal Agregar Escuela -->
+<!-- Modal Agregar Inspector -->
 <div class="modal fade" id="modalAddSchool" tabindex="-1" aria-labelledby="modalAddSchoolLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl">
-    <form method="post" action="schools_back/school_add.php">
+    <form method="post" action="school_add.php">
       <div class="modal-content">
         <div class="modal-header bg-success text-white">
           <h5 class="modal-title" id="modalAddSchoolLabel"><i class="fa fa-plus"></i> Agregar Escuela</h5>
@@ -220,7 +220,7 @@
 <!-- Modal Modificar Autoridad -->
 <div class="modal fade" id="modalModifyAuthority" tabindex="-1" aria-labelledby="modalModifyAuthorityLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="post" action="schools_back/authorities_edit.php" class="modal-content">
+    <form method="post" action="authorities_edit.php" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalModifyAuthorityLabel">Modificar Autoridad</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -328,7 +328,7 @@
 <!-- Modal Eliminar Autoridad -->
 <div class="modal fade" id="modalDeleteAuthority" tabindex="-1" aria-labelledby="modalDeleteAuthorityLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="post" action="schools_back/authorities_delete.php" class="modal-content">
+    <form method="post" action="authorities_delete.php" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalDeleteAuthorityLabel">Eliminar Autoridad</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -349,7 +349,7 @@
 <!-- Modal Agregar Categoría -->
 <div class="modal fade" id="modalAddCategory" tabindex="-1" aria-labelledby="modalAddCategoryLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="post" action="schools_back/categories_add.php" class="modal-content">
+    <form method="post" action="categories_add.php" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalAddCategoryLabel">Agregar Categoría</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -371,7 +371,7 @@
 <!-- Modal Agregar Autoridad -->
 <div class="modal fade" id="modalAddAuthority" tabindex="-1" aria-labelledby="modalAddAuthorityLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form method="post" action="schools_back/authorities_add.php" class="modal-content">
+    <form method="post" action="authorities_add.php" class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalAddAuthorityLabel">Agregar Autoridad</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
