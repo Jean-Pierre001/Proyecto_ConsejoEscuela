@@ -34,13 +34,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     <!-- Botones de agregar agrupados -->
     <div class="btn-group-top">
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddSchool">
-        <i class="fa fa-plus"></i> Agregar Escuela
-      </button>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddCategory">
-        <i class="fa fa-plus"></i> Agregar Categoría
-      </button>
-      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddAuthority">
-        <i class="fa fa-plus"></i> Agregar Autoridad
+        <i class="fa fa-plus"></i> Agregar inspector
       </button>
     </div>
 
@@ -74,63 +68,61 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
       <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
 
-<div class="table-responsive mt-2">
-<?php
-// Consulta a la nueva tabla
-$sqlinspectors = "SELECT id, name, levelModality, phone, email FROM inspectors ORDER BY name ASC";
-$stmtinspectors = $pdo->prepare($sqlinspectors);
-$stmtinspectors->execute();
-$inspectors = $stmtinspectors->fetchAll(PDO::FETCH_ASSOC);
+    <div class="table-responsive mt-2">
+    <?php
+    // Consulta a la nueva tabla
+    $sqlinspectors = "SELECT id, name, levelModality, phone, email FROM inspectors ORDER BY name ASC";
+    $stmtinspectors = $pdo->prepare($sqlinspectors);
+    $stmtinspectors->execute();
+    $inspectors = $stmtinspectors->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$inspectors) {
-    echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay registros en la tabla de instituciones.</div>';
-} else {
-    echo '<table class="table table-striped table-hover align-middle">';
-    echo '<thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Modalidad/Nivel</th>
-                <th>Teléfono</th>
-                <th>Email</th>
-                <th class="action-btns">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>';
-    foreach ($inspectors as $inst) {
-        echo '<tr>
-                <td>' . htmlspecialchars($inst['id']) . '</td>
-                <td>' . htmlspecialchars($inst['name']) . '</td>
-                <td>' . htmlspecialchars($inst['levelModality']) . '</td>
-                <td>' . htmlspecialchars($inst['phone']) . '</td>
-                <td>' . htmlspecialchars($inst['email']) . '</td>
-                <td class="action-btns">
-                    <button class="btn btn-sm btn-primary me-1"
-                        data-bs-toggle="modal" data-bs-target="#modalEditInstitution"
-                        data-id="' . htmlspecialchars($inst['id']) . '"
-                        data-name="' . htmlspecialchars($inst['name']) . '"
-                        data-levelmodality="' . htmlspecialchars($inst['levelModality']) . '"
-                        data-phone="' . htmlspecialchars($inst['phone']) . '"
-                        data-email="' . htmlspecialchars($inst['email']) . '"
-                    >
-                        <i class="fa fa-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-danger"
-                        data-bs-toggle="modal" data-bs-target="#modalDeleteInstitution"
-                        data-id="' . htmlspecialchars($inst['id']) . '"
-                        data-name="' . htmlspecialchars($inst['name']) . '"
-                    >
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-              </tr>';
+    if (!$inspectors) {
+        echo '<div class="schools-empty"><i class="fa-solid fa-school"></i> No hay registros en la tabla de instituciones.</div>';
+    } else {
+        echo '<table class="table table-striped table-hover align-middle">';
+        echo '<thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Modalidad/Nivel</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th class="action-btns">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>';
+        foreach ($inspectors as $inst) {
+            echo '<tr>
+                    <td>' . htmlspecialchars($inst['id']) . '</td>
+                    <td>' . htmlspecialchars($inst['name']) . '</td>
+                    <td>' . htmlspecialchars($inst['levelModality']) . '</td>
+                    <td>' . htmlspecialchars($inst['phone']) . '</td>
+                    <td>' . htmlspecialchars($inst['email']) . '</td>
+                    <td class="action-btns">
+                        <button class="btn btn-sm btn-primary me-1"
+                            data-bs-toggle="modal" data-bs-target="#modalEditInstitution"
+                            data-id="' . htmlspecialchars($inst['id']) . '"
+                            data-name="' . htmlspecialchars($inst['name']) . '"
+                            data-levelmodality="' . htmlspecialchars($inst['levelModality']) . '"
+                            data-phone="' . htmlspecialchars($inst['phone']) . '"
+                            data-email="' . htmlspecialchars($inst['email']) . '"
+                        >
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-danger"
+                            data-bs-toggle="modal" data-bs-target="#modalDeleteInstitution"
+                            data-id="' . htmlspecialchars($inst['id']) . '"
+                            data-name="' . htmlspecialchars($inst['name']) . '"
+                        >
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                  </tr>';
+        }
+        echo '</tbody></table>';
     }
-    echo '</tbody></table>';
-}
-?>
-</div>
-
-
+    ?>
+    </div>
 
 <?php include 'includes/footer.php'; ?>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
