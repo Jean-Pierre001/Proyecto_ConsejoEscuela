@@ -144,83 +144,78 @@
       <div class="modal-body">
         <input type="hidden" id="edit-id" name="id">
 
-        <div class="mb-3">
-          <label for="edit-schoolName" class="form-label">Nombre</label>
-          <input type="text" id="edit-schoolName" name="schoolName" class="form-control" required>
-        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="edit-schoolName" class="form-label">Nombre</label>
+            <input type="text" id="edit-schoolName" name="schoolName" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-category_id" class="form-label">Categoría</label>
+            <select id="edit-category_id" name="category_id" class="form-select" required>
+              <option value="">Seleccione categoría</option>
+              <?php
+              $cats = $pdo->query("SELECT id, name FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
+              foreach($cats as $c){
+                echo '<option value="'.htmlspecialchars($c['id']).'">'.htmlspecialchars($c['name']).'</option>';
+              }
+              ?>
+            </select>
+          </div>
 
-        <div class="mb-3">
-          <label for="edit-category_id" class="form-label">Categoría</label>
-          <select id="edit-category_id" name="category_id" class="form-select" required>
-            <option value="">Seleccione categoría</option>
-            <?php
-            // Cargar categorías para el select
-            $cats = $pdo->query("SELECT id, name FROM categories ORDER BY name ASC")->fetchAll(PDO::FETCH_ASSOC);
-            foreach($cats as $c){
-              echo '<option value="'.htmlspecialchars($c['id']).'">'.htmlspecialchars($c['name']).'</option>';
-            }
-            ?>
-          </select>
-        </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-is_disadvantaged" class="form-label">¿Desfavorecida?</label>
+            <select id="edit-is_disadvantaged" name="is_disadvantaged" class="form-select" required>
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-shift" class="form-label">Turno</label>
+            <input type="text" id="edit-shift" name="shift" class="form-control" required>
+          </div>
 
-        <div class="mb-3">
-          <label for="edit-is_disadvantaged" class="form-label">¿Desfavorecida?</label>
-          <select id="edit-is_disadvantaged" name="is_disadvantaged" class="form-select" required>
-            <option value="1">Sí</option>
-            <option value="0">No</option>
-          </select>
-        </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-service_code" class="form-label">Código de Servicio</label>
+            <input type="text" id="edit-service_code" name="service_code" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-shared_building" class="form-label">Edificio Compartido</label>
+            <input type="text" id="edit-shared_building" name="shared_building" class="form-control">
+          </div>
 
-        <div class="mb-3">
-          <label for="edit-shift" class="form-label">Turno</label>
-          <input type="text" id="edit-shift" name="shift" class="form-control" required>
-        </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-cue_code" class="form-label">CUE</label>
+            <input type="text" id="edit-cue_code" name="cue_code" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-address" class="form-label">Dirección</label>
+            <input type="text" id="edit-address" name="address" class="form-control" required>
+          </div>
 
-        <div class="mb-3">
-          <label for="edit-service_code" class="form-label">Código de Servicio</label>
-          <input type="text" id="edit-service_code" name="service_code" class="form-control" required>
-        </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-locality" class="form-label">Localidad</label>
+            <input type="text" id="edit-locality" name="locality" class="form-control" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="edit-phone" class="form-label">Teléfono</label>
+            <input type="text" id="edit-phone" name="phone" class="form-control">
+          </div>
 
-        <div class="mb-3">
-          <label for="edit-shared_building" class="form-label">Edificio Compartido</label>
-          <input type="text" id="edit-shared_building" name="shared_building" class="form-control">
-          <!-- Si querés que sea sí/no usa un select como antes, pero el campo es varchar(255) -->
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-cue_code" class="form-label">CUE</label>
-          <input type="text" id="edit-cue_code" name="cue_code" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-address" class="form-label">Dirección</label>
-          <input type="text" id="edit-address" name="address" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-locality" class="form-label">Localidad</label>
-          <input type="text" id="edit-locality" name="locality" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-phone" class="form-label">Teléfono</label>
-          <input type="text" id="edit-phone" name="phone" class="form-control">
-        </div>
-
-        <div class="mb-3">
-          <label for="edit-email" class="form-label">Email</label>
-          <input type="email" id="edit-email" name="email" class="form-control">
+          <div class="col-md-6 mb-3">
+            <label for="edit-email" class="form-label">Email</label>
+            <input type="email" id="edit-email" name="email" class="form-control">
+          </div>
         </div>
 
       </div>
       <div class="modal-footer">
         <button type="submit" name="update" class="btn btn-primary">Guardar Cambios</button>
-        <button type="submit" name="delete_school" class="btn btn-danger" onclick="return confirm('¿Seguro que querés eliminar esta escuela? Esta acción es irreversible.')">Eliminar Escuela</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
       </div>
     </form>
   </div>
 </div>
+
 
 <!-- Modal Modificar Autoridad -->
 <div class="modal fade" id="modalModifyAuthority" tabindex="-1" aria-labelledby="modalModifyAuthorityLabel" aria-hidden="true">

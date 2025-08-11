@@ -10,14 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Función para sanear nombres igual que en las carpetas
-    function sanitizeFolderName($name) {
-        $name = trim($name);
-        $name = preg_replace('/[\/\\\\:*?"<>|]/', '_', $name);
-        $name = preg_replace('/[\s_]+/', '_', $name);
-        return $name;
-    }
-
     try {
         if (isset($_POST['update'])) {
             // Recibir datos del formulario
@@ -56,8 +48,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
 
-            $oldNameSanitized = sanitizeFolderName($school['schoolName']);
-            $newNameSanitized = sanitizeFolderName($schoolName);
+            // Obtener nombre de la categoría actual
+            $stmtCatOld = $pdo->prepare("SELECT c.name FROM schools s JOIN categories c ON s.category_id = c.id WHERE s.id = ?");
+            $stmtCatOld->execute([$id]);
+            $oldCategoryName = $stmtCatOld->fetchColumn();
+
+            if (!$oldCategoryName) {
+                $_SESSION['error'] = "Categoría actual no encontrada.";
+                header('Location: schools.php');
+                exit;
+            }
+
+            // Obtener nombre de la categoría nueva
+            $stmtCatNew = $pdo->prepare("SELECT name FROM categories WHERE id = ?");
+            $stmtCatNew->execute([$category_id]);
+            $newCategoryName = $stmtCatNew->fetchColumn();
+
+            if (!$newCategoryName) {
+                $_SESSION['error'] = "Categoría nueva no encontrada.";
+                header('Location: schools.php');
+                exit;
+            }
 
             // Actualizar escuela en la base de datos
             $stmt = $pdo->prepare("UPDATE schools SET 
@@ -89,22 +100,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':id' => $id
             ]);
 
-            // --- Lógica para renombrar carpeta en uploads ---
+            // --- Lógica para renombrar/mover carpeta en uploads ---
             $baseDir = __DIR__ . '/uploads/';
-            $oldPath = $baseDir . $oldNameSanitized;
-            $newPath = $baseDir . $newNameSanitized;
 
-            if (is_dir($oldPath)) {
-                // Solo renombrar si el nuevo nombre es diferente
-                if ($oldNameSanitized !== $newNameSanitized) {
-                    if (!file_exists($newPath)) {
-                        if (!rename($oldPath, $newPath)) {
+            $oldFolder = $baseDir . $oldCategoryName . DIRECTORY_SEPARATOR . $school['schoolName'];
+            $newFolder = $baseDir . $newCategoryName . DIRECTORY_SEPARATOR . $schoolName;
+
+            if (is_dir($oldFolder)) {
+                // Crear carpeta de la nueva categoría si no existe
+                if (!is_dir($baseDir . $newCategoryName)) {
+                    mkdir($baseDir . $newCategoryName, 0777, true);
+                }
+
+                // Renombrar/mover solo si cambió el nombre o la categoría
+                if ($oldFolder !== $newFolder) {
+                    if (!file_exists($newFolder)) {
+                        if (!rename($oldFolder, $newFolder)) {
                             $_SESSION['error'] = "Escuela actualizada, pero no se pudo renombrar la carpeta.";
                             header('Location: schools.php');
                             exit;
                         }
                     } else {
-                        $_SESSION['error'] = "Escuela actualizada, pero ya existe una carpeta con el nuevo nombre.";
+                        $_SESSION['error'] = "Escuela actualizada, pero ya existe una carpeta con el nuevo nombre y categoría.";
                         header('Location: schools.php');
                         exit;
                     }

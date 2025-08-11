@@ -322,7 +322,6 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
 
   });
 
-
     // Abrir modal modificar escuela y cargar datos al botón modificar escuela
     document.getElementById('btn-modify-school').addEventListener('click', function () {
       var schoolData = this.dataset.school;

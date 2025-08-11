@@ -9,15 +9,13 @@ include 'includes/conn.php';
 // Recibir ID, primero POST, luego GET
 $id = 0;
 if (isset($_POST['id'])) {
-    header('Location: schools.php');
     $id = intval($_POST['id']);
-    echo "ID recibido por POST: $id<br>";
 } elseif (isset($_GET['id'])) {
-    header('Location: schools.php');
     $id = intval($_GET['id']);
-    echo "ID recibido por GET: $id<br>";
 } else {
     echo "No se recibió ID por POST ni GET.<br>";
+    echo '<a href="schools.php">Volver a listado</a>';
+    exit;
 }
 
 if ($id <= 0) {
@@ -27,7 +25,12 @@ if ($id <= 0) {
 }
 
 try {
-    $stmt = $pdo->prepare("SELECT schoolName FROM schools WHERE id = ?");
+    // Consultar nombre escuela y nombre categoría con JOIN
+    $stmt = $pdo->prepare("
+        SELECT s.schoolName, c.name AS categoryName 
+        FROM schools s 
+        JOIN categories c ON s.category_id = c.id 
+        WHERE s.id = ?");
     if (!$stmt->execute([$id])) {
         $errorInfo = $stmt->errorInfo();
         echo "Error en consulta SELECT: " . $errorInfo[2];
@@ -35,15 +38,18 @@ try {
     }
 
     $school = $stmt->fetch(PDO::FETCH_ASSOC);
-
     if (!$school) {
         echo "No se encontró la escuela con id $id.<br>";
+        echo '<a href="schools.php">Volver a listado</a>';
         exit;
     }
 
     $schoolName = $school['schoolName'];
+    $categoryName = $school['categoryName'];
     echo "Escuela encontrada: $schoolName<br>";
+    echo "Categoría: $categoryName<br>";
 
+    // Eliminar la escuela de la base de datos
     $stmtDel = $pdo->prepare("DELETE FROM schools WHERE id = ?");
     if (!$stmtDel->execute([$id])) {
         $errorInfo = $stmtDel->errorInfo();
@@ -52,10 +58,9 @@ try {
     }
     echo "Escuela eliminada correctamente.<br>";
 
-    // Eliminar carpeta asociada
-    $safeFolderName =  $schoolName;
+    // Construir ruta carpeta escuela dentro de su categoría (sin saneo)
     $baseDir = __DIR__ . '/uploads/';
-    $folderPath = $baseDir . $safeFolderName;
+    $folderPath = $baseDir . $categoryName . DIRECTORY_SEPARATOR . $schoolName;
 
     if (is_dir($folderPath)) {
         echo "Eliminando carpeta: $folderPath<br>";
@@ -68,7 +73,6 @@ try {
 
     // Redirigir después de 3 segundos para que se vean los mensajes
     header("refresh:3;url=schools.php");
-
     exit;
 
 } catch (Exception $e) {
