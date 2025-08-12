@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.0.0",
+    "animate.css": "^4.1.1",
+    "bootstrap": "^5.3.7",
+    "jquery": "^3.7.1",
+    "jquery.fancytree": "^2.38.5",
+    "sweetalert2": "^11.22.3",
+    "toastr": "^2.1.4"
+  }
+}

@@ -11,11 +11,8 @@ Browser testing provided by BrowserStack.
 - Demo can be found at http://codeseven.github.io/toastr/demo.html
 - [Demo using FontAwesome icons with toastr](http://plnkr.co/edit/6W9URNyyp2ItO4aUWzBB?p=preview)
 
-## CDNs
-[![cdnjs](https://img.shields.io/cdnjs/v/toastr.js.svg)](https://cdnjs.com/libraries/toastr.js)
-[![jsdelivr](https://data.jsdelivr.com/v1/package/npm/toastr/badge)](https://www.jsdelivr.com/package/npm/toastr)
-
-Toastr is hosted at cdnjs and jsdelivr
+## [CDNjs](https://cdnjs.com/libraries/toastr.js)
+Toastr is hosted at CDN JS
 
 #### Debug
 - [//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css](//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css)
@@ -39,11 +36,6 @@ bower install toastr
 #### [npm](https://www.npmjs.com/package/toastr)
 ```
 npm install --save toastr
-```
-
-#### [yarn](https://yarnpkg.com/en/package/toastr)
-```
-yarn add toastr
 ```
 
 #### [Ruby on Rails](https://github.com/tylergannon/toastr-rails)
@@ -191,19 +183,12 @@ toastr.options.preventDuplicates = true;
 ```
 
 ### Timeouts
-Control how toastr interacts with users by setting timeouts appropriately.
+Control how toastr interacts with users by setting timeouts appropriately. Timeouts can be disabled by setting them to 0.
 ```js
 toastr.options.timeOut = 30; // How long the toast will display without user interaction
 toastr.options.extendedTimeOut = 60; // How long the toast will display after a user hovers over it
 ```
 
-### Prevent from Auto Hiding
-To prevent toastr from closing based on the timeouts, set the `timeOut` and `extendedTimeOut` options to `0`. The toastr will persist until selected.
-
-```js
-toastr.options.timeOut = 0;
-toastr.options.extendedTimeOut = 0;
-```
 
 ### Progress Bar
 Visually indicate how long before a toast expires.
