@@ -32,6 +32,9 @@
     </li>
     <?php endif; ?>
 
+  <h5 class="text-center mt-4">Accesos Rápidos</h5>
+  <hr>
+
     <li class="nav-item">
       <a href="https://www.citypopulation.de/es/argentina/admin/buenos_aires/06602__patagones/" class="nav-link">
         <i class="fa-solid fa-users"></i> Poblacion

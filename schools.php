@@ -8,8 +8,8 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
 <html lang="es">
 <?php $pageTitle = 'Listado de Escuelas'; include 'includes/header.php'; ?>
 <style>
-  body, html { height: 100%; margin: 0; background: #f8f9fa; }
-  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px; }
+  body, html { height: 100%; margin: 0; background: #f8f9fa;}
+  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px;  overflow:hidden;}
   .action-btns { min-width: 120px; }
   .schools-empty {
     text-align: center;
@@ -18,7 +18,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     margin-top: 2rem;
   }
   .table-styles {
-     padding:1%; box-shadow: 0 0px 4px rgba(0, 0, 0, 0.29); border-radius: 10px;
+    padding:1%; box-shadow: 0 0px 4px rgba(0, 0, 0, 0.29); border-radius: 10px;
   }
   .title-container {
     background-image: linear-gradient(to right, #f0f4fdff, #2885ffff); padding:1%; box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2); border-radius: 12px;
@@ -167,7 +167,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                           <th>Email</th>
                           <th>Director/a</th>
                           <th>Vicedirector/a</th>
-                          <th>Secretario/a</th>
+      
                           <th class="action-btns">Acciones</th>
                         </tr>
                       </thead>
@@ -208,7 +208,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                             <td>' . htmlspecialchars($s['email']) . '</td>
                             <td>' . $director . '</td>
                             <td>' . $viceDirector . '</td>
-                            <td>' . $secretary . '</td>
+
                             <td class="action-btns">
                               <button type="button" class="btn btn-sm btn-primary me-1 mb-1"
                                 data-bs-toggle="modal" data-bs-target="#modalShowModify"

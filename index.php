@@ -11,7 +11,7 @@ include 'includes/modals/indexmodals.php';
   
 </head>
 <style>
-  body, html { height: 100%; margin: 0; }
+  body, html { height: 100%; margin: 0; border-radius: 12px; }
   .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border-radius: 12px; }
   .d-flex { height: 100vh; overflow: hidden; }
   .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 50px; }
@@ -601,7 +601,7 @@ function showProperties(path) {
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        alert(`Nombre: ${data.name}\nTamaño: ${data.size} KB\nTipo: ${data.type}\nModificado: ${data.modified}`);
+        alert(`Nombre: ${data.name}\nTamaño: ${data.size} KB\nTipo: ${data.type}\nCreado: ${data.modified}`);
       } else {
         toastr.error('No se pudieron obtener propiedades');
       }

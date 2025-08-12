@@ -13,7 +13,13 @@
 </nav>
 <style>
   .navbar {
+    overflow:hidden;
     background-image: linear-gradient(to right, #ffffffff, #2885ffff);
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2);
+  }
+  .navbar-brand:hover {
+    font-weight:bold; 
+    color: #2885ffff;
   }
   .navbar-brand {
     font-weight:bold; 
