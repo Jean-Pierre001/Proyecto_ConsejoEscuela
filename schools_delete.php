@@ -9,8 +9,10 @@ include 'includes/conn.php';
 // Recibir ID, primero POST, luego GET
 $id = 0;
 if (isset($_POST['id'])) {
+    header('Location: schools.php');
     $id = intval($_POST['id']);
 } elseif (isset($_GET['id'])) {
+    header('Location: schools.php');
     $id = intval($_GET['id']);
 } else {
     echo "No se recibió ID por POST ni GET.<br>";

@@ -1,3 +1,3 @@
 <footer class="text-center text-muted py-3 bg-light">
-  <small>© 2025 File Manager - Todos los derechos reservados</small>
+  <small>© 2025 Escuela Tecnica N°1 De Carmen De Patagones - Todos los derechos reservados</small>
 </footer>

@@ -41,7 +41,7 @@ include 'includes/modals/indexmodals.php';
 <div class="d-flex">
   <?php include 'includes/sidebar.php'; ?>
   <main class="p-4 flex-grow-1 overflow-auto">
-    <h3>Bienvenido, <?= htmlspecialchars($_SESSION['username']) ?> 👋</h3>
+    <h3>Bienvenido, <?= htmlspecialchars($_SESSION['username']) ?> Accediste Como, <?= htmlspecialchars($_SESSION['role']) ?></h3>
     <nav aria-label="breadcrumb" class="mb-3">
       <ol id="breadcrumb-container" class="breadcrumb"></ol>
     </nav>

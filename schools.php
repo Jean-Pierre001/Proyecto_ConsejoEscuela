@@ -104,7 +104,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
             $hideBtnsClass = ($catIdEsc === 7) ? ' d-none' : '';
 
             echo '<span class="' . $hideBtnsClass . '">';
-            echo '<button class="btn btn-sm btn-primary me-1" 
+            echo '<button type="button" class="btn btn-sm btn-primary me-1" 
                           data-bs-toggle="modal" data-bs-target="#modalModifyCategory" 
                           data-category-id="' . $catIdEsc . '" 
                           data-category-name="' . $catNameEsc . '" 
@@ -112,7 +112,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                     <i class="fa fa-edit"></i>
                   </button>';
 
-            echo '<button class="btn btn-sm btn-danger" 
+            echo '<button type="button" class="btn btn-sm btn-danger" 
                           data-bs-toggle="modal" data-bs-target="#modalDeleteCategory" 
                           data-category-id="' . $catIdEsc . '" 
                           data-category-name="' . $catNameEsc . '" 
@@ -233,6 +233,16 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
     </button>
 </form>
 
+      <?php
+if (!empty($_SESSION['error'])) {
+    echo "<script>toastr.error('" . addslashes($_SESSION['error']) . "');</script>";
+    unset($_SESSION['error']);
+}
+if (!empty($_SESSION['success'])) {
+    echo "<script>toastr.success('" . addslashes($_SESSION['success']) . "');</script>";
+    unset($_SESSION['success']);
+}
+?>
 
 
 <?php include 'includes/footer.php'; ?>

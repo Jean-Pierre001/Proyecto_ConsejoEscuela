@@ -1,5 +1,4 @@
 <?php
-// schools.php
 include 'includes/session.php';
 include 'includes/conn.php';
 include 'includes/modals/inspectorsmodals.php';
@@ -62,7 +61,7 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
     <form method="get" class="d-flex gap-2 flex-wrap mb-3 align-items-center">
       <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" style="max-width:180px;" value="<?= htmlspecialchars($_GET['nombre'] ?? '') ?>">
       
-      <select name="nivel" class="form-select" style="max-width:140px;">
+      <select name="nivel" class="form-select" style="max-width:190px;">
         <option value="">Todos los niveles</option>
         <?php
         foreach ($levels as $level) {
@@ -132,11 +131,21 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
             </table>
         <?php endif; ?>
       </div>
-
       <button type="submit" class="btn btn-warning mt-2">
         <i class="fa fa-file-excel"></i> Exportar seleccionados a Excel
       </button>
     </form>
+
+    <?php
+    if (!empty($_SESSION['error'])) {
+        echo "<script>toastr.error('" . addslashes($_SESSION['error']) . "');</script>";
+        unset($_SESSION['error']);
+    }
+    if (!empty($_SESSION['success'])) {
+        echo "<script>toastr.success('" . addslashes($_SESSION['success']) . "');</script>";
+        unset($_SESSION['success']);
+    }
+    ?>
 
 <?php include 'includes/footer.php'; ?>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
