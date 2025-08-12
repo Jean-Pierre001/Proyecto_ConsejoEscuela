@@ -4,7 +4,7 @@ include 'includes/session.php';
 include 'includes/conn.php';
 include 'includes/modals/inspectorsmodals.php';
 
-// Consulta para obtener inspectores con filtros
+// Filtros para la consulta
 $where = [];
 $params = [];
 
@@ -12,10 +12,7 @@ if (!empty($_GET['nombre'])) {
     $where[] = "name LIKE ?";
     $params[] = "%" . $_GET['nombre'] . "%";
 }
-if (!empty($_GET['cue'])) {
-    $where[] = "cue LIKE ?";
-    $params[] = "%" . $_GET['cue'] . "%";
-}
+
 if (!empty($_GET['nivel'])) {
     $where[] = "levelModality = ?";
     $params[] = $_GET['nivel'];
@@ -25,11 +22,16 @@ $sql = "SELECT * FROM inspectors";
 if ($where) {
     $sql .= " WHERE " . implode(" AND ", $where);
 }
-$sql .= " ORDER BY id DESC";
+$sql .= " ORDER BY id ASC";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $inspectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Para llenar el select de niveles (levelModality)
+$stmtLevelFilter = $pdo->query("SELECT DISTINCT levelModality FROM inspectors ORDER BY levelModality ASC");
+$levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,9 +49,9 @@ $inspectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <?php include 'includes/sidebar.php'; ?>
   <main class="main-container flex-grow-1 p-4">
 
-    <h3><i id="i-inspectors" class="fa-solid fa-user"></i> Listado de Inspectores</h3>
+    <h3><i id="i-inspectors" class="fa-solid fa-user-tie"></i> Listado de Inspectores</h3>
 
-    <!-- Botones de agregar agrupados -->
+    <!-- Botone agregar -->
     <div class="btn-group-top">
       <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAddInspector">
           <i class="fa fa-plus"></i> Agregar inspector
@@ -59,19 +61,22 @@ $inspectors = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Filtros -->
     <form method="get" class="d-flex gap-2 flex-wrap mb-3 align-items-center">
       <input type="text" name="nombre" class="form-control" placeholder="Filtrar por nombre" style="max-width:180px;" value="<?= htmlspecialchars($_GET['nombre'] ?? '') ?>">
-      <input type="text" name="cue" class="form-control" placeholder="Filtrar por CUE" style="max-width:120px;" value="<?= htmlspecialchars($_GET['cue'] ?? '') ?>">
+      
       <select name="nivel" class="form-select" style="max-width:140px;">
         <option value="">Todos los niveles</option>
         <?php
-        $stmtCatFilter = $pdo->query("SELECT name FROM categories ORDER BY name ASC");
-        foreach ($stmtCatFilter->fetchAll(PDO::FETCH_COLUMN) as $catName) {
-            $selected = (($_GET['nivel'] ?? '') === $catName) ? 'selected' : '';
-            echo "<option value=\"" . htmlspecialchars($catName) . "\" $selected>" . htmlspecialchars($catName) . "</option>";
+        foreach ($levels as $level) {
+            $selected = (($_GET['nivel'] ?? '') === $level) ? 'selected' : '';
+            echo "<option value=\"" . htmlspecialchars($level) . "\" $selected>" . htmlspecialchars($level) . "</option>";
         }
         ?>
       </select>
+      
       <button type="submit" class="btn btn-primary">Filtrar</button>
+
+      <a href="inspectors.php" class="btn btn-secondary">Eliminar filtros</a>
     </form>
+
 
     <!-- Tabla de inspectores -->
     <form id="exportForm" method="post" action="export_inspectors.php">

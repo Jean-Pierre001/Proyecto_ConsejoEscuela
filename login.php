@@ -44,24 +44,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta charset="UTF-8" />
   <title>Login - File Manager</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    /* Contenedor que cubre toda la pantalla con la imagen de fondo */
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Opcional para evitar scroll si no quieres */
+    }
+    .background-image {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('assets/images/patagones.jfif') no-repeat center center/cover;
+      filter: blur(0px); <!-- Cambia el valor para aumentar o disminuir el desenfoque -->
+      z-index: -1; /* Para que esté detrás */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    /* Contenedor del login centrado y por encima */
+    .login-container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+  </style>
 </head>
-<body class="bg-light">
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <form method="post" class="bg-white p-4 rounded shadow" style="width: 320px;">
-    <h4 class="text-center mb-3">Iniciar Sesión</h4>
-    <?php if ($error): ?>
-      <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
-    <div class="mb-3">
-      <label for="username">Usuario</label>
-      <input type="text" id="username" name="username" class="form-control" required autofocus />
-    </div>
-    <div class="mb-3">
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" name="password" class="form-control" required />
-    </div>
-    <button class="btn btn-primary w-100">Ingresar</button>
-  </form>
-</div>
+<body>
+  <div class="background-image"></div>
+
+  <div class="login-container">
+    <form method="post" class="bg-white p-4 rounded shadow" style="width: 320px;">
+      <h4 class="text-center mb-3">Iniciar Sesión</h4>
+      <?php if ($error): ?>
+        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+      <?php endif; ?>
+      <div class="mb-3">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" class="form-control" required autofocus />
+      </div>
+      <div class="mb-3">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" class="form-control" required />
+      </div>
+      <button class="btn btn-primary w-100">Ingresar</button>
+    </form>
+  </div>
 </body>
 </html>

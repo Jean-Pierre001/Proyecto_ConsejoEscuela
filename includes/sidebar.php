@@ -17,12 +17,17 @@
     </li>
     <li class="nav-item">
       <a href="inspectors.php" class="nav-link<?php echo ($currentPage == 'inspectors.php') ? ' active' : ''; ?>">
-        <i class="fa-solid fa-school"></i> Inspectores
+        <i class="fa-solid fa-user-tie"></i> Inspectores
       </a>
     </li>
     <li class="nav-item">
       <a href="https://www.citypopulation.de/es/argentina/admin/buenos_aires/06602__patagones/" class="nav-link">
-        <i class="fa-solid fa-info"></i> Poblacion
+        <i class="fa-solid fa-users"></i> Poblacion
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="https://www.argentina.gob.ar/capital-humano/educacion" class="nav-link">
+        <i class="fa-solid fa-graduation-cap"></i> Educación
       </a>
     </li>
   </ul>

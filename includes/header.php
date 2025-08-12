@@ -1,6 +1,7 @@
 <!-- includes/header.php -->
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" href="../assets/images/consejoicono.ico" type="image/x-icon">
   <title><?php echo isset($pageTitle) ? $pageTitle : 'Proyecto Consejo Escolar'; ?></title>
 
   <!-- Bootstrap CSS (HTTPS CDN) -->
@@ -35,6 +36,7 @@
 
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 

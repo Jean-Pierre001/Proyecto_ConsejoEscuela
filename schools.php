@@ -73,6 +73,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
         ?>
       </select>
       <button type="submit" class="btn btn-primary">Filtrar</button>
+      <a href="schools.php" class="btn btn-secondary">Eliminar filtros</a>
     </form>
 <form id="exportForm" method="post" action="export_schools.php">
   <div class="table-responsive mt-2">
@@ -173,7 +174,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
 
                     foreach ($authorities as $auth) {
                         $role = strtolower($auth['role']);
-                        if (strpos($role, 'director') !== false && $director === '') {
+                        if (strpos($role, 'director/a') !== false && $director === '') {
                             $director = htmlspecialchars($auth['name']);
                         } elseif ((strpos($role, 'vicedirector/a') !== false || strpos($role, 'vicedirector/a') !== false) && $viceDirector === '') {
                             $viceDirector = htmlspecialchars($auth['name']);
