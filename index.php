@@ -7,8 +7,12 @@ include 'includes/modals/indexmodals.php';
 <!DOCTYPE html>
 <html lang="es">
 <?php $pageTitle = 'Gestor de Archivos'; include 'includes/header.php'; ?>
+<head>
+  
+</head>
 <style>
   body, html { height: 100%; margin: 0; }
+  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); border-radius: 12px; }
   .d-flex { height: 100vh; overflow: hidden; }
   .dropzone { border: 2px dashed #007bff; border-radius: 6px; background: #f8f9fa; padding: 50px; }
   .folder-item:hover, .file-row:hover { background-color: #e9ecef; cursor: pointer; }
@@ -32,6 +36,25 @@ include 'includes/modals/indexmodals.php';
   white-space: nowrap;             /* Evita que el texto se divida en varias líneas */
 }
 
+.files-container{ 
+  padding:1%;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.21); border-radius: 12px; 
+}
+
+.folders-container{
+  padding:1%;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.21); border-radius: 12px; 
+}
+
+#header-welcome{
+  text-decoration:underline;
+  text-decoration-color: #008cffff;
+}
+
+#header-user {
+  font-size:20px;
+}
+
 </style>
 
   <!-- HABILITAR CUANDO YA ESTE HOSTEADO EN CASO CONTRARIO DA ERRORES INDESEADOS -->
@@ -40,30 +63,30 @@ include 'includes/modals/indexmodals.php';
 <?php include 'includes/navbar.php'; ?>
 <div class="d-flex">
   <?php include 'includes/sidebar.php'; ?>
-  <main class="p-4 flex-grow-1 overflow-auto">
-    <h3>Bienvenido, <?= htmlspecialchars($_SESSION['username']) ?> Accediste Como, <?= htmlspecialchars($_SESSION['role']) ?></h3>
+  <main class="main-container p-4 flex-grow-1 overflow-auto">
+    <h3 id="header-welcome">Bienvenido, <?= htmlspecialchars($_SESSION['username']) ?></h3>
+    <h3 id="header-user">Accediste como <?= htmlspecialchars($_SESSION['role']) ?></h3>
     <nav aria-label="breadcrumb" class="mb-3">
       <ol id="breadcrumb-container" class="breadcrumb"></ol>
     </nav>
-    <div class="mb-4">
+
+    
+    <hr />
+    <div class="folders-container">
+    <section class="mb-3">
+      <h5 class="mb-3">Carpetas</h5>
+          <div>
       <form id="create-folder-form" style="display: inline-flex; gap: 0.5rem; align-items: center;">
         <input type="text" name="folder_name" class="form-control form-control-sm" placeholder="Nombre carpeta" required style="max-width: 200px;" />
         <button type="submit" class="btn btn-sm btn-success">Crear</button>
       </form>
     </div>
-    <section class="mb-4">
-      <h5>Subir archivos</h5>
-      <form action="upload_files.php" class="dropzone" id="my-dropzone" enctype="multipart/form-data">
-        <input type="hidden" name="targetFolder" value="" />
-      </form>
-    </section>
-    <hr />
-    <section class="mb-3">
-      <h5>Carpetas</h5>
       <ul id="folder-list" class="list-group"></ul>
     </section>
+    </div>
     <hr>
     <section>
+    <div class="files-container">
     <h5>Archivos
       <button id="delete-selected" class="btn btn-danger btn-sm ms-3" disabled>Eliminar seleccionados</button>
       <button id="download-selected" class="btn btn-primary btn-sm ms-1" disabled>Descargar seleccionados</button>
@@ -89,6 +112,13 @@ include 'includes/modals/indexmodals.php';
   </label>
 </div>
     <div id="file-list"></div>
+    <section class="mb-4">
+      <h5>Subir archivos</h5>
+      <form action="upload_files.php" class="dropzone" id="my-dropzone" enctype="multipart/form-data">
+        <input type="hidden" name="targetFolder" value="" />
+      </form>
+    </section>
+    </div>
   </section>
   </main>
 </div>

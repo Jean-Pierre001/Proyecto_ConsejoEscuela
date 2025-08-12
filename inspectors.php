@@ -37,10 +37,16 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
 <?php $pageTitle = 'Listado de Inspectores'; include 'includes/header.php'; ?>
 <style>
   body, html { height: 100%; margin: 0; background: #f8f9fa; }
-  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: 12px; }
+  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px; }
   .action-btns { min-width: 120px; }
   .schools-empty { text-align: center; color: #888; font-size: 1.1rem; margin-top: 2rem; }
   .btn-group-top { margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .table-styles {
+     padding:1%; box-shadow: 0 0px 6px rgba(0, 0, 0, 0.29); border-radius: 10px;
+  }
+  .table-responsive {
+    padding:1%;
+  }
   #i-inspectors { color: #007bff; margin-right: 1px; }
 </style>
 <?php include 'includes/navbar.php'; ?>
@@ -85,7 +91,7 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
               <i class="fa-solid fa-school"></i> No hay registros en la tabla de instituciones.
             </div>
         <?php else: ?>
-            <table class="table table-striped table-hover align-middle">
+            <table class="table table-styles table-striped table-hover align-middle">
               <thead>
                 <tr>
                   <th><input type="checkbox" id="selectAll"></th>

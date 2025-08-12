@@ -9,13 +9,22 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
 <?php $pageTitle = 'Listado de Escuelas'; include 'includes/header.php'; ?>
 <style>
   body, html { height: 100%; margin: 0; background: #f8f9fa; }
-  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border-radius: 12px; }
+  .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px; }
   .action-btns { min-width: 120px; }
   .schools-empty {
     text-align: center;
     color: #888;
     font-size: 1.1rem;
     margin-top: 2rem;
+  }
+  .table-styles {
+     padding:1%; box-shadow: 0 0px 4px rgba(0, 0, 0, 0.29); border-radius: 10px;
+  }
+  .title-container {
+    background-image: linear-gradient(to right, #f0f4fdff, #2885ffff); padding:1%; box-shadow: 0 0px 8px rgba(0, 0, 0, 0.2); border-radius: 12px;
+  }
+  .table-responsive {
+    padding:1%; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); border-radius: 12px;
   }
   #i-school { color: #007bff; margin-right: 1px; }
   .btn-group-top {
@@ -97,8 +106,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
         foreach ($categories as $cat) {
             $catNameEsc = htmlspecialchars($cat['name']);
             $catIdEsc = (int)$cat['id'];
-
-            echo '<h3 class="mt-4 d-flex align-items-center justify-content-between">';
+            echo '<h3 class="title-container mt-4 d-flex align-items-center justify-content-between">';
             echo '<span>' . $catNameEsc . '</span>';
 
             $hideBtnsClass = ($catIdEsc === 7) ? ' d-none' : '';
@@ -144,7 +152,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                 echo '<div class="schools-empty">No hay escuelas registradas en esta categoría.</div>';
             } else {
                 // Agregamos id único al checkbox selectAll y clase con id de categoría a checkboxes
-                echo '<table class="table table-striped table-hover align-middle">';
+                echo '<table class="table table-styles table-striped table-hover align-middle">';
                 echo '<thead>
                         <tr>
                           <th><input type="checkbox" class="selectAllCategory" data-cat-id="' . $catIdEsc . '" id="selectAll_' . $catIdEsc . '"></th>
@@ -202,21 +210,21 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
                             <td>' . $viceDirector . '</td>
                             <td>' . $secretary . '</td>
                             <td class="action-btns">
-                              <button type="button" class="btn btn-sm btn-primary me-1"
+                              <button type="button" class="btn btn-sm btn-primary me-1 mb-1"
                                 data-bs-toggle="modal" data-bs-target="#modalShowModify"
                                 data-school=\'' . $escuelaJSON . '\'
                                 data-authorities=\'' . $autoridadesJSON . '\'
                               >
                                 <i class="fa fa-edit"></i>
                               </button>
-                              <button type="button" class="btn btn-sm btn-danger"
+                              <button type="button" class="btn btn-sm btn-danger mb-1"
                                 data-bs-toggle="modal" data-bs-target="#modalShowDelete"
                                 data-school=\'' . $escuelaJSON . '\'
                                 data-authorities=\'' . $autoridadesJSON . '\'
                               >
                                 <i class="fa fa-trash"></i>
                               </button>
-                              <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary" title="Archivos">
+                              <a href="create_folder_and_redirect.php?id=' . $s['id'] . '" class="btn btn-sm btn-secondary mb-1" title="Archivos">
                                 <i class="fa fa-file"></i>
                               </a>
                             </td>
