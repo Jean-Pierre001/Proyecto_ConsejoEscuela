@@ -43,21 +43,21 @@ CREATE TABLE `authorities` (
 --
 
 INSERT INTO `authorities` (`id`, `school_id`, `role`, `name`, `personal_phone`, `personal_email`, `created_at`, `updated_at`) VALUES
-(9, 7, 'Director', 'Director 1', '3000000001', 'director1@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(10, 8, 'Director', 'Director 2', '3000000002', 'director2@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(11, 9, 'Director', 'Director 3', '3000000003', 'director3@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(12, 10, 'Director', 'Director 4', '3000000004', 'director4@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(13, 11, 'Director', 'Director 5', '3000000005', 'director5@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(14, 12, 'Director', 'Director 6', '3000000006', 'director6@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(15, 13, 'Director', 'Director 7', '3000000007', 'director7@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(16, 14, 'Director', 'Director 8', '3000000008', 'director8@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(17, 15, 'Director', 'Director 9', '3000000009', 'director9@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(18, 16, 'Director', 'Director 10', '3000000010', 'director10@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(19, 17, 'Director', 'Director 11', '3000000011', 'director11@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(20, 18, 'Director', 'Director 12', '3000000012', 'director12@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(21, 19, 'Director', 'Director 13', '3000000013', 'director13@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(22, 20, 'Director', 'Director 14', '3000000014', 'director14@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(23, 21, 'Director', 'Director 15', '3000000015', 'director15@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28');
+(9, 7, 'Director/a', 'Director 1', '3000000001', 'director1@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
+(10, 8, 'Director/a', 'Director 2', '3000000002', 'director2@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
+(11, 9, 'Director/a', 'Director 3', '3000000003', 'director3@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
+(12, 10, 'Director/a', 'Director 4', '3000000004', 'director4@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
+(13, 11, 'Director/a', 'Director 5', '3000000005', 'director5@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(14, 12, 'Director/a', 'Director 6', '3000000006', 'director6@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(15, 13, 'Director/a', 'Director 7', '3000000007', 'director7@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(16, 14, 'Director/a', 'Director 8', '3000000008', 'director8@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(17, 15, 'Director/a', 'Director 9', '3000000009', 'director9@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(18, 16, 'Director/a', 'Director 10', '3000000010', 'director10@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(19, 17, 'Director/a', 'Director 11', '3000000011', 'director11@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(20, 18, 'Director/a', 'Director 12', '3000000012', 'director12@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(21, 19, 'Director/a', 'Director 13', '3000000013', 'director13@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(22, 20, 'Director/a', 'Director 14', '3000000014', 'director14@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
+(23, 21, 'Director/a', 'Director 15', '3000000015', 'director15@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28');
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') NOT NULL DEFAULT 'user',
+  `role` enum('Usuario','Administrador') NOT NULL DEFAULT 'user',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -159,7 +159,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'admin', 'Agustin500cm@gmail.com', '$2y$10$HWNAV694yPRci4kkECogt.h8ItY.hexhGEkcykTQPWwosIA0f6MZW', 'user', '2025-08-05 15:55:04');
+(1, 'admin', 'Agustin500cm@gmail.com', '$2y$10$HWNAV694yPRci4kkECogt.h8ItY.hexhGEkcykTQPWwosIA0f6MZW', 'Admistrador', '2025-08-05 15:55:04');
 
 --
 -- Índices para tablas volcadas
