@@ -84,8 +84,9 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
 
 
     <!-- Tabla de inspectores -->
-    <form id="exportForm" method="post" action="export_inspectors.php">
-      <div class="table-responsive mt-2">
+  <form id="exportForm" method="post" action="export_inspectors.php" style="box-shadow: 0 2px 8px rgba(0, 0, 0, 0.21); border-radius: 12px; padding: 1px;">
+
+      <div class="table-responsive mt-2" >
         <?php if (!$inspectors): ?>
             <div class="schools-empty">
               <i class="fa-solid fa-school"></i> No hay registros en la tabla de instituciones.
@@ -137,9 +138,12 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
             </table>
         <?php endif; ?>
       </div>
-      <button type="submit" class="btn btn-warning mt-2">
+      <button type="submit" class="btn btn-warning mt-2 mx-3">
         <i class="fa fa-file-excel"></i> Exportar seleccionados a Excel
       </button>
+      <div class="mx-3";>
+        <?php include 'includes/footer.php'; ?> 
+      </div>   
     </form>
 
     <?php
@@ -153,7 +157,7 @@ $levels = $stmtLevelFilter->fetchAll(PDO::FETCH_COLUMN);
     }
     ?>
 
-<?php include 'includes/footer.php'; ?>
+
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 

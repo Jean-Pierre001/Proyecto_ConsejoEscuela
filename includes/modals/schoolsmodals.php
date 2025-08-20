@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-xl">
     <form method="post" action="schools_back/school_add.php">
       <div class="modal-content">
-        <div class="modal-header bg-success text-white">
+        <div class="modal-header">
           <h5 class="modal-title" id="modalAddSchoolLabel"><i class="fa fa-plus"></i> Agregar Escuela</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
@@ -11,8 +11,8 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Nombre</label>
-              <input type="text" name="schoolName" id="schoolName" class="form-control" required>
-              <small id="nameWarning" style="color:red; display:none;">Ese nombre ya existe</small>
+              <input type="text" name="schoolName" id="schoolName" id="schoolName" class="form-control" required>
+              <small id="nameMessage" class="text-danger"></small>
             </div>
             <div class="col-md-3">
               <label class="form-label">Número de orden</label>
@@ -38,7 +38,7 @@
               </select>
             </div>
             <div class="col-md-3">
-              <label class="Turno">Turno</label>
+              <label class="form-label">Turno</label>
               <input type="text" name="shift" class="form-control" required>
             </div>
             <div class="col-md-6">
@@ -72,7 +72,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+          <button type="submit" class="btn btn-success" disabled><i class="fa fa-save"></i> Guardar</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
       </div>
@@ -169,7 +169,6 @@
             <label for="edit-shift" class="form-label">Turno</label>
             <input type="text" id="edit-shift" name="shift" class="form-control" required>
           </div>
-
           <div class="col-md-6 mb-3">
             <label for="edit-service_code" class="form-label">Código de Servicio</label>
             <input type="text" id="edit-service_code" name="service_code" class="form-control" required>

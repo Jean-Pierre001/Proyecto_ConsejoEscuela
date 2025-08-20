@@ -83,7 +83,7 @@ $roles = $stmtRoleFilter->fetchAll(PDO::FETCH_COLUMN);
     </form>
 
     <!-- Tabla de usuarios -->
-      <div class="table-responsive mt-2">
+      <div class="table-responsive mt-2" style="box-shadow: 0 2px 8px rgba(0, 0, 0, 0.21); border-radius: 12px; padding: 17px;">
         <?php if (!$users): ?>
             <div class="schools-empty">
               <i class="fa-solid fa-users"></i> No hay registros en la tabla de usuarios.
@@ -131,6 +131,8 @@ $roles = $stmtRoleFilter->fetchAll(PDO::FETCH_COLUMN);
               </tbody>
             </table>
         <?php endif; ?>
+        
+<?php include 'includes/footer.php'; ?>
       </div>
 
       <?php
@@ -144,7 +146,6 @@ if (!empty($_SESSION['success'])) {
 }
 ?>
 
-<?php include 'includes/footer.php'; ?>
 <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 
