@@ -11,7 +11,8 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Nombre</label>
-              <input type="text" name="schoolName" class="form-control" required>
+              <input type="text" name="schoolName" id="schoolName" class="form-control" required>
+              <small id="nameWarning" style="color:red; display:none;">Ese nombre ya existe</small>
             </div>
             <div class="col-md-3">
               <label class="form-label">Número de orden</label>
@@ -20,7 +21,7 @@
             <div class="col-md-3">
               <label class="form-label">Categoría</label>
                 <select name="category_id" class="form-select">
-                  <option value="">Sin categoría (opcional)</option>
+                  <option value="">Sin categoría</option>
                   <?php
                   $stmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
                   while ($row = $stmt->fetch()) {
@@ -37,13 +38,8 @@
               </select>
             </div>
             <div class="col-md-3">
-              <label class="form-label">Turno</label>
-              <select name="shift" class="form-select" required>
-                <option value="">--</option>
-                <option value="manana">Mañana</option>
-                <option value="tarde">Tarde</option>
-                <option value="noche">Noche</option>
-              </select>
+              <label class="Turno">Turno</label>
+              <input type="text" name="shift" class="form-control" required>
             </div>
             <div class="col-md-6">
               <label class="form-label">Código de Servicio</label>
@@ -51,7 +47,7 @@
             </div>
             <div class="col-md-6">
               <label class="form-label">¿Comparte edificio?</label>
-              <input type="text" name="shared_building" class="form-control" required>
+              <input type="text" name="shared_building" class="form-control">
             </div>
             <div class="col-md-6">
               <label class="form-label">CUE</label>

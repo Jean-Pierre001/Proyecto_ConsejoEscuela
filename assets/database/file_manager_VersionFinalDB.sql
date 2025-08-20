@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-08-2025 a las 17:43:07
+-- Tiempo de generación: 12-08-2025 a las 21:08:24
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,78 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `file_manager`
 --
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `authorities`
---
-
-CREATE TABLE `authorities` (
-  `id` int(11) NOT NULL,
-  `school_id` int(11) NOT NULL,
-  `role` varchar(50) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `personal_phone` varchar(50) DEFAULT NULL,
-  `personal_email` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `authorities`
---
-
-INSERT INTO `authorities` (`id`, `school_id`, `role`, `name`, `personal_phone`, `personal_email`, `created_at`, `updated_at`) VALUES
-(9, 7, 'Director', 'Director 1', '3000000001', 'director1@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(10, 8, 'Director', 'Director 2', '3000000002', 'director2@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(11, 9, 'Director', 'Director 3', '3000000003', 'director3@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(12, 10, 'Director', 'Director 4', '3000000004', 'director4@example.com', '2025-08-11 15:30:27', '2025-08-11 15:30:27'),
-(13, 11, 'Director', 'Director 5', '3000000005', 'director5@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(14, 12, 'Director', 'Director 6', '3000000006', 'director6@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(15, 13, 'Director', 'Director 7', '3000000007', 'director7@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(16, 14, 'Director', 'Director 8', '3000000008', 'director8@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(17, 15, 'Director', 'Director 9', '3000000009', 'director9@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(18, 16, 'Director', 'Director 10', '3000000010', 'director10@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(19, 17, 'Director', 'Director 11', '3000000011', 'director11@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(20, 18, 'Director', 'Director 12', '3000000012', 'director12@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(21, 19, 'Director', 'Director 13', '3000000013', 'director13@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(22, 20, 'Director', 'Director 14', '3000000014', 'director14@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28'),
-(23, 21, 'Director', 'Director 15', '3000000015', 'director15@example.com', '2025-08-11 15:30:28', '2025-08-11 15:30:28');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `categories`
---
-
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `categories`
---
-
-INSERT INTO `categories` (`id`, `name`, `description`, `created_at`) VALUES
-(7, 'Sin categoría', NULL, '2025-08-11 15:36:50');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `inspectors`
---
-
-CREATE TABLE `inspectors` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `levelModality` varchar(50) NOT NULL,
-  `phone` varchar(30) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -122,68 +50,25 @@ CREATE TABLE `schools` (
 --
 
 INSERT INTO `schools` (`id`, `schoolName`, `order_number`, `category_id`, `is_disadvantaged`, `shift`, `service_code`, `shared_building`, `cue_code`, `address`, `locality`, `phone`, `email`, `created_at`, `updated_at`) VALUES
-(7, 'Escuela 12', 1, 7, 0, 'Mañana', 'SC001', '', 'CUE001', 'Calle 1', 'Ciudad A', '111111111', 'esc1@example.com', '2025-08-11 15:30:27', '2025-08-11 15:40:00'),
-(8, 'Escuela 2', 2, 7, 1, 'Tarde', 'SC002', 'Edificio A', 'CUE002', 'Calle 2', 'Ciudad A', '222222222', 'esc2@example.com', '2025-08-11 15:30:27', '2025-08-11 15:40:00'),
-(9, 'Escuela 3', 3, 7, 0, 'Mañana', 'SC003', NULL, 'CUE003', 'Calle 3', 'Ciudad B', '333333333', 'esc3@example.com', '2025-08-11 15:30:27', '2025-08-11 15:40:00'),
-(10, 'Escuela 4', 4, 7, 0, 'Tarde', 'SC004', NULL, 'CUE004', 'Calle 4', 'Ciudad B', '444444444', 'esc4@example.com', '2025-08-11 15:30:27', '2025-08-11 15:40:00'),
-(11, 'Escuela 5', 5, 7, 1, 'Mañana', 'SC005', 'Edificio B', 'CUE005', 'Calle 5', 'Ciudad C', '555555555', 'esc5@example.com', '2025-08-11 15:30:28', '2025-08-11 15:40:00'),
-(12, 'Escuela 6', 6, 7, 0, 'Mañana', 'SC006', NULL, 'CUE006', 'Calle 6', 'Ciudad C', '666666666', 'esc6@example.com', '2025-08-11 15:30:28', '2025-08-11 15:41:24'),
-(13, 'Escuela 7', 7, 7, 0, 'Tarde', 'SC007', NULL, 'CUE007', 'Calle 7', 'Ciudad D', '777777777', 'esc7@example.com', '2025-08-11 15:30:28', '2025-08-11 15:41:24'),
-(14, 'Escuela 8', 8, 7, 1, 'Mañana', 'SC008', 'Edificio C', 'CUE008', 'Calle 8', 'Ciudad D', '888888888', 'esc8@example.com', '2025-08-11 15:30:28', '2025-08-11 15:41:24'),
-(15, 'Escuela 9', 9, 7, 0, 'Tarde', 'SC009', NULL, 'CUE009', 'Calle 9', 'Ciudad E', '999999999', 'esc9@example.com', '2025-08-11 15:30:28', '2025-08-11 15:41:24'),
-(16, 'Escuela 10', 10, 7, 0, 'Mañana', 'SC010', NULL, 'CUE010', 'Calle 10', 'Ciudad E', '1010101010', 'esc10@example.com', '2025-08-11 15:30:28', '2025-08-11 15:41:24'),
-(17, 'Escuela 11', 11, 7, 0, 'Tarde', 'SC011', NULL, 'CUE011', 'Calle 11', 'Ciudad F', '111111222', 'esc11@example.com', '2025-08-11 15:30:28', '2025-08-11 15:37:09'),
-(18, 'Escuela 12', 12, 7, 1, 'Mañana', 'SC012', 'Edificio D', 'CUE012', 'Calle 12', 'Ciudad F', '222222333', 'esc12@example.com', '2025-08-11 15:30:28', '2025-08-11 15:37:09'),
-(19, 'Escuela 13', 13, 7, 0, 'Tarde', 'SC013', NULL, 'CUE013', 'Calle 13', 'Ciudad G', '333333444', 'esc13@example.com', '2025-08-11 15:30:28', '2025-08-11 15:37:09'),
-(20, 'Escuela 14', 14, 7, 0, 'Mañana', 'SC014', NULL, 'CUE014', 'Calle 14', 'Ciudad G', '444444555', 'esc14@example.com', '2025-08-11 15:30:28', '2025-08-11 15:37:09'),
-(21, 'Escuela 15', 15, 7, 1, 'Tarde', 'SC015', 'Edificio E', 'CUE015', 'Calle 15', 'Ciudad H', '555555666', 'esc15@example.com', '2025-08-11 15:30:28', '2025-08-11 15:37:09'),
-(22, 'Escuela de Comercio N°', 3, 7, 1, 'manana', 'JI 903', 'Edificio A', 'CUE011', 'Luis py 366', 'Carmen de patagones', '02920541084', 'Agustin500cm@gmail.com', '2025-08-11 15:36:50', '2025-08-11 15:36:50');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `users`
---
-
-CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `role` enum('user','admin') NOT NULL DEFAULT 'user',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'admin', 'Agustin500cm@gmail.com', '$2y$10$HWNAV694yPRci4kkECogt.h8ItY.hexhGEkcykTQPWwosIA0f6MZW', 'user', '2025-08-05 15:55:04');
+(24, 'Escuela 1', 1, 10, 0, 'Mañana', 'SC001', NULL, 'CUE001', 'Calle 1', 'Ciudad A', '111111111', 'esc1@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(25, 'Escuela 2', 2, 10, 1, 'Tarde', 'SC002', 'Edificio A', 'CUE002', 'Calle 2', 'Ciudad A', '222222222', 'esc2@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(26, 'Escuela 3', 3, 10, 0, 'Mañana', 'SC003', NULL, 'CUE003', 'Calle 3', 'Ciudad B', '333333333', 'esc3@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(27, 'Escuela 4', 4, 10, 0, 'Tarde', 'SC004', NULL, 'CUE004', 'Calle 4', 'Ciudad B', '444444444', 'esc4@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(28, 'Escuela 5', 5, 10, 1, 'Mañana', 'SC005', 'Edificio B', 'CUE005', 'Calle 5', 'Ciudad C', '555555555', 'esc5@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(29, 'Escuela 6', 6, 11, 0, 'Mañana', 'SC006', NULL, 'CUE006', 'Calle 6', 'Ciudad C', '666666666', 'esc6@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(30, 'Escuela 7', 7, 11, 0, 'Tarde', 'SC007', NULL, 'CUE007', 'Calle 7', 'Ciudad D', '777777777', 'esc7@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(31, 'Escuela 8', 8, 11, 1, 'Mañana', 'SC008', 'Edificio C', 'CUE008', 'Calle 8', 'Ciudad D', '888888888', 'esc8@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(32, 'Escuela 9', 9, 11, 0, 'Tarde', 'SC009', NULL, 'CUE009', 'Calle 9', 'Ciudad E', '999999999', 'esc9@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(33, 'Escuela 10', 10, 11, 0, 'Mañana', 'SC010', NULL, 'CUE010', 'Calle 10', 'Ciudad E', '1010101010', 'esc10@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(34, 'Escuela 11', 11, 12, 0, 'Tarde', 'SC011', NULL, 'CUE011', 'Calle 11', 'Ciudad F', '111111222', 'esc11@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(35, 'Escuela 12', 12, 12, 1, 'Mañana', 'SC012', 'Edificio D', 'CUE012', 'Calle 12', 'Ciudad F', '222222333', 'esc12@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(36, 'Escuela 13', 13, 12, 0, 'Tarde', 'SC013', NULL, 'CUE013', 'Calle 13', 'Ciudad G', '333333444', 'esc13@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(37, 'Escuela 14', 14, 12, 0, 'Mañana', 'SC014', NULL, 'CUE014', 'Calle 14', 'Ciudad G', '444444555', 'esc14@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36'),
+(38, 'Escuela 15', 15, 12, 1, 'Tarde', 'SC015', 'Edificio E', 'CUE015', 'Calle 15', 'Ciudad H', '555555666', 'esc15@example.com', '2025-08-12 19:07:36', '2025-08-12 19:07:36');
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `authorities`
---
-ALTER TABLE `authorities`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `school_id` (`school_id`);
-
---
--- Indices de la tabla `categories`
---
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
--- Indices de la tabla `inspectors`
---
-ALTER TABLE `inspectors`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `schools`
@@ -193,56 +78,18 @@ ALTER TABLE `schools`
   ADD KEY `category_id` (`category_id`);
 
 --
--- Indices de la tabla `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
---
--- AUTO_INCREMENT de la tabla `authorities`
---
-ALTER TABLE `authorities`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
-
---
--- AUTO_INCREMENT de la tabla `categories`
---
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
---
--- AUTO_INCREMENT de la tabla `inspectors`
---
-ALTER TABLE `inspectors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `schools`
 --
 ALTER TABLE `schools`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT de la tabla `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- Restricciones para tablas volcadas
 --
-
---
--- Filtros para la tabla `authorities`
---
-ALTER TABLE `authorities`
-  ADD CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`school_id`) REFERENCES `schools` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `schools`

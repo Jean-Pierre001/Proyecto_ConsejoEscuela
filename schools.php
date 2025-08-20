@@ -8,7 +8,7 @@ include 'includes/modals/schoolsmodals.php'; // donde pondrás los modales que t
 <html lang="es">
 <?php $pageTitle = 'Listado de Escuelas'; include 'includes/header.php'; ?>
 <style>
-  body, html { height: 100%; margin: 0; background: #f8f9fa;}
+  body, html { height: 100%; margin: 0; background: #f8f9fa; }
   .main-container { min-height: 100vh; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px;  overflow:hidden;}
   .action-btns { min-width: 120px; }
   .schools-empty {
@@ -596,6 +596,20 @@ if (!empty($_SESSION['success'])) {
     });
   });
 
+  document.getElementById('schoolName').addEventListener('blur', function() {
+      let name = this.value.trim();
+      if (name !== "") {
+          fetch('check_school.php?name=' + encodeURIComponent(name))
+          .then(res => res.json())
+          .then(data => {
+              if (data.exists) {
+                  document.getElementById('nameWarning').style.display = 'inline';
+              } else {
+                  document.getElementById('nameWarning').style.display = 'none';
+              }
+          });
+      }
+  });
 
 </script>
 
